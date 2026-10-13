@@ -1,72 +1,33 @@
-import { useNavigate, useParams } from 'react-router-dom';
-import { Stack } from '@mantine/core';
+import { useParams } from 'react-router-dom';
 import { paths } from '@/shared/config/paths';
-import { ErrorState, LoadingState, PageHeader, notifySuccess } from '@/shared/ui';
-import { PostForm } from '../components/PostForm';
-import { usePost, useUpdatePost } from '../hooks/useDiscussions';
-import type { PostFormValues } from '../schemas/postSchema';
+import { RelatedLinks, StarterPage } from '@/shared/ui';
 
 /**
- * Edit an existing post (spec 6.7).
+ * Edit an existing post (`/discussions/:postId/edit`).
  *
- * Only the author sees the entry point to this page, and the server rejects an
- * edit from anyone else - the hidden control is a convenience, the server check
- * is the rule. Saving marks the post as edited, which the UI then shows.
+ * Reusable, already-wired building blocks for the real design:
+ *   - `src/features/discussions/components/PostForm.tsx` - shared with
+ *     "new post", pre-filled from the existing post here
+ *   - `src/features/discussions/hooks/useDiscussions.ts` - `usePost`,
+ *     `useUpdatePost`
+ *
+ * The real page should confirm `post.isOwn` before rendering the form -
+ * ownership is also enforced server-side, but the UI should not let someone
+ * start editing a post that is not theirs.
  */
 export function EditPostPage() {
   const { postId } = useParams<{ postId: string }>();
-  const navigate = useNavigate();
-
-  const post = usePost(postId);
-  const updatePost = useUpdatePost(postId ?? '');
-
-  if (post.isPending) return <LoadingState label="Loading your post…" />;
-
-  if (post.isError) {
-    return (
-      <ErrorState
-        error={post.error}
-        title="We could not load this post"
-        onRetry={() => void post.refetch()}
-        isRetrying={post.isFetching}
-      />
-    );
-  }
-
-  if (!post.data.isOwn) {
-    return (
-      <ErrorState
-        title="You cannot edit this post"
-        message="Only the person who wrote a post can edit it."
-      />
-    );
-  }
-
-  const handleSubmit = (values: PostFormValues) => {
-    updatePost.mutate(values, {
-      onSuccess: () => {
-        notifySuccess('Your post was updated.');
-        navigate(paths.discussionDetail(post.data.id));
-      },
-    });
-  };
 
   return (
-    <Stack gap="lg">
-      <PageHeader title="Edit post" description="Your post will be marked as edited." />
-
-      <PostForm
-        defaultValues={{
-          title: post.data.title,
-          body: post.data.body,
-          tags: post.data.tags,
-        }}
-        submitLabel="Save changes"
-        isPending={updatePost.isPending}
-        error={updatePost.error}
-        onSubmit={handleSubmit}
-        onCancel={() => navigate(paths.discussionDetail(post.data.id))}
+    <StarterPage
+      title="Edit Post"
+      description="This page will provide a form for editing an existing discussion post."
+      sourceFile="src/features/discussions/pages/EditPostPage.tsx"
+      routeValues={{ postId }}
+    >
+      <RelatedLinks
+        links={[{ to: paths.discussionDetail(postId ?? ''), label: 'Back to this post' }]}
       />
-    </Stack>
+    </StarterPage>
   );
 }

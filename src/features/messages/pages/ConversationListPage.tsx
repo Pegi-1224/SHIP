@@ -1,75 +1,33 @@
-import { Link } from 'react-router-dom';
-import { Group, Paper, Stack, Text, Badge } from '@mantine/core';
-import { MessagesSquare } from 'lucide-react';
 import { paths } from '@/shared/config/paths';
-import { AnonymousAvatar, PageHeader, QueryStateView } from '@/shared/ui';
-import { formatRelativeTime, truncate } from '@/shared/utils/format';
-import { useConversations } from '../hooks/useMessages';
-import styles from './Messages.module.css';
+import { RelatedLinks, StarterPage } from '@/shared/ui';
 
-/** The conversation list (spec 3.7). */
+/**
+ * The conversation list (`/messages`).
+ *
+ * Reusable, already-wired building blocks for the real design:
+ *   - `src/shared/ui` - `AnonymousAvatar`
+ *   - `src/features/messages/hooks/useMessages.ts` - `useConversations`
+ *
+ * There is no seeded conversation id in the mock fixtures: conversations are
+ * created at runtime when someone messages a post's author (see
+ * `src/features/messages/hooks/useStartConversationFlow.ts`). Open the
+ * Discussions starter page and use that flow once its UI exists, or call
+ * `startConversation` from `src/features/messages/api/messagesApi.ts`
+ * directly while developing.
+ */
 export function ConversationListPage() {
-  const conversations = useConversations();
-
   return (
-    <Stack gap="lg">
-      <PageHeader
-        title="Messages"
-        description="Direct messages are anonymous on both sides. Nobody sees your name or email address."
+    <StarterPage
+      title="Messages"
+      description="This page will show the list of anonymous conversations for the signed-in user."
+      sourceFile="src/features/messages/pages/ConversationListPage.tsx"
+    >
+      <RelatedLinks
+        links={[
+          { to: paths.discussions(), label: 'Discussions (where conversations start)' },
+          { to: paths.home(), label: 'Home' },
+        ]}
       />
-
-      <QueryStateView
-        query={conversations}
-        loadingLabel="Loading your messages…"
-        isEmpty={(data) => data.length === 0}
-        emptyProps={{
-          title: 'No conversations yet',
-          description:
-            'Open a discussion and tap the avatar next to a post to message its author.',
-          icon: <MessagesSquare size={28} aria-hidden="true" />,
-        }}
-      >
-        {(items) => (
-          <Stack gap="xs">
-            {items.map((conversation) => (
-              <Paper
-                key={conversation.id}
-                component={Link}
-                to={paths.conversation(conversation.id)}
-                withBorder
-                p="md"
-                className={styles.conversationRow}
-              >
-                <Group wrap="nowrap" gap="md" align="flex-start">
-                  <AnonymousAvatar identity={conversation.peer} />
-                  <div className={styles.conversationBody}>
-                    <Group justify="space-between" wrap="nowrap" gap="sm">
-                      <Text size="sm" fw={600}>
-                        {conversation.peer.label}
-                      </Text>
-                      <Group gap="xs" wrap="nowrap">
-                        {conversation.unreadCount > 0 ? (
-                          <Badge size="sm" color="ship">
-                            {conversation.unreadCount} new
-                          </Badge>
-                        ) : null}
-                        <Text size="xs" c="dimmed">
-                          {formatRelativeTime(conversation.lastMessageAt)}
-                        </Text>
-                      </Group>
-                    </Group>
-                    <Text size="sm" c="dimmed" mt={2}>
-                      {conversation.lastMessagePreview
-                        ? truncate(conversation.lastMessagePreview, 90)
-                        : 'No messages yet.'}
-                    </Text>
-                  </div>
-                </Group>
-              </Paper>
-            ))}
-          </Stack>
-        )}
-      </QueryStateView>
-    </Stack>
+    </StarterPage>
   );
 }

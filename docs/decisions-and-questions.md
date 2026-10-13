@@ -301,6 +301,48 @@ TypeScript 7.0 is current, but `typescript-eslint@8` declares support for `>=4.8
 
 ---
 
+## DQ-18 🟢 Finished mock pages replaced with starter pages
+
+**The request.** The UI designs are not finalized, and the person building each page wanted to do so
+without first undoing a finished mock design that a previous pass had already built.
+
+**What we did.** Every route's page component now renders a `StarterPage` placeholder (title,
+one-sentence purpose, its own source file path, resolved route parameters, minimal links to related
+pages) instead of the finished layout it had before. Nothing underneath changed: the shared API
+client, every feature's API functions, query/mutation hooks, validation schemas, the mock backend,
+and the reusable feature components (forms, cards, metric renderers) are all still in the
+repository, still tested where they were tested, and ready to be wired into a real page design.
+
+**Why a dev-only bypass for sign-in and the assessment, rather than disabling those guards.**
+`RequireAuth` and `RequireAssessment` gate most of the app. If `/login` and `/assessment` were
+placeholders with no way to actually complete them, every other guarded starter page would become
+unreachable during development. Two small, documented, mock-mode-only shortcuts
+(`useDevSignIn`, `useDevCompleteAssessment` — see README §12) call the same real mock endpoints a
+finished form would, without rendering a form. Neither guard was weakened, bypassed at the router
+level, or disabled in a way that would also affect a production build pointed at a real backend
+(`VITE_ENABLE_MOCKS=false` hides both).
+
+**Why the instruction walkthrough is no longer auto-mounted.** It is a fully designed, six-step
+tour built for the finished page designs. Auto-showing a polished modal on top of placeholder
+screens would be inconsistent with the rest of the refactor. The component is unchanged and still
+exported; re-mounting it in `App.tsx` is a one-line change once the pages it tours have real
+designs.
+
+**Why 8 integration test files and the old e2e spec were removed rather than kept skipped.** They
+asserted specific rendered content from the removed designs (company cards, chat bubbles, form
+field labels) and would either fail immediately or need to be entirely rewritten to test a
+placeholder instead of the feature. The 5 test files that exercise pure logic or the API layer
+without rendering a finished page (`comparison.test.ts`, `aggregations.test.ts`,
+`submissionSchema.test.ts`, `tags.test.ts`, `client.test.ts` — 59 tests) were not touched. New route
+and guard smoke tests (`AppRoutes.test.tsx`, `StarterPage.test.tsx`) and a new e2e spec
+(`e2e/starter-pages.spec.ts`) cover the starter-page scaffold itself.
+
+**Needs:** nothing from the team — this is a recorded engineering decision, not an open question.
+See `PROGRESS.md` for the dated log entry and `docs/feature-checklist.md` for the page-by-page
+status this produced.
+
+---
+
 ## Summary
 
 | # | Issue | Severity | Owner |
@@ -316,4 +358,4 @@ TypeScript 7.0 is current, but `typescript-eslint@8` declares support for `>=4.8
 | DQ-09 | Leadership representation not compared | 🟡 | Product |
 | DQ-15 | Task schedule not supplied | 🟡 | Project |
 | DQ-17 | TypeScript version pin | 🟡 | Frontend |
-| DQ-10 to DQ-14, DQ-16 | Recorded decisions | 🟢 | — |
+| DQ-10 to DQ-14, DQ-16, DQ-18 | Recorded decisions | 🟢 | — |

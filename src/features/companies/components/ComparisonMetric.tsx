@@ -2,7 +2,7 @@ import { Badge, Paper, Stack, Text, Title } from '@mantine/core';
 import { Bar, BarChart, Cell, ResponsiveContainer, XAxis, YAxis } from 'recharts';
 import type { MetricComparison } from '../utils/comparison';
 import { formatPercent, formatUsd, formatUsdShort, formatWeeks } from '@/shared/utils/format';
-import styles from '../pages/ComparePage.module.css';
+import styles from './ComparisonMetric.module.css';
 
 export interface ComparisonMetricProps {
   comparison: MetricComparison;

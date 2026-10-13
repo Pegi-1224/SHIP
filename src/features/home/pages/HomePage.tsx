@@ -1,294 +1,214 @@
-import { useNavigate } from 'react-router-dom';
-import { Alert, Button, Group, Paper, Stack, Text, Title } from '@mantine/core';
-import { Building2, Inbox, MessagesSquare, RefreshCw, Sparkles } from 'lucide-react';
-import { PUBLIC_PREVIEW_POSTS_PER_TAG } from '@/shared/config/constants';
+import { useState } from 'react';
+import { Button, Group, Stack, Text, TextInput } from '@mantine/core';
+import { env } from '@/shared/config/env';
 import { paths } from '@/shared/config/paths';
-import {
-  EmptyState,
-  ErrorState,
-  LoadingState,
-  PostCard,
-  SearchInput,
-  TagPill,
-} from '@/shared/ui';
-import { formatTag } from '@/shared/utils/format';
+import { FormErrorAlert, RelatedLinks, StarterPage } from '@/shared/ui';
 import { useAuth } from '@/app/providers/useAuth';
-import { usePublicPreview } from '@/features/discussions';
-import { useStartConversationFlow } from '@/features/messages';
-import { useClearReadHistory, useRecommendations } from '../hooks/useHome';
-import styles from './HomePage.module.css';
+import { useDevSignIn, useSignOut } from '@/features/auth';
+import { useDevCompleteAssessment } from '@/features/onboarding';
 
 /**
- * Home (spec 3.8, 5.1, 5.4, AC-1, AC-3).
+ * Home (`/`).
  *
- * Signed out: a limited preview of recent posts per tag, and a prompt to join.
- * No search bars, because signed-out visitors may not use them.
- *
- * Signed in: recommendations built from assessment answers 3 and 4, excluding
- * posts already opened. When nothing unseen is left the page says so rather
- * than recycling posts the user has read.
+ * This is also the development index for the whole app: every registered
+ * route is listed below, with worked examples for the routes that need an
+ * id. Routes behind a guard are listed anyway - following one while signed
+ * out, or before finishing the assessment, exercises the guard's redirect,
+ * which is useful to see too.
  */
 export function HomePage() {
-  const { isAuthenticated, user, status } = useAuth();
+  const { status, user } = useAuth();
 
-  if (status === 'loading') return <LoadingState label="Loading…" />;
-
-  return isAuthenticated && user?.hasCompletedAssessment ? (
-    <SignedInHome />
-  ) : isAuthenticated ? (
-    <AssessmentPrompt />
-  ) : (
-    <SignedOutHome />
+  return (
+    <StarterPage
+      title="Home"
+      description="This page will provide the company and discussion search entry points, along with personalized recommendations for signed-in users."
+      sourceFile="src/features/home/pages/HomePage.tsx"
+    >
+      <SessionPanel status={status} email={user?.email} hasCompletedAssessment={user?.hasCompletedAssessment} />
+      <DevIndex />
+    </StarterPage>
   );
 }
 
-/* -------------------------------------------------------------------------- */
+interface SessionPanelProps {
+  status: 'loading' | 'authenticated' | 'unauthenticated';
+  email?: string;
+  hasCompletedAssessment?: boolean;
+}
 
-function SignedInHome() {
-  const navigate = useNavigate();
-  const recommendations = useRecommendations();
-  const clearHistory = useClearReadHistory();
-  const { startWith, isPending: isStartingConversation } = useStartConversationFlow();
+/** Shows the current dev session and, when signed out, the dev sign-in shortcut. */
+function SessionPanel({ status, email, hasCompletedAssessment }: SessionPanelProps) {
+  const [devEmail, setDevEmail] = useState('dev@example.com');
+  const devSignIn = useDevSignIn();
+  const signOut = useSignOut();
+
+  if (status === 'loading') {
+    return <Text size="sm">Checking session…</Text>;
+  }
+
+  if (status === 'authenticated') {
+    return (
+      <Group justify="space-between" wrap="wrap">
+        <Text size="sm">
+          Signed in as <strong>{email}</strong>.{' '}
+          {hasCompletedAssessment
+            ? 'Assessment completed.'
+            : 'Assessment not completed yet - open the Assessment starter page below.'}
+        </Text>
+        <Button size="xs" variant="light" onClick={() => signOut.mutate()} loading={signOut.isPending}>
+          Sign out
+        </Button>
+      </Group>
+    );
+  }
+
+  if (!env.enableMocks) {
+    return (
+      <Text size="sm" c="dimmed">
+        Not signed in. The dev sign-in shortcut is disabled because this build is configured for a
+        real backend (<code>VITE_ENABLE_MOCKS=false</code>). Use the real sign-in flow once it is
+        implemented at <code>/login</code>.
+      </Text>
+    );
+  }
 
   return (
-    <Stack gap="lg">
+    <Stack gap="xs">
+      <Text size="sm">
+        Not signed in. Development-only shortcut: signs in through the real mock sign-in endpoints
+        (no form to fill in). Disabled whenever <code>VITE_ENABLE_MOCKS=false</code>, which is also
+        the production setting.
+      </Text>
+      <Group gap="xs" wrap="wrap">
+        <TextInput
+          size="xs"
+          value={devEmail}
+          onChange={(event) => setDevEmail(event.currentTarget.value)}
+          aria-label="Dev sign-in email"
+          w={220}
+        />
+        <Button
+          size="xs"
+          loading={devSignIn.isPending}
+          disabled={devSignIn.isPending || devEmail.trim().length === 0}
+          onClick={() => devSignIn.mutate(devEmail)}
+        >
+          Dev sign in (mock)
+        </Button>
+      </Group>
+      <FormErrorAlert
+        error={devSignIn.error}
+        onRetry={() => devSignIn.mutate(devEmail)}
+        isRetrying={devSignIn.isPending}
+      />
+    </Stack>
+  );
+}
+
+/** Lets a developer complete the assessment from here too, without a second click into /assessment. */
+function AssessmentShortcut() {
+  const { user } = useAuth();
+  const devComplete = useDevCompleteAssessment();
+
+  if (!user || user.hasCompletedAssessment || !env.enableMocks) return null;
+
+  return (
+    <Group gap="xs">
+      <Text size="xs" c="dimmed">
+        Quick unblock:
+      </Text>
+      <Button
+        size="xs"
+        variant="light"
+        loading={devComplete.isPending}
+        onClick={() => devComplete.mutate()}
+      >
+        Dev: complete assessment with default answers
+      </Button>
+    </Group>
+  );
+}
+
+const EXAMPLE_COMPANY_ID = 'northwind-systems';
+const EXAMPLE_COMPANY_ID_B = 'harborline-financial';
+const EXAMPLE_POST_ID = 'post_seed_1';
+
+function DevIndex() {
+  return (
+    <Stack gap="md">
+      <Text size="xs" fw={700} tt="uppercase" c="dimmed">
+        All starter pages
+      </Text>
+      <Text size="xs" c="dimmed">
+        Routes marked "guarded" need a signed-in session; routes marked "+ assessment" also need
+        the assessment completed. Use the dev sign-in shortcut above to reach them.
+      </Text>
+
+      <RelatedLinks
+        heading="Public"
+        links={[
+          { to: paths.home(), label: 'Home (this page)' },
+          { to: paths.login(), label: 'Login' },
+          { to: '/this-route-does-not-exist', label: 'Not found (example)' },
+        ]}
+      />
+
       <div>
-        <Title order={1}>Welcome back</Title>
-        <Text size="sm" c="dimmed" mt={4}>
-          Search a company, or pick up a discussion we think is relevant to you.
+        <RelatedLinks heading="Onboarding (guarded)" links={[{ to: paths.assessment(), label: 'Assessment' }]} />
+        <AssessmentShortcut />
+      </div>
+
+      <RelatedLinks
+        heading="Companies (guarded + assessment)"
+        links={[
+          { to: paths.companies(), label: 'Company search' },
+          { to: paths.companyNew(), label: 'Add a company' },
+          {
+            to: paths.companyDetail(EXAMPLE_COMPANY_ID),
+            label: `Company profile (example: ${EXAMPLE_COMPANY_ID})`,
+          },
+          {
+            to: paths.companySubmit(EXAMPLE_COMPANY_ID),
+            label: `Company data submission (example: ${EXAMPLE_COMPANY_ID})`,
+          },
+          {
+            to: paths.compareCompanies(EXAMPLE_COMPANY_ID, EXAMPLE_COMPANY_ID_B),
+            label: `Compare (example: ${EXAMPLE_COMPANY_ID} vs ${EXAMPLE_COMPANY_ID_B})`,
+          },
+        ]}
+      />
+
+      <RelatedLinks
+        heading="Discussions (guarded + assessment)"
+        links={[
+          { to: paths.discussions(), label: 'Discussion feed' },
+          { to: paths.discussionNew(), label: 'New post' },
+          {
+            to: paths.discussionDetail(EXAMPLE_POST_ID),
+            label: `Post detail (example: ${EXAMPLE_POST_ID})`,
+          },
+          {
+            to: paths.discussionEdit(EXAMPLE_POST_ID),
+            label: `Edit post (example: ${EXAMPLE_POST_ID})`,
+          },
+        ]}
+      />
+
+      <div>
+        <RelatedLinks
+          heading="Messages (guarded + assessment)"
+          links={[{ to: paths.messages(), label: 'Conversation list' }]}
+        />
+        <Text size="xs" c="dimmed" mt={4}>
+          There is no seeded conversation id: conversations are created at runtime when someone
+          messages a post's author. Open the conversation list to see the empty state, or see{' '}
+          <code>src/features/messages/hooks/useStartConversationFlow.ts</code> for how one gets
+          created.
         </Text>
       </div>
 
-      <div className={styles.searchRow}>
-        <SearchInput
-          name="home-company-q"
-          label="Search companies"
-          placeholder="Search a company"
-          onSearch={(query) => navigate(paths.companiesSearch(query))}
-        />
-        <SearchInput
-          name="home-discussion-q"
-          label="Search discussions"
-          placeholder="Search a tag or post"
-          onSearch={(query) => navigate(paths.discussionsSearch(query))}
-        />
-      </div>
-
-      <Group gap="sm">
-        <Button
-          variant="light"
-          leftSection={<Building2 size={16} aria-hidden="true" />}
-          onClick={() => navigate(paths.companies())}
-        >
-          Browse companies
-        </Button>
-        <Button
-          variant="light"
-          leftSection={<MessagesSquare size={16} aria-hidden="true" />}
-          onClick={() => navigate(paths.discussions())}
-        >
-          All discussions
-        </Button>
-      </Group>
-
-      <section aria-labelledby="recommendations-heading">
-        <Group justify="space-between" align="flex-end" mb="sm" wrap="wrap">
-          <div>
-            <Title id="recommendations-heading" order={2} size="var(--ship-text-xl)">
-              Recommended for you
-            </Title>
-            {recommendations.data && recommendations.data.basedOnTags.length > 0 ? (
-              <Group gap={6} mt={6} wrap="wrap">
-                <Text size="xs" c="dimmed">
-                  Based on your assessment:
-                </Text>
-                {recommendations.data.basedOnTags.slice(0, 6).map((tag) => (
-                  <TagPill key={tag} tag={tag} asLink />
-                ))}
-              </Group>
-            ) : null}
-          </div>
-          <Button
-            variant="subtle"
-            size="compact-sm"
-            leftSection={<RefreshCw size={14} aria-hidden="true" />}
-            onClick={() => void recommendations.refetch()}
-            loading={recommendations.isFetching}
-          >
-            Refresh
-          </Button>
-        </Group>
-
-        {recommendations.isPending ? (
-          <LoadingState label="Finding discussions for you…" />
-        ) : recommendations.isError ? (
-          <ErrorState
-            error={recommendations.error}
-            onRetry={() => void recommendations.refetch()}
-            isRetrying={recommendations.isFetching}
-          />
-        ) : recommendations.data.items.length === 0 ? (
-          <Paper withBorder p="lg">
-            <EmptyState
-              icon={<Inbox size={28} aria-hidden="true" />}
-              title={
-                recommendations.data.totalMatching === 0
-                  ? 'Nothing matches your topics yet'
-                  : "You're all caught up"
-              }
-              description={
-                recommendations.data.totalMatching === 0
-                  ? 'No posts carry the tags you chose. Try browsing all discussions, or write the first post on one of your topics.'
-                  : `You have opened all ${recommendations.data.totalMatching} posts that match your topics. Refreshing will not surface new ones until someone posts again, or until you change your answers.`
-              }
-              action={{
-                label: 'Browse all discussions',
-                onClick: () => navigate(paths.discussions()),
-              }}
-            />
-            {recommendations.data.totalMatching > 0 ? (
-              <Group justify="center" mt="sm">
-                <Button
-                  variant="subtle"
-                  size="compact-xs"
-                  onClick={() => clearHistory.mutate()}
-                  loading={clearHistory.isPending}
-                >
-                  Demo: clear my read history
-                </Button>
-              </Group>
-            ) : null}
-          </Paper>
-        ) : (
-          <Stack gap="sm">
-            {recommendations.data.items.map((post) => (
-              <PostCard
-                key={post.id}
-                post={post}
-                onStartConversation={
-                  post.isOwn || isStartingConversation
-                    ? undefined
-                    : (target) => startWith(target.author.id)
-                }
-                messagingDisabledReason={post.isOwn ? 'This is your own post' : undefined}
-              />
-            ))}
-            <Text size="xs" c="dimmed" ta="center">
-              {recommendations.data.unseenRemaining - recommendations.data.items.length > 0
-                ? `${recommendations.data.unseenRemaining - recommendations.data.items.length} more unseen posts match your topics.`
-                : 'That is everything unseen that matches your topics right now.'}
-            </Text>
-          </Stack>
-        )}
-      </section>
-    </Stack>
-  );
-}
-
-/* -------------------------------------------------------------------------- */
-
-/**
- * Signed in but the assessment is unfinished.
- *
- * A prompt rather than a redirect: the assessment route redirects here when it
- * is done, so redirecting back would be a loop.
- */
-function AssessmentPrompt() {
-  const navigate = useNavigate();
-
-  return (
-    <Stack gap="lg" className={styles.narrow}>
-      <Title order={1}>One quick step left</Title>
-      <Alert color="ship" variant="light" icon={<Sparkles size={18} aria-hidden="true" />}>
-        <Text size="sm">
-          Answer five short questions and we will recommend discussions that match what you care
-          about. It takes about a minute, and you can redo it any time.
-        </Text>
-      </Alert>
-      <Group>
-        <Button onClick={() => navigate(paths.assessment())}>Start the assessment</Button>
-      </Group>
-    </Stack>
-  );
-}
-
-/* -------------------------------------------------------------------------- */
-
-function SignedOutHome() {
-  const navigate = useNavigate();
-  const preview = usePublicPreview();
-
-  return (
-    <Stack gap="lg">
-      <Paper withBorder p="xl" className={styles.hero}>
-        <Stack gap="sm" maw={620}>
-          <Title order={1}>Know what it is really like before you take the job.</Title>
-          <Text size="sm" c="dimmed">
-            SHIP collects what companies publish about pay, promotion, leave and support for women,
-            keeps it separate from what employees report, and lets you compare two employers side by
-            side.
-          </Text>
-          <Group mt="sm">
-            <Button size="md" onClick={() => navigate(paths.login())}>
-              Sign up
-            </Button>
-          </Group>
-          <Text size="xs" c="dimmed">
-            Your privacy comes first. Your email is never shown to other users.
-          </Text>
-        </Stack>
-      </Paper>
-
-      <Alert color="ship" variant="light" role="note">
-        <Text size="sm">
-          You are browsing signed out, so you can read the {PUBLIC_PREVIEW_POSTS_PER_TAG} most
-          recent posts under each tag. Searching, company pages, comments and messages need an
-          account.
-        </Text>
-      </Alert>
-
-      <section aria-labelledby="preview-heading">
-        <Title id="preview-heading" order={2} size="var(--ship-text-xl)" mb="sm">
-          What people are discussing
-        </Title>
-
-        {preview.isPending ? (
-          <LoadingState label="Loading discussions…" />
-        ) : preview.isError ? (
-          <ErrorState
-            error={preview.error}
-            onRetry={() => void preview.refetch()}
-            isRetrying={preview.isFetching}
-          />
-        ) : preview.data.length === 0 ? (
-          <EmptyState description="There's no related info yet." />
-        ) : (
-          <Stack gap="xl">
-            {preview.data.map((group) => (
-              <div key={group.tag}>
-                <Group gap="xs" mb="sm">
-                  <TagPill tag={group.tag} />
-                  <Text size="xs" c="dimmed">
-                    {formatTag(group.tag)} · newest {group.posts.length}
-                  </Text>
-                </Group>
-                <Stack gap="sm">
-                  {group.posts.map((post) => (
-                    <PostCard
-                      key={post.id}
-                      post={post}
-                      // Signed-out visitors cannot message or open a post, so
-                      // the card links to sign-in instead of a dead end.
-                      linkTo={paths.loginWithRedirect(paths.discussionDetail(post.id))}
-                      messagingDisabledReason="Sign in to message this person"
-                    />
-                  ))}
-                </Stack>
-              </div>
-            ))}
-          </Stack>
-        )}
-      </section>
+      <RelatedLinks heading="Account" links={[{ to: paths.profile(), label: 'Profile' }]} />
     </Stack>
   );
 }

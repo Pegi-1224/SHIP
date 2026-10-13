@@ -1,0 +1,22 @@
+.nav {
+  margin: 0;
+}
+
+.list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.link {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: var(--ship-text-sm);
+  color: var(--ship-primary-700);
+  text-decoration: none;
+}
+
+.link:hover {
+  text-decoration: underline;
+}

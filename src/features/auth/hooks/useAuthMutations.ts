@@ -47,6 +47,38 @@ export function useVerifyEmailCode() {
   });
 }
 
+/**
+ * DEVELOPMENT ONLY. Signs in without rendering the real sign-in form.
+ *
+ * It drives the same two mock endpoints a real sign-in uses
+ * (`requestEmailCode` then `verifyEmailCode`), reading the verification code
+ * back out of the mock response instead of asking a human to type it. This is
+ * the "reuse the existing mock session mechanism" bypass called for while the
+ * sign-in page is a starter placeholder: it exists so a developer can reach
+ * every guarded starter route without building the real sign-in UI first.
+ *
+ * It only works in mock mode: a real backend never returns
+ * `mockVerificationCode`, so this throws instead of doing anything silently
+ * wrong. Callers must also hide the button that triggers this behind
+ * `env.enableMocks`, which is already false in a production deployment.
+ */
+export function useDevSignIn() {
+  const applySession = useApplySession();
+
+  return useMutation({
+    mutationFn: async (email: string) => {
+      const { mockVerificationCode } = await requestEmailCode({ email });
+      if (!mockVerificationCode) {
+        throw new Error(
+          'Dev sign-in only works in mock mode (VITE_ENABLE_MOCKS=true). A real backend does not return a code to skip the sign-in form with.',
+        );
+      }
+      return verifyEmailCode({ email, code: mockVerificationCode, confirmsEligibility: true });
+    },
+    onSuccess: applySession,
+  });
+}
+
 /** Simulated Google sign-in. No OAuth flow runs. */
 export function useMockGoogleSignIn() {
   const applySession = useApplySession();

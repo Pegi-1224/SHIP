@@ -3,6 +3,11 @@
 How to connect this frontend to a real backend, what has to be agreed first, and what must not be
 left to the browser.
 
+> This checklist is unaffected by the frontend's current starter-page state. Every migration step
+> below still applies regardless of whether the page calling an endpoint has a finished design yet
+> — the API layer, hooks and mock handlers it describes were not changed by that refactor. See
+> `docs/decisions-and-questions.md` DQ-18 for what did change.
+
 ---
 
 ## 1. The short version

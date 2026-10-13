@@ -3,6 +3,12 @@
 How this codebase is organised, which direction dependencies are allowed to point, and who owns
 which piece of state.
 
+> This document describes the architecture, which is unaffected by the move to starter pages (see
+> `PROGRESS.md`, 2026-10-13 and `docs/decisions-and-questions.md` DQ-18). Every layer, dependency
+> rule and state-ownership decision below still holds; only §7 (testing strategy) needed an update,
+> since the page-level integration tests it previously described were removed along with the
+> finished page designs they exercised.
+
 ---
 
 ## 1. Layers
@@ -201,23 +207,34 @@ sets of focus styles, two modal implementations and two bundles.
 | Level | Tool | What it proves |
 | --- | --- | --- |
 | Unit | Vitest | Domain rules: comparison, aggregation, validation, tag rules, the API client |
-| Integration | Vitest + RTL + MSW | A page behaves correctly against the real mock backend |
-| End-to-end | Playwright | The built app works in a real browser, including the service worker |
+| Route / guard | Vitest + RTL | Every route renders, guards redirect correctly, no placeholder page triggers an unwanted request |
+| End-to-end | Playwright | The built app works in a real browser, including the service worker and the dev-only bypasses |
 
-Integration tests render real pages and let requests go through MSW. They do not mock hooks: a test
-that stubs `useCompanyProfile` proves the component renders its props, which nobody doubted.
+Unit tests exercise domain logic directly, with no rendering at all: `comparison.test.ts` calls
+`buildComparison` with plain objects, `aggregations.test.ts` calls `aggregateUserReported` with
+plain arrays. They do not mock hooks: a test that stubs a hook and asserts a component rendered its
+props proves nothing anyone doubted.
 
-What is tested is behaviour a user or the spec cares about — "the aggregate is hidden below five
-contributors", "a retry does not duplicate a message", "typed input survives a failure" — not
-implementation details.
+**Previously** this layer also included page-level integration tests that rendered a real page and
+let its requests go through MSW (e.g. a test asserting "the aggregate is hidden below five
+contributors" against the rendered company profile page). Those tests were removed when their pages
+became `StarterPage` placeholders with nothing left to assert — see `docs/decisions-and-questions.md`
+DQ-18. The underlying behaviour they tested is still fully covered by the unit tests above
+(`aggregations.test.ts` tests the same rule without a page in front of it); what is no longer
+covered is "a real page displays it correctly," because there is no real page yet. **Re-add a test
+in this shape for each page as it gets a real design** — `src/test/renderWithProviders.tsx` and
+`src/test/signIn.ts` still provide everything needed to do that, and
+`src/app/router/AppRoutes.test.tsx` is a template for the pattern.
 
 ---
 
 ## 8. Known architectural debt
 
-- **No route-level code splitting.** Every page is in the main chunk (~1.2 MB before gzip, ~363 kB
-  after). `React.lazy` per route would fix it. Deferred because readability matters more than load
-  time at this stage, and the mock backend is already split out.
+- **No route-level code splitting.** Every page is in the main chunk. `React.lazy` per route would
+  fix it. Deferred because readability matters more than load time at this stage, and the mock
+  backend is already split out. (The main chunk shrank considerably when the pages became
+  placeholders - see `npm run build` output for the current number - and will grow again as real
+  pages are built; this is the point at which code splitting becomes worth revisiting.)
 - **Lists are not paginated in the UI.** The API and client support it; no list renders a control.
 - **`mocks/aggregations.ts` is doing a backend's job.** Intentional, and the first thing to delete
   once the backend computes aggregates.

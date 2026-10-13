@@ -11,6 +11,7 @@ export {
   useSignOut,
   useDeleteAccount,
   useMarkInstructionsSeen,
+  useDevSignIn,
 } from './hooks/useAuthMutations';
 
 // Used by AuthProvider to read the session, and by tests to sign in directly.

@@ -1,79 +1,33 @@
 import { expect, type Page } from '@playwright/test';
 
 /**
- * Signs in through the real UI using the mock email-code flow, then completes
- * the assessment so the signed-in routes are reachable.
- *
- * Every browser context starts with empty storage, so each test gets a fresh
- * mock database and a brand-new account.
- *
- * Each step asserts before moving on. A helper that fails silently turns every
- * test that uses it into a confusing timeout somewhere else.
+ * Signs in using the development-only shortcut on the Home starter page
+ * (see `src/features/home/pages/HomePage.tsx` -> `SessionPanel`). It drives
+ * the same mock sign-in endpoints a real form would, just without a form:
+ * this is "reuse the existing mock session mechanism" from the refactor
+ * brief, not a separate fake login.
  */
-export async function signUpAndOnboard(page: Page, email: string): Promise<void> {
-  await page.goto('/login');
+export async function devSignIn(page: Page, email: string): Promise<void> {
+  await page.goto('/');
+  await expect(page.getByRole('heading', { name: 'Home' })).toBeVisible();
 
-  await page.getByLabel('I am a woman aged 18 or older').check();
-  await page.getByLabel('Email address').fill(email);
-  await page.getByRole('button', { name: 'Send verification code' }).click();
+  const emailInput = page.getByLabel('Dev sign-in email');
+  await emailInput.fill(email);
+  await page.getByRole('button', { name: 'Dev sign in (mock)' }).click();
 
-  // The mock API returns the code it generated, in a clearly labelled panel.
-  const codePanel = page.getByText('Mock code — no email was sent');
-  await expect(codePanel).toBeVisible();
-
-  const code = ((await page.locator('code').first().textContent()) ?? '').trim();
-  expect(code).toMatch(/^\d{6}$/);
-
-  // The 6-digit PinInput is a row of single-character fields.
-  const pinFields = page.locator('#verification-code input');
-  await expect(pinFields).toHaveCount(6);
-  await pinFields.first().click();
-  await page.keyboard.type(code);
-
-  await page.getByRole('button', { name: 'Verify and continue' }).click();
-
-  await completeAssessment(page);
+  // Signed in: the sign-in control is replaced by the "Signed in as" text.
+  await expect(page.getByText(`Signed in as ${email}`)).toBeVisible();
 }
 
-/** Answers the five assessment questions with a fixed, predictable set. */
-export async function completeAssessment(page: Page): Promise<void> {
-  await expect(page.getByText('Question 1 of 5')).toBeVisible();
-  await page.getByRole('radio', { name: 'Employed and looking to switch' }).check();
-  await page.getByRole('button', { name: 'Next' }).click();
-
-  await expect(page.getByText('Question 2 of 5')).toBeVisible();
-  await page.getByRole('checkbox', { name: 'Tech' }).check();
-  await page.getByRole('button', { name: 'Next' }).click();
-
-  await expect(page.getByText('Question 3 of 5')).toBeVisible();
-  await page.getByRole('checkbox', { name: 'Pay equity' }).check();
-  await page.getByRole('button', { name: 'Next' }).click();
-
-  await expect(page.getByText('Question 4 of 5')).toBeVisible();
-  await page.getByRole('checkbox', { name: '#pay gap' }).check();
-  await page.getByRole('button', { name: 'Next' }).click();
-
-  // Question 5 is optional.
-  await expect(page.getByText(/Question 5 of 5/)).toBeVisible();
-  await page.getByRole('button', { name: 'Finish' }).click();
-
-  // The walkthrough opens once the assessment is saved, which is also the
-  // proof that it was saved.
-  await dismissWalkthrough(page);
-
-  await expect(page).toHaveURL(/\/$/);
-}
-
-export async function dismissWalkthrough(page: Page): Promise<void> {
-  const dialog = page.getByRole('dialog');
-  await expect(dialog).toBeVisible();
-  await expect(dialog.getByText('How SHIP works')).toBeVisible();
-
-  // Six steps, one per page of the app.
-  for (let step = 0; step < 5; step += 1) {
-    await dialog.getByRole('button', { name: 'Next' }).click();
-  }
-
-  await dialog.getByRole('button', { name: 'Got it' }).click();
-  await expect(dialog).toBeHidden();
+/**
+ * Completes the assessment using the development-only shortcut on the
+ * Assessment starter page, so the `RequireAssessment` guard clears without
+ * driving the real five-question form.
+ */
+export async function devCompleteAssessment(page: Page): Promise<void> {
+  await page.goto('/assessment');
+  await page
+    .getByRole('button', { name: 'Dev: complete assessment with default answers' })
+    .click();
+  await expect(page.getByText('Assessment already completed for this session.')).toBeVisible();
 }

@@ -16,14 +16,22 @@ npm run dev
 
 Then:
 
-1. Click through the demonstration walkthrough in README section 3. It touches every feature.
-2. Read [docs/architecture.md](./docs/architecture.md) — layers and dependency rules.
+1. On Home, use the dev sign-in shortcut and the assessment shortcut (README §3) to reach every
+   guarded starter page. This is also how you will reach the page you are about to implement.
+2. Read [docs/architecture.md](./docs/architecture.md) — layers and dependency rules, unchanged by
+   the move to starter pages.
 3. Open these four files, in order. They are the spine of the codebase:
    - `src/shared/api/client.ts` — every request goes through here
    - `src/app/router/AppRoutes.tsx` — the whole route map on one screen
-   - `src/features/companies/utils/comparison.ts` — the most careful logic in the project
+   - `src/features/companies/utils/comparison.ts` — the most careful logic in the project, and a
+     good example of logic that is fully preserved and tested but not currently rendered anywhere
    - `src/mocks/handlers/companies.ts` — what the backend is expected to do
 4. Run `npm run check`. It should pass on a clean checkout.
+
+**This repository currently provides frontend architecture and starter pages. Final page designs
+and user-facing workflows are intentionally not implemented in the rendered UI yet** — see
+README §1 and `docs/feature-checklist.md` before assuming a feature is "done" because its hooks and
+mock handler exist.
 
 ---
 
@@ -31,8 +39,10 @@ Then:
 
 | Looking for | Go to |
 | --- | --- |
-| A page | `src/features/<feature>/pages/` |
+| A page (currently a `StarterPage` placeholder) | `src/features/<feature>/pages/` |
+| The starter-page building blocks | `src/shared/ui/starter/` — `StarterPage`, `RelatedLinks` |
 | A shared component | `src/shared/ui/` — the barrel lists everything |
+| A feature component built for the real design but not wired into a page yet | `src/features/<feature>/components/` — see the doc comment on that feature's starter page for which ones |
 | What an endpoint returns | `docs/api-contract.md`, then `src/mocks/handlers/<feature>.ts` |
 | Where a request is made | `src/features/<feature>/api/` |
 | Caching and invalidation | `src/features/<feature>/hooks/` |
@@ -74,12 +84,15 @@ wrong for this codebase, change the rule in a separate commit and say why.
 
 ## Common tasks
 
-### Add a page
-See README section 9. Five steps: path → page component → feature barrel → route → README table.
+### Replace a placeholder with a real page
+See README §8 for the full worked example (Company Profile). In short: read the starter page's
+doc comment for the hooks already built for it, design the page, swap the `StarterPage` body for
+real markup wired to those hooks, reuse existing buttons/navigation (`paths.ts`) rather than
+inventing new ones, and add a test next to the page.
 
-### Add an endpoint
-See README section 9. Six steps: contract doc → types → api function → query key → hook → mock
-handler.
+### Add a brand-new route or endpoint
+Every route already exists as a starter page, so this is rarer than replacing one. See README §8,
+"Adding something that does not exist yet" for routes, endpoints and mock handlers.
 
 ### Add a shared component
 
@@ -91,8 +104,16 @@ a file everyone has to read and nobody needs.
 
 ### Change demo data
 
-Edit `src/mocks/fixtures/`. Your browser keeps a saved copy, so afterwards reset it:
-**Profile → Demo tools → Reset demo data.**
+Edit `src/mocks/fixtures/`. Your browser keeps a saved copy, so afterwards reset it from the
+console:
+
+```js
+localStorage.removeItem('ship.mock.db'); location.reload();
+```
+
+(There is no in-app "Reset demo data" button right now — `ProfilePage` is a starter page. The
+original one lived in the now-replaced UI and can be rebuilt the same way: call
+`resetMockDatabase()` from `src/mocks/db.ts` behind a button, gated on `env.enableMocks`.)
 
 If you change the *shape* of the stored data, bump `DB_VERSION` in `src/mocks/db.ts` so everyone
 else's saved copy is discarded automatically instead of crashing.
@@ -102,8 +123,9 @@ else's saved copy is discarded automatically instead of crashing.
 | Testing | Use |
 | --- | --- |
 | A pure function | Plain Vitest. See `comparison.test.ts` |
-| A page or a flow | `renderWithProviders` + `signInTestUser`. See `CompanyProfilePage.test.tsx` |
-| A specific server response | `server.use(http.post(…))` inside the test. See `DiscussionFlow.test.tsx` |
+| A route, a guard, or a rendered starter page | `renderWithProviders` + `signInTestUser`. See `src/app/router/AppRoutes.test.tsx` |
+| A specific server response | `server.use(http.post(…))` inside the test. See `src/shared/api/client.test.ts` |
+| A real page once you build one | Same pattern as above — add `<Feature>Page.test.tsx` next to it |
 | A real browser | Playwright in `e2e/`. Keep this set small |
 
 Test what a user or the spec cares about. A test that stubs a hook and asserts the component
@@ -181,7 +203,7 @@ All user-facing text, comments and documentation are in **English**.
 ## Where to ask
 
 1. The error message. They are written to be actionable.
-2. README section 14, Troubleshooting.
+2. README §16, Troubleshooting.
 3. The doc comment at the top of the file — every non-obvious module has one.
 4. `docs/decisions-and-questions.md` — it may already be a known open question.
 5. The team.

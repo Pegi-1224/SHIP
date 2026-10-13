@@ -1,0 +1,49 @@
+/* Deliberately plain: a starter page is a working scaffold, not a design. */
+
+.page {
+  max-width: 640px;
+  padding-block: var(--ship-space-2);
+}
+
+.eyebrow {
+  letter-spacing: 0.06em;
+}
+
+.source {
+  padding-top: var(--ship-space-2);
+  border-top: 1px solid var(--ship-color-border);
+}
+
+.values {
+  display: flex;
+  flex-direction: column;
+  gap: var(--ship-space-1);
+  margin: 0;
+  padding: var(--ship-space-3);
+  border: 1px solid var(--ship-color-border);
+  border-radius: var(--ship-radius-sm);
+  background-color: var(--ship-color-surface-muted);
+}
+
+.valueRow {
+  display: flex;
+  gap: var(--ship-space-2);
+  font-size: var(--ship-text-sm);
+}
+
+.valueRow dt {
+  min-width: 140px;
+  color: var(--ship-color-text-muted);
+}
+
+.valueRow dd {
+  margin: 0;
+  overflow-wrap: anywhere;
+}
+
+.controls {
+  display: flex;
+  flex-direction: column;
+  gap: var(--ship-space-3);
+  padding-top: var(--ship-space-2);
+}

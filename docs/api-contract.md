@@ -2,10 +2,13 @@
 
 > **Status: PROPOSED. Nothing here has been confirmed by a backend team.**
 >
-> Every endpoint below is implemented by the mock backend in `src/mocks/handlers/` and called by the
-> frontend today. Treat this as the frontend's current assumption and a starting point for the
-> conversation, not a specification the backend must match. Where a decision is genuinely open it is
-> marked **❓ Needs backend confirmation**.
+> Every endpoint below is implemented by the mock backend in `src/mocks/handlers/` and callable
+> through each feature's existing hooks (`src/features/<feature>/hooks/`). This contract is
+> unaffected by the frontend's current starter-page state (see `docs/feature-checklist.md`): most
+> endpoints are not called by any page today simply because no page has a finished design yet to
+> call them from, not because the contract changed. Treat this as the frontend's current assumption
+> and a starting point for the conversation, not a specification the backend must match. Where a
+> decision is genuinely open it is marked **❓ Needs backend confirmation**.
 
 All paths are relative to `VITE_API_BASE_URL` (default `/api`).
 All requests and responses are `application/json`, except where a 204 is specified.
