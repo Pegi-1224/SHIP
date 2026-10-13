@@ -1,0 +1,16 @@
+.header {
+  margin-bottom: var(--ship-space-5);
+}
+
+.above {
+  margin-bottom: var(--ship-space-2);
+}
+
+.text {
+  min-width: 0;
+  flex: 1 1 320px;
+}
+
+.action {
+  flex-shrink: 0;
+}

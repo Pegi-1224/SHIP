@@ -1,0 +1,40 @@
+.card {
+  background-color: var(--ship-color-surface);
+  transition: box-shadow 140ms ease, border-color 140ms ease;
+}
+
+.card:hover {
+  box-shadow: var(--ship-shadow-sm);
+  border-color: var(--ship-color-border-strong);
+}
+
+.body {
+  min-width: 0;
+  flex: 1;
+}
+
+.title {
+  margin: 0;
+  overflow-wrap: anywhere;
+}
+
+.titleLink {
+  color: var(--ship-color-text);
+  text-decoration: none;
+}
+
+.titleLink:hover {
+  color: var(--ship-primary-700);
+  text-decoration: underline;
+}
+
+.excerpt {
+  color: var(--ship-color-text-muted);
+  line-height: 1.55;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+
+.edited {
+  font-style: italic;
+}

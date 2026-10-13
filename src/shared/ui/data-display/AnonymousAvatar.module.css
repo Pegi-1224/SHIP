@@ -1,0 +1,27 @@
+.static {
+  display: inline-flex;
+  flex-shrink: 0;
+}
+
+.button {
+  display: inline-flex;
+  flex-shrink: 0;
+  border-radius: var(--ship-radius-pill);
+  transition: transform 120ms ease;
+}
+
+.button:hover:not(:disabled) {
+  transform: scale(1.06);
+}
+
+.button:disabled {
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+.initials {
+  font-size: var(--ship-text-xs);
+  font-weight: 700;
+  color: #ffffff;
+  letter-spacing: 0.04em;
+}

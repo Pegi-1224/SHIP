@@ -1,0 +1,41 @@
+.point {
+  min-width: 0;
+}
+
+.label {
+  margin: 0;
+  font-weight: 500;
+}
+
+.value {
+  margin: 0;
+  font-size: var(--ship-text-lg);
+  font-weight: 650;
+  line-height: 1.3;
+}
+
+.valueLg {
+  margin: 0;
+  font-size: var(--ship-text-2xl);
+  font-weight: 700;
+  line-height: 1.2;
+}
+
+.caption {
+  margin-top: 2px;
+  line-height: 1.45;
+}
+
+.notice {
+  padding: var(--ship-space-3);
+  border: 1px dashed var(--ship-color-border-strong);
+  border-radius: var(--ship-radius-sm);
+  background-color: var(--ship-color-surface-muted);
+}
+
+.thresholdText {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--ship-space-2);
+  line-height: 1.5;
+}

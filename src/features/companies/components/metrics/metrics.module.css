@@ -1,0 +1,73 @@
+/* Shared layout for the two provenance branches of every metric area.
+   Public data and user-reported data always sit in their own column so they
+   can never be read as one merged number (spec 3.5, AC-5). */
+
+.branches {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--ship-space-4);
+}
+
+.branch {
+  display: flex;
+  flex-direction: column;
+  gap: var(--ship-space-3);
+  padding: var(--ship-space-3);
+  border-radius: var(--ship-radius-sm);
+  background-color: var(--ship-color-surface-muted);
+}
+
+.publicBranch {
+  border-left: 3px solid var(--ship-source-public);
+}
+
+.userBranch {
+  border-left: 3px solid var(--ship-source-user);
+}
+
+.values {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: var(--ship-space-3);
+  margin: 0;
+}
+
+.list {
+  margin: 0;
+  padding-left: var(--ship-space-4);
+  font-size: var(--ship-text-sm);
+  line-height: 1.6;
+  color: var(--ship-color-text-muted);
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: var(--ship-text-sm);
+}
+
+.table th,
+.table td {
+  padding: var(--ship-space-2);
+  border-bottom: 1px solid var(--ship-color-border);
+  text-align: left;
+}
+
+.table th {
+  font-weight: 600;
+  color: var(--ship-color-text-muted);
+}
+
+.tableScroll {
+  overflow-x: auto;
+}
+
+.note {
+  line-height: 1.5;
+}
+
+@media (max-width: 768px) {
+  .branches {
+    grid-template-columns: 1fr;
+  }
+}

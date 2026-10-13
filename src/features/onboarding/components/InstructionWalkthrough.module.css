@@ -1,0 +1,18 @@
+.card {
+  padding: var(--ship-space-5);
+  border: 1px solid var(--ship-color-border);
+  border-radius: var(--ship-radius-md);
+  background-color: var(--ship-primary-50);
+  min-height: 190px;
+}
+
+.icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 48px;
+  height: 48px;
+  border-radius: var(--ship-radius-md);
+  color: #ffffff;
+  background-color: var(--ship-primary-600);
+}

@@ -1,0 +1,26 @@
+.block {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 220px;
+  padding: var(--ship-space-6) var(--ship-space-4);
+}
+
+.inline {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--ship-space-4);
+}
+
+.icon {
+  color: var(--ship-color-text-subtle);
+}
+
+.errorIcon {
+  color: var(--ship-color-danger);
+}
+
+.errorText {
+  color: var(--ship-color-danger);
+}

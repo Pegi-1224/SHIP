@@ -1,0 +1,7 @@
+.page {
+  max-width: 640px;
+}
+
+.suggestions {
+  background-color: var(--ship-color-surface-muted);
+}

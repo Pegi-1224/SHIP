@@ -1,0 +1,14 @@
+.pill {
+  padding-right: 4px;
+  text-transform: none;
+}
+
+.link {
+  text-decoration: none;
+  cursor: pointer;
+  text-transform: none;
+}
+
+.link:hover {
+  filter: brightness(0.96);
+}

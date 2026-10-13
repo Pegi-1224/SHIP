@@ -1,0 +1,126 @@
+/*
+ * SHIP design tokens.
+ *
+ * Every custom style in the app reads from these variables instead of
+ * hard-coding a value, so the palette and spacing scale can change in one
+ * place. Mantine components read the same palette through the theme defined in
+ * `src/app/providers/theme.ts`.
+ *
+ * The design input for this project was a single hand-drawn sketch of the
+ * comparison page, so the rest of the system is an assumption recorded in
+ * docs/decisions-and-questions.md (DQ-02).
+ */
+
+:root {
+  /* --- Brand palette: plum/violet, taken from the sketch ink colour -------- */
+  --ship-primary-50: #f6f0fb;
+  --ship-primary-100: #e8dcf3;
+  --ship-primary-200: #cfb6e6;
+  --ship-primary-300: #b58ed9;
+  --ship-primary-400: #9f6ccf;
+  --ship-primary-500: #8f54c8;
+  --ship-primary-600: #7c40b6;
+  --ship-primary-700: #68359a;
+  --ship-primary-800: #552b7e;
+  --ship-primary-900: #3f2060;
+
+  /* --- Neutrals ----------------------------------------------------------- */
+  --ship-neutral-0: #ffffff;
+  --ship-neutral-50: #faf9fb;
+  --ship-neutral-100: #f2f0f5;
+  --ship-neutral-200: #e4e1ea;
+  --ship-neutral-300: #cdc8d6;
+  --ship-neutral-400: #a49cb3;
+  --ship-neutral-500: #786f88;
+  --ship-neutral-600: #5a5268;
+  --ship-neutral-700: #423b4e;
+  --ship-neutral-800: #2c2635;
+  --ship-neutral-900: #1a161f;
+
+  /* --- Semantic colours --------------------------------------------------- */
+  --ship-color-bg: var(--ship-neutral-50);
+  --ship-color-surface: var(--ship-neutral-0);
+  --ship-color-surface-muted: var(--ship-neutral-100);
+  --ship-color-border: var(--ship-neutral-200);
+  --ship-color-border-strong: var(--ship-neutral-300);
+  --ship-color-text: var(--ship-neutral-900);
+  --ship-color-text-muted: var(--ship-neutral-600);
+  --ship-color-text-subtle: var(--ship-neutral-500);
+
+  /* Contrast-checked against --ship-color-surface (#ffffff) for body text. */
+  --ship-color-success: #1f7a4d;
+  --ship-color-success-bg: #e8f6ef;
+  --ship-color-warning: #8a5a00;
+  --ship-color-warning-bg: #fdf3e2;
+  --ship-color-danger: #b3261e;
+  --ship-color-danger-bg: #fdeceb;
+  --ship-color-info: #1c5f8f;
+  --ship-color-info-bg: #e8f2f9;
+
+  /* Data-source colours. Public data and user-reported data must stay
+     visually distinct everywhere they appear (spec 3.5, AC-5). */
+  --ship-source-public: #1c5f8f;
+  --ship-source-public-bg: #e8f2f9;
+  --ship-source-user: #7c40b6;
+  --ship-source-user-bg: #f3ebfa;
+
+  /* Chart series. Company A / company B on the comparison page. */
+  --ship-chart-a: #7c40b6;
+  --ship-chart-b: #1c7f8f;
+  --ship-chart-grid: var(--ship-neutral-200);
+
+  /* --- Spacing scale (4px base) ------------------------------------------- */
+  --ship-space-1: 0.25rem;
+  --ship-space-2: 0.5rem;
+  --ship-space-3: 0.75rem;
+  --ship-space-4: 1rem;
+  --ship-space-5: 1.5rem;
+  --ship-space-6: 2rem;
+  --ship-space-7: 3rem;
+  --ship-space-8: 4rem;
+
+  /* --- Radius ------------------------------------------------------------- */
+  --ship-radius-sm: 6px;
+  --ship-radius-md: 10px;
+  --ship-radius-lg: 16px;
+  --ship-radius-pill: 999px;
+
+  /* --- Elevation ---------------------------------------------------------- */
+  --ship-shadow-sm: 0 1px 2px rgb(26 22 31 / 6%), 0 1px 3px rgb(26 22 31 / 4%);
+  --ship-shadow-md: 0 2px 8px rgb(26 22 31 / 8%), 0 1px 3px rgb(26 22 31 / 5%);
+
+  /* --- Typography --------------------------------------------------------- */
+  --ship-font-body:
+    'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial,
+    sans-serif;
+  --ship-font-mono: ui-monospace, SFMono-Regular, 'SF Mono', Menlo, Consolas, monospace;
+  --ship-text-xs: 0.75rem;
+  --ship-text-sm: 0.875rem;
+  --ship-text-md: 1rem;
+  --ship-text-lg: 1.125rem;
+  --ship-text-xl: 1.375rem;
+  --ship-text-2xl: 1.75rem;
+  --ship-text-3xl: 2.25rem;
+
+  /* --- Layout ------------------------------------------------------------- */
+  --ship-content-max: 1120px;
+  --ship-header-height: 64px;
+  --ship-mobile-nav-height: 60px;
+
+  /* --- Breakpoints (documented; media queries must repeat the literal) ----- */
+  /* sm 480px | md 768px | lg 1024px | xl 1280px */
+}
+
+/*
+ * Respect the reduced-motion preference everywhere.
+ */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

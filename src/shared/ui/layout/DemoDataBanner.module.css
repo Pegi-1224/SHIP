@@ -1,0 +1,10 @@
+.banner {
+  border-radius: 0;
+  border-left: 0;
+  border-right: 0;
+  border-top: 0;
+}
+
+.text {
+  line-height: 1.5;
+}

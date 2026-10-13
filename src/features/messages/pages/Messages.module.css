@@ -1,0 +1,72 @@
+.conversationRow {
+  display: block;
+  text-decoration: none;
+  color: inherit;
+  background-color: var(--ship-color-surface);
+  transition: border-color 140ms ease, box-shadow 140ms ease;
+}
+
+.conversationRow:hover {
+  border-color: var(--ship-color-border-strong);
+  box-shadow: var(--ship-shadow-sm);
+}
+
+.conversationBody {
+  flex: 1;
+  min-width: 0;
+}
+
+.thread {
+  max-width: 720px;
+}
+
+.messageList {
+  max-height: 55vh;
+  overflow-y: auto;
+  background-color: var(--ship-color-surface);
+}
+
+.bubbleOutgoing,
+.bubbleIncoming {
+  max-width: 78%;
+  padding: var(--ship-space-2) var(--ship-space-3);
+  border-radius: var(--ship-radius-md);
+}
+
+.bubbleOutgoing {
+  align-self: flex-end;
+  margin-left: auto;
+  background-color: var(--ship-primary-600);
+  color: #ffffff;
+}
+
+.bubbleIncoming {
+  align-self: flex-start;
+  margin-right: auto;
+  background-color: var(--ship-color-surface-muted);
+  border: 1px solid var(--ship-color-border);
+}
+
+.bubbleText {
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  line-height: 1.5;
+}
+
+.bubbleOutgoing .bubbleTime {
+  color: rgb(255 255 255 / 80%);
+}
+
+.bubbleIncoming .bubbleTime {
+  color: var(--ship-color-text-subtle);
+}
+
+.bubbleTime {
+  display: block;
+  margin-top: 2px;
+}
+
+.composer {
+  flex: 1;
+  min-width: 0;
+}

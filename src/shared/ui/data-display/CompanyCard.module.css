@@ -1,0 +1,52 @@
+.card {
+  background-color: var(--ship-color-surface);
+  transition: box-shadow 140ms ease, border-color 140ms ease;
+}
+
+.card:hover {
+  box-shadow: var(--ship-shadow-sm);
+  border-color: var(--ship-color-border-strong);
+}
+
+.logo {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  flex-shrink: 0;
+  border-radius: var(--ship-radius-sm);
+  color: var(--ship-primary-700);
+  background-color: var(--ship-primary-50);
+}
+
+.body {
+  min-width: 0;
+  flex: 1;
+}
+
+.name {
+  margin: 0;
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
+.nameLink {
+  color: var(--ship-color-text);
+  text-decoration: none;
+}
+
+.nameLink:hover {
+  color: var(--ship-primary-700);
+  text-decoration: underline;
+}
+
+.action {
+  flex-shrink: 0;
+}
+
+@media (max-width: 480px) {
+  .action {
+    align-self: flex-start;
+  }
+}

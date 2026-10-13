@@ -1,0 +1,41 @@
+.card {
+  background-color: var(--ship-color-surface);
+  height: 100%;
+}
+
+.header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--ship-space-3);
+}
+
+.heading {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--ship-space-3);
+  min-width: 0;
+}
+
+.icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  flex-shrink: 0;
+  border-radius: var(--ship-radius-sm);
+  color: var(--ship-primary-700);
+  background-color: var(--ship-primary-50);
+}
+
+.action {
+  flex-shrink: 0;
+}
+
+@media (max-width: 480px) {
+  .header {
+    flex-direction: column;
+    align-items: stretch;
+  }
+}

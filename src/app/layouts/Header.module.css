@@ -1,0 +1,123 @@
+.header {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background-color: var(--ship-color-surface);
+  border-bottom: 1px solid var(--ship-color-border);
+}
+
+.inner {
+  display: flex;
+  align-items: center;
+  gap: var(--ship-space-4);
+  max-width: var(--ship-content-max);
+  min-height: var(--ship-header-height);
+  margin: 0 auto;
+  padding: var(--ship-space-2) var(--ship-space-4);
+}
+
+.brand {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--ship-space-2);
+  text-decoration: none;
+  color: var(--ship-color-text);
+  flex-shrink: 0;
+}
+
+.brandMark {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: var(--ship-radius-sm);
+  background-color: var(--ship-primary-600);
+  color: #ffffff;
+  font-weight: 800;
+}
+
+.brandName {
+  font-weight: 800;
+  letter-spacing: 0.06em;
+}
+
+.search {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--ship-space-2);
+  flex: 1 1 auto;
+  min-width: 0;
+  max-width: 520px;
+}
+
+.nav {
+  display: flex;
+  align-items: center;
+  gap: var(--ship-space-1);
+  flex-shrink: 0;
+}
+
+.navLink {
+  padding: var(--ship-space-2) var(--ship-space-3);
+  border-radius: var(--ship-radius-sm);
+  color: var(--ship-color-text-muted);
+  font-size: var(--ship-text-sm);
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.navLink:hover {
+  background-color: var(--ship-color-surface-muted);
+  color: var(--ship-color-text);
+}
+
+.navLinkActive {
+  color: var(--ship-primary-700);
+  background-color: var(--ship-primary-50);
+}
+
+.actions {
+  display: flex;
+  align-items: center;
+  gap: var(--ship-space-2);
+  margin-left: auto;
+  flex-shrink: 0;
+}
+
+.accountLabel {
+  max-width: 120px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.burger {
+  display: none;
+}
+
+/* Tablet and below: collapse the inline search and nav into the drawer. */
+@media (max-width: 1024px) {
+  .search {
+    max-width: 320px;
+    grid-template-columns: 1fr;
+  }
+
+  .nav {
+    display: none;
+  }
+
+  .burger {
+    display: block;
+  }
+}
+
+@media (max-width: 768px) {
+  .search {
+    display: none;
+  }
+
+  .accountLabel {
+    display: none;
+  }
+}

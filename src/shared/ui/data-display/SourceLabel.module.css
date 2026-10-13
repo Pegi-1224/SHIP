@@ -1,0 +1,41 @@
+.root {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 2px var(--ship-space-2);
+  border-radius: var(--ship-radius-pill);
+  font-size: var(--ship-text-xs);
+  font-weight: 600;
+  line-height: 1.6;
+  white-space: nowrap;
+}
+
+.public {
+  color: var(--ship-source-public);
+  background-color: var(--ship-source-public-bg);
+}
+
+.user {
+  color: var(--ship-source-user);
+  background-color: var(--ship-source-user-bg);
+}
+
+.meta {
+  display: block;
+  line-height: 1.5;
+}
+
+.link {
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+}
+
+.linkIcon {
+  flex-shrink: 0;
+}

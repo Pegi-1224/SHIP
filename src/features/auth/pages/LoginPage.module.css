@@ -1,0 +1,22 @@
+.page {
+  display: flex;
+  justify-content: center;
+  padding-block: var(--ship-space-4);
+}
+
+.column {
+  width: 100%;
+  max-width: 480px;
+}
+
+.privacy {
+  background-color: var(--ship-primary-50);
+  border-color: var(--ship-primary-200);
+}
+
+.privacyHeading {
+  display: flex;
+  align-items: center;
+  gap: var(--ship-space-2);
+  color: var(--ship-primary-800);
+}

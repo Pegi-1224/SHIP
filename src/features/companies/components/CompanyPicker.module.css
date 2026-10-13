@@ -1,0 +1,7 @@
+.row {
+  background-color: var(--ship-color-surface);
+}
+
+.info {
+  min-width: 0;
+}

@@ -1,0 +1,55 @@
+/* Global base styles. Component styling lives in CSS Modules next to each
+   component; only genuinely global rules belong here. */
+
+html,
+body,
+#root {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  background-color: var(--ship-color-bg);
+  color: var(--ship-color-text);
+  font-family: var(--ship-font-body);
+  -webkit-font-smoothing: antialiased;
+}
+
+/* A visible focus ring is required for keyboard navigation. Never remove this
+   without providing an equally visible replacement. */
+:focus-visible {
+  outline: 3px solid var(--ship-primary-500);
+  outline-offset: 2px;
+  border-radius: var(--ship-radius-sm);
+}
+
+/* Skip link used by AppLayout so keyboard users can jump past the header. */
+.ship-skip-link {
+  position: absolute;
+  left: var(--ship-space-3);
+  top: var(--ship-space-3);
+  z-index: 1000;
+  padding: var(--ship-space-2) var(--ship-space-4);
+  background: var(--ship-color-surface);
+  color: var(--ship-color-text);
+  border: 2px solid var(--ship-primary-600);
+  border-radius: var(--ship-radius-sm);
+  transform: translateY(-200%);
+}
+
+.ship-skip-link:focus {
+  transform: translateY(0);
+}
+
+/* Visually hidden but available to screen readers. */
+.ship-visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
