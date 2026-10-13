@@ -13,6 +13,40 @@ made.
 
 ---
 
+## Repository organization
+
+This repository's root **is** the frontend application — there is no separate `frontend/` folder.
+Everything described in the rest of this README (`src/`, `package.json`, `docs/`, …) lives directly
+at the repository root, exactly where it always has.
+
+```
+ship-frontend/        ← repository root = the frontend app root
+  src/                ← frontend source (see §6 below)
+  docs/                ← architecture, API contract, integration checklist
+  backend/             ← reserved for the backend service - no implementation yet
+    README.md
+  package.json          ← frontend dependencies only
+```
+
+- **`backend/`** is reserved for the backend service. It currently contains only
+  [`backend/README.md`](./backend/README.md) — no server code, no dependency manifest, nothing
+  runnable. A backend teammate should start there.
+- **Frontend and backend dependencies are managed completely separately.** The frontend's
+  `package.json`/`package-lock.json` at the repository root describe the frontend only; the backend
+  will get its own dependency manifest and lockfile inside `backend/` once implementation starts.
+  Neither should ever reference or install the other's packages.
+- **The backend teammate should begin at [`backend/README.md`](./backend/README.md)**, which explains
+  what the frontend currently expects from a server, links to the files that encode those
+  expectations, and lists the integration decisions still open. It points back to
+  [`docs/api-contract.md`](./docs/api-contract.md) (the proposed endpoint-by-endpoint contract) and
+  [`docs/backend-integration.md`](./docs/backend-integration.md) (a step-by-step integration
+  checklist) rather than repeating them.
+- **No backend service exists yet.** Every request this frontend makes today either stays inside the
+  browser (Mock Service Worker, §13) or, with mocks disabled, goes to whatever `VITE_API_BASE_URL`
+  names — which is nothing, until a backend is running there.
+
+---
+
 ## 1. Status
 
 | Layer | Status |
