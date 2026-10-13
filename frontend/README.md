@@ -15,28 +15,29 @@ made.
 
 ## Repository organization
 
-This repository's root **is** the frontend application — there is no separate `frontend/` folder.
-Everything described in the rest of this README (`src/`, `package.json`, `docs/`, …) lives directly
-at the repository root, exactly where it always has.
+This is one of two sibling directories in a monorepo. **This directory (`frontend/`) is the frontend
+application** described by the rest of this README; it is no longer the repository root itself — see
+the [repository root README](../README.md) for how the two fit together.
 
 ```
-ship-frontend/        ← repository root = the frontend app root
-  src/                ← frontend source (see §6 below)
-  docs/                ← architecture, API contract, integration checklist
+<repository root>
+  frontend/            ← you are here — everything below is unchanged by the monorepo move
+    src/                 ← frontend source (see §6 below)
+    docs/                 ← architecture, API contract, integration checklist
+    package.json           ← frontend dependencies only
   backend/             ← reserved for the backend service - no implementation yet
     README.md
-  package.json          ← frontend dependencies only
 ```
 
-- **`backend/`** is reserved for the backend service. It currently contains only
-  [`backend/README.md`](./backend/README.md) — no server code, no dependency manifest, nothing
+- **`../backend/`** is reserved for the backend service. It currently contains only
+  [`../backend/README.md`](../backend/README.md) — no server code, no dependency manifest, nothing
   runnable. A backend teammate should start there.
-- **Frontend and backend dependencies are managed completely separately.** The frontend's
-  `package.json`/`package-lock.json` at the repository root describe the frontend only; the backend
-  will get its own dependency manifest and lockfile inside `backend/` once implementation starts.
-  Neither should ever reference or install the other's packages.
-- **The backend teammate should begin at [`backend/README.md`](./backend/README.md)**, which explains
-  what the frontend currently expects from a server, links to the files that encode those
+- **Frontend and backend dependencies are managed completely separately.** This directory's
+  `package.json`/`package-lock.json` describe the frontend only; the backend will get its own
+  dependency manifest and lockfile inside `../backend/` once implementation starts. Neither should
+  ever reference or install the other's packages.
+- **The backend teammate should begin at [`../backend/README.md`](../backend/README.md)**, which
+  explains what the frontend currently expects from a server, links to the files that encode those
   expectations, and lists the integration decisions still open. It points back to
   [`docs/api-contract.md`](./docs/api-contract.md) (the proposed endpoint-by-endpoint contract) and
   [`docs/backend-integration.md`](./docs/backend-integration.md) (a step-by-step integration
@@ -77,7 +78,7 @@ and [PROGRESS.md](./PROGRESS.md) for the running log of this repository's direct
 
 ```bash
 git clone <repository-url>
-cd ship-frontend
+cd frontend
 
 npm install
 cp .env.example .env     # Windows: copy .env.example .env
