@@ -8,21 +8,21 @@
 import { createTheme, type MantineColorsTuple } from '@mantine/core';
 
 const ship: MantineColorsTuple = [
-  '#f6f0fb',
-  '#e8dcf3',
-  '#cfb6e6',
-  '#b58ed9',
-  '#9f6ccf',
-  '#8f54c8',
-  '#7c40b6',
-  '#68359a',
-  '#552b7e',
-  '#3f2060',
+  '#f2f6f0',
+  '#dfe9db',
+  '#bfd3b9',
+  '#9cbb98',
+  '#78a07c',
+  '#4f7f62',
+  '#315d48',
+  '#2b513f',
+  '#264536',
+  '#22372e',
 ];
 
 export const theme = createTheme({
   primaryColor: 'ship',
-  // Shade 6 passes WCAG AA for white text at body size.
+  // Shade 6 (#315d48) passes WCAG AA for white text at body size.
   primaryShade: { light: 6, dark: 5 },
   colors: { ship },
   fontFamily: 'var(--ship-font-body)',

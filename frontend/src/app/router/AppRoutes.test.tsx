@@ -1,15 +1,22 @@
 /**
- * Route and guard smoke tests.
+ * Route smoke tests.
  *
  * These prove the scaffolding that survived the move to starter pages: every
- * route still resolves to a component, guards still redirect correctly, and
- * - because MSW is configured to throw on an unhandled request
- * (`src/test/setup.ts`) - a placeholder page that accidentally fetched company
- * data, discussion content or messages would fail these tests immediately.
- * That is the "no unwanted API calls" check for this refactor.
+ * route resolves to its own component regardless of auth state (see the
+ * "temporary, documented state" note in `AppRoutes.tsx` and
+ * `docs/decisions-and-questions.md` DQ-19), and - because MSW is configured
+ * to throw on an unhandled request (`src/test/setup.ts`) - a placeholder page
+ * that accidentally fetched company data, discussion content or messages
+ * would fail these tests immediately. That is the "no unwanted API calls"
+ * check for this refactor.
+ *
+ * `RequireAuth` and `RequireAssessment` are not applied to any route right
+ * now, so they are not exercised here - see `guards.test.tsx`, which drives
+ * both directly and proves they still redirect correctly, ready to be
+ * reinstated per route.
  */
 import { describe, expect, it } from 'vitest';
-import { screen, waitFor } from '@testing-library/react';
+import { screen } from '@testing-library/react';
 import { renderWithProviders } from '@/test/renderWithProviders';
 import { signInTestUser } from '@/test/signIn';
 import { AppRoutes } from './AppRoutes';
@@ -18,18 +25,29 @@ function renderAt(route: string) {
   return renderWithProviders(<AppRoutes />, { route });
 }
 
-describe('public routes', () => {
-  it('renders the Home starter page for a signed-out visitor', async () => {
-    renderAt('/');
+const ALL_ROUTES: Array<[string, string]> = [
+  ['/', 'Home'],
+  ['/login', 'Login'],
+  ['/assessment', 'Assessment'],
+  ['/profile', 'Profile'],
+  ['/companies', 'Company Search'],
+  ['/companies/new', 'Add Company'],
+  ['/companies/northwind-systems', 'Company Profile'],
+  ['/companies/northwind-systems/submit', 'Company Data Submission'],
+  ['/compare', 'Compare Companies'],
+  ['/discussions', 'Discussions'],
+  ['/discussions/new', 'New Post'],
+  ['/discussions/post_seed_1', 'Post Detail'],
+  ['/discussions/post_seed_1/edit', 'Edit Post'],
+  ['/messages', 'Messages'],
+  ['/messages/conv_1', 'Conversation'],
+];
 
-    expect(await screen.findByRole('heading', { name: 'Home' })).toBeInTheDocument();
-    expect(await screen.findByText(/Dev sign in \(mock\)/)).toBeInTheDocument();
-  });
+describe('every route, for a signed-out visitor with no assessment', () => {
+  it.each(ALL_ROUTES)('renders its own starter page at %s (expects "%s")', async (route, heading) => {
+    renderAt(route);
 
-  it('renders the Login starter page', async () => {
-    renderAt('/login');
-
-    expect(await screen.findByRole('heading', { name: 'Login' })).toBeInTheDocument();
+    expect(await screen.findByRole('heading', { name: heading })).toBeInTheDocument();
   });
 
   it('renders the not-found page for an unknown path', async () => {
@@ -41,59 +59,28 @@ describe('public routes', () => {
   });
 });
 
-describe('auth guard (RequireAuth)', () => {
-  it('redirects a signed-out visitor away from a guarded route, to login', async () => {
-    renderAt('/profile');
+describe('the same routes, for a fully onboarded signed-in user', () => {
+  it.each(ALL_ROUTES)('still renders %s (expects "%s")', async (route, heading) => {
+    await signInTestUser();
 
-    await waitFor(() => expect(screen.getByRole('heading', { name: 'Login' })).toBeInTheDocument());
-  });
+    renderAt(route);
 
-  it('lets a signed-in user reach a route gated only by RequireAuth', async () => {
-    await signInTestUser({ assessment: null });
-
-    renderAt('/profile');
-
-    expect(await screen.findByRole('heading', { name: 'Profile' })).toBeInTheDocument();
+    expect(await screen.findByRole('heading', { name: heading })).toBeInTheDocument();
   });
 });
 
-describe('assessment guard (RequireAssessment)', () => {
-  it('redirects to /assessment when the assessment is not complete', async () => {
-    await signInTestUser({ assessment: null });
+describe('RedirectIfAuthenticated (still applied to /login)', () => {
+  it('lets a signed-out visitor see the Login starter page', async () => {
+    renderAt('/login');
 
-    renderAt('/companies');
-
-    expect(await screen.findByRole('heading', { name: 'Assessment' })).toBeInTheDocument();
+    expect(await screen.findByRole('heading', { name: 'Login' })).toBeInTheDocument();
   });
 
-  it('does not gate /assessment itself, avoiding a redirect loop', async () => {
-    await signInTestUser({ assessment: null });
-
-    renderAt('/assessment');
-
-    expect(await screen.findByRole('heading', { name: 'Assessment' })).toBeInTheDocument();
-    expect(screen.getByText(/Dev: complete assessment with default answers/)).toBeInTheDocument();
-  });
-
-  it('lets a fully onboarded user reach every assessment-gated starter page', async () => {
+  it('redirects an already signed-in user away from /login', async () => {
     await signInTestUser();
 
-    for (const [route, heading] of [
-      ['/companies', 'Company Search'],
-      ['/companies/new', 'Add Company'],
-      ['/companies/northwind-systems', 'Company Profile'],
-      ['/companies/northwind-systems/submit', 'Company Data Submission'],
-      ['/compare', 'Compare Companies'],
-      ['/discussions', 'Discussions'],
-      ['/discussions/new', 'New Post'],
-      ['/discussions/post_seed_1', 'Post Detail'],
-      ['/discussions/post_seed_1/edit', 'Edit Post'],
-      ['/messages', 'Messages'],
-      ['/messages/conv_1', 'Conversation'],
-    ] as const) {
-      const { unmount } = renderAt(route);
-      expect(await screen.findByRole('heading', { name: heading })).toBeInTheDocument();
-      unmount();
-    }
+    renderAt('/login');
+
+    expect(await screen.findByRole('heading', { name: 'Home' })).toBeInTheDocument();
   });
 });

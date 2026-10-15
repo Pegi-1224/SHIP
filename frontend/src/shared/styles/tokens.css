@@ -12,33 +12,33 @@
  */
 
 :root {
-  /* --- Brand palette: plum/violet, taken from the sketch ink colour -------- */
-  --ship-primary-50: #f6f0fb;
-  --ship-primary-100: #e8dcf3;
-  --ship-primary-200: #cfb6e6;
-  --ship-primary-300: #b58ed9;
-  --ship-primary-400: #9f6ccf;
-  --ship-primary-500: #8f54c8;
-  --ship-primary-600: #7c40b6;
-  --ship-primary-700: #68359a;
-  --ship-primary-800: #552b7e;
-  --ship-primary-900: #3f2060;
+  /* --- Brand palette: forest green (#f2f6f0 / #315d48 / #22372e) ------- */
+  --ship-primary-50: #f2f6f0;
+  --ship-primary-100: #dfe9db;
+  --ship-primary-200: #bfd3b9;
+  --ship-primary-300: #9cbb98;
+  --ship-primary-400: #78a07c;
+  --ship-primary-500: #4f7f62;
+  --ship-primary-600: #315d48;
+  --ship-primary-700: #2b513f;
+  --ship-primary-800: #264536;
+  --ship-primary-900: #22372e;
 
   /* --- Neutrals ----------------------------------------------------------- */
   --ship-neutral-0: #ffffff;
-  --ship-neutral-50: #faf9fb;
-  --ship-neutral-100: #f2f0f5;
-  --ship-neutral-200: #e4e1ea;
-  --ship-neutral-300: #cdc8d6;
-  --ship-neutral-400: #a49cb3;
-  --ship-neutral-500: #786f88;
-  --ship-neutral-600: #5a5268;
-  --ship-neutral-700: #423b4e;
-  --ship-neutral-800: #2c2635;
-  --ship-neutral-900: #1a161f;
+  --ship-neutral-50: #f8faf7;
+  --ship-neutral-100: #eef2ec;
+  --ship-neutral-200: #dfe5dc;
+  --ship-neutral-300: #c6cfc3;
+  --ship-neutral-400: #9aa597;
+  --ship-neutral-500: #6c786a;
+  --ship-neutral-600: #525d51;
+  --ship-neutral-700: #3b4540;
+  --ship-neutral-800: #29312d;
+  --ship-neutral-900: #171d1a;
 
   /* --- Semantic colours --------------------------------------------------- */
-  --ship-color-bg: var(--ship-neutral-50);
+  --ship-color-bg: var(--ship-primary-50);
   --ship-color-surface: var(--ship-neutral-0);
   --ship-color-surface-muted: var(--ship-neutral-100);
   --ship-color-border: var(--ship-neutral-200);
@@ -61,12 +61,12 @@
      visually distinct everywhere they appear (spec 3.5, AC-5). */
   --ship-source-public: #1c5f8f;
   --ship-source-public-bg: #e8f2f9;
-  --ship-source-user: #7c40b6;
-  --ship-source-user-bg: #f3ebfa;
+  --ship-source-user: var(--ship-primary-600);
+  --ship-source-user-bg: var(--ship-primary-100);
 
   /* Chart series. Company A / company B on the comparison page. */
-  --ship-chart-a: #7c40b6;
-  --ship-chart-b: #1c7f8f;
+  --ship-chart-a: var(--ship-primary-600);
+  --ship-chart-b: #b3532a;
   --ship-chart-grid: var(--ship-neutral-200);
 
   /* --- Spacing scale (4px base) ------------------------------------------- */
@@ -86,8 +86,8 @@
   --ship-radius-pill: 999px;
 
   /* --- Elevation ---------------------------------------------------------- */
-  --ship-shadow-sm: 0 1px 2px rgb(26 22 31 / 6%), 0 1px 3px rgb(26 22 31 / 4%);
-  --ship-shadow-md: 0 2px 8px rgb(26 22 31 / 8%), 0 1px 3px rgb(26 22 31 / 5%);
+  --ship-shadow-sm: 0 1px 2px rgb(23 29 26 / 6%), 0 1px 3px rgb(23 29 26 / 4%);
+  --ship-shadow-md: 0 2px 8px rgb(23 29 26 / 8%), 0 1px 3px rgb(23 29 26 / 5%);
 
   /* --- Typography --------------------------------------------------------- */
   --ship-font-body:
