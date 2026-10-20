@@ -164,7 +164,7 @@ out.
 ```
 src/
   app/                  Application shell.
-    layouts/            AppLayout, Header, MobileNavigation - unchanged by this refactor
+    layouts/            AppLayout and Header (top navigation bar; web only, no bottom mobile nav)
     providers/          Mantine theme, TanStack Query client, AuthProvider
     router/             Route table (AppRoutes.tsx) and route guards (guards.tsx) - unchanged
     App.tsx
@@ -516,6 +516,7 @@ Deploying with `VITE_ENABLE_MOCKS=true` publishes the dev sign-in/assessment sho
 
 | Document | What it covers |
 | --- | --- |
+| [docs/component-reference.md](./docs/component-reference.md) | Every reusable component and hook: where it lives, what it does, how to call it, where to use it |
 | [docs/architecture.md](./docs/architecture.md) | Layers, dependency rules, state ownership — unchanged by this refactor |
 | [docs/api-contract.md](./docs/api-contract.md) | Every proposed endpoint, request, response and error — unchanged |
 | [docs/backend-integration.md](./docs/backend-integration.md) | Step-by-step checklist for connecting a real backend — unchanged |

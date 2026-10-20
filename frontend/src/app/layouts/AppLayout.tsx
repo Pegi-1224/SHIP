@@ -1,9 +1,7 @@
 import { Outlet, useLocation } from 'react-router-dom';
 import { Text } from '@mantine/core';
 import { DemoDataBanner } from '@/shared/ui';
-import { useAuth } from '@/app/providers/useAuth';
 import { Header } from './Header';
-import { MobileNavigation } from './MobileNavigation';
 import styles from './AppLayout.module.css';
 
 /** Routes that benefit from the full page width (side-by-side comparison). */
@@ -11,23 +9,16 @@ const WIDE_ROUTES = ['/compare'];
 
 /**
  * The frame every page renders inside: skip link, demo banner, header, main
- * content and - on small screens, for signed-in users - the bottom navigation.
+ * content and footer.
  *
  * Pages render into `<Outlet />`. They supply their own `PageHeader`; the
  * layout owns only the chrome around them.
  */
 export function AppLayout() {
-  const { isAuthenticated } = useAuth();
   const location = useLocation();
   const isWide = WIDE_ROUTES.some((route) => location.pathname.startsWith(route));
 
-  const mainClassName = [
-    styles.main,
-    isWide ? styles.wide : '',
-    isAuthenticated ? styles.mainWithBottomNav : '',
-  ]
-    .filter(Boolean)
-    .join(' ');
+  const mainClassName = isWide ? `${styles.main} ${styles.wide}` : styles.main;
 
   return (
     <div className={styles.shell}>
@@ -51,7 +42,6 @@ export function AppLayout() {
         </div>
       </footer>
 
-      {isAuthenticated ? <MobileNavigation /> : null}
     </div>
   );
 }

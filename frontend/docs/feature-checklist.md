@@ -50,8 +50,9 @@ hidden/refused when `VITE_ENABLE_MOCKS=false`.
 | Signed-out preview, max 10 posts/tag | — | ✅ `GET /discussions/public-preview`, capped server-side | ⬜ *not rendered* | ⬜ | 🔵 |
 | Protected routes and guards | ✅ `guards.tsx`, fully tested | — | — | — (not a UI concern) | — |
 
-Header and MobileNavigation are **not** placeholders — they were already minimal, functional chrome
-rather than a finished product design, so they were left exactly as they were.
+The Header is **not** a placeholder. It is the agreed web navigation bar: brand, a page-specific
+search bar (companies on Home, discussions on Discussions) and Home / Discussions / Profile on the
+right. The bottom mobile navigation was removed because SHIP is web-only for now.
 
 ---
 
@@ -126,7 +127,7 @@ any page body right now, because no page has a body yet.
 
 Unaffected by this refactor at the infrastructure level (skip link, focus ring, reduced-motion
 handling in `global.css`/`tokens.css`, responsive breakpoints in the shared layout) — these live in
-`AppLayout`/`Header`/`MobileNavigation`, which were not replaced. A formal audit (axe, screen-reader
+`AppLayout`/`Header`, which were not replaced. A formal audit (axe, screen-reader
 pass) was not performed before this refactor and remains outstanding. Starter pages themselves are
 plain text and headings, so they carry no new accessibility risk.
 

@@ -1,62 +1,53 @@
-import { useState } from 'react';
-import { Link, NavLink, useNavigate } from 'react-router-dom';
-import { Burger, Button, Drawer, Menu, Stack, Text } from '@mantine/core';
-import { Building2, LogOut, MessageCircle, MessagesSquare, Scale, User } from 'lucide-react';
-import { paths } from '@/shared/config/paths';
+import { Link, NavLink, useLocation, useNavigate } from 'react-router-dom';
+import { Button, Menu } from '@mantine/core';
+import { ChevronDown, LogOut, MessageCircle, User } from 'lucide-react';
+import { paths, routePatterns } from '@/shared/config/paths';
 import { SearchInput } from '@/shared/ui';
 import { useAuth } from '@/app/providers/useAuth';
 import { useSignOut } from '@/features/auth';
 import styles from './Header.module.css';
 
 const NAV_LINKS = [
-  { to: paths.discussions(), label: 'Discussions', icon: MessagesSquare },
-  { to: paths.companies(), label: 'Companies', icon: Building2 },
-  { to: paths.compare(), label: 'Compare', icon: Scale },
+  { to: paths.home(), label: 'Home', end: true },
+  { to: paths.discussions(), label: 'Discussions', end: false },
 ] as const;
 
+const navLinkClass = ({ isActive }: { isActive: boolean }) =>
+  isActive ? `${styles.navLink} ${styles.navLinkActive}` : styles.navLink;
+
 /**
- * Top navigation (spec 3.11).
+ * Which search bar the header shows on the current page: company search on
+ * Home (and its results page), discussion search on Discussions, none
+ * elsewhere.
+ */
+function useHeaderSearch() {
+  const { pathname } = useLocation();
+  if (pathname === routePatterns.home || pathname === routePatterns.companies) {
+    return 'companies';
+  }
+  if (pathname.startsWith(routePatterns.discussions)) {
+    return 'discussions';
+  }
+  return null;
+}
+
+/**
+ * Top navigation bar (spec 3.11): brand on the left, a page-specific search bar
+ * in the middle, and Home / Discussions / Profile on the right.
  *
- * The two search entry points are deliberately separate controls with their own
- * labels: one searches companies, the other searches discussion tags and posts.
- * Both are hidden from signed-out visitors, who are not allowed to use them
+ * Search is hidden from signed-out visitors, who are not allowed to use it
  * (spec 2.2, AC-3) - hiding a control the user cannot use is clearer than
  * showing one that always fails.
  */
 export function Header() {
   const navigate = useNavigate();
+  const { pathname } = useLocation();
   const { isAuthenticated, user } = useAuth();
   const signOut = useSignOut();
-  const [drawerOpen, setDrawerOpen] = useState(false);
+  const search = useHeaderSearch();
 
-  const closeDrawer = () => setDrawerOpen(false);
-
-  const searchBars = (
-    <>
-      <SearchInput
-        name="company-q"
-        label="Search companies"
-        placeholder="Search a company"
-        hideLabel
-        size="sm"
-        onSearch={(query) => {
-          closeDrawer();
-          navigate(paths.companiesSearch(query));
-        }}
-      />
-      <SearchInput
-        name="discussion-q"
-        label="Search discussions"
-        placeholder="Search a tag or post"
-        hideLabel
-        size="sm"
-        onSearch={(query) => {
-          closeDrawer();
-          navigate(paths.discussionsSearch(query));
-        }}
-      />
-    </>
-  );
+  const isProfileArea =
+    pathname.startsWith(routePatterns.profile) || pathname.startsWith(routePatterns.messages);
 
   return (
     <header className={styles.header}>
@@ -68,29 +59,51 @@ export function Header() {
           <span className={styles.brandName}>SHIP</span>
         </Link>
 
-        {isAuthenticated ? <div className={styles.search}>{searchBars}</div> : null}
+        {isAuthenticated && search ? (
+          <div className={styles.search}>
+            {search === 'companies' ? (
+              <SearchInput
+                key="company-q"
+                name="company-q"
+                label="Search companies"
+                placeholder="Search a company"
+                hideLabel
+                size="sm"
+                onSearch={(query) => navigate(paths.companiesSearch(query))}
+              />
+            ) : (
+              <SearchInput
+                key="discussion-q"
+                name="discussion-q"
+                label="Search discussions"
+                placeholder="Search a tag or post"
+                hideLabel
+                size="sm"
+                onSearch={(query) => navigate(paths.discussionsSearch(query))}
+              />
+            )}
+          </div>
+        ) : null}
 
         <nav className={styles.nav} aria-label="Main">
           {NAV_LINKS.map((link) => (
-            <NavLink
-              key={link.to}
-              to={link.to}
-              className={({ isActive }) =>
-                isActive ? `${styles.navLink} ${styles.navLinkActive}` : styles.navLink
-              }
-            >
+            <NavLink key={link.to} to={link.to} end={link.end} className={navLinkClass}>
               {link.label}
             </NavLink>
           ))}
-        </nav>
 
-        <div className={styles.actions}>
           {isAuthenticated && user ? (
             <Menu position="bottom-end" withinPortal>
               <Menu.Target>
-                <Button variant="subtle" size="sm" leftSection={<User size={16} />}>
-                  <span className={styles.accountLabel}>{user.displayName}</span>
-                </Button>
+                <button
+                  type="button"
+                  className={
+                    isProfileArea ? `${styles.navLink} ${styles.navLinkActive}` : styles.navLink
+                  }
+                >
+                  Profile
+                  <ChevronDown size={14} aria-hidden="true" />
+                </button>
               </Menu.Target>
               <Menu.Dropdown>
                 <Menu.Label>{user.email}</Menu.Label>
@@ -98,7 +111,7 @@ export function Header() {
                   leftSection={<User size={14} />}
                   onClick={() => navigate(paths.profile())}
                 >
-                  Profile
+                  My profile
                 </Menu.Item>
                 <Menu.Item
                   leftSection={<MessageCircle size={14} />}
@@ -121,51 +134,8 @@ export function Header() {
               Sign up
             </Button>
           )}
-
-          <Burger
-            opened={drawerOpen}
-            onClick={() => setDrawerOpen((open) => !open)}
-            className={styles.burger}
-            aria-label="Open menu"
-            size="sm"
-          />
-        </div>
+        </nav>
       </div>
-
-      <Drawer
-        opened={drawerOpen}
-        onClose={closeDrawer}
-        title="Menu"
-        position="right"
-        size="xs"
-      >
-        <Stack gap="md">
-          {isAuthenticated ? (
-            <Stack gap="sm">{searchBars}</Stack>
-          ) : (
-            <Text size="sm" c="dimmed">
-              Sign in to search companies and discussions.
-            </Text>
-          )}
-
-          <Stack gap={4}>
-            {NAV_LINKS.map((link) => (
-              <Button
-                key={link.to}
-                variant="subtle"
-                justify="flex-start"
-                leftSection={<link.icon size={16} />}
-                onClick={() => {
-                  closeDrawer();
-                  navigate(link.to);
-                }}
-              >
-                {link.label}
-              </Button>
-            ))}
-          </Stack>
-        </Stack>
-      </Drawer>
     </header>
   );
 }

@@ -16,13 +16,6 @@
   max-width: 1320px;
 }
 
-/* Leave room for the fixed bottom navigation on small screens. */
-@media (max-width: 768px) {
-  .mainWithBottomNav {
-    padding-bottom: calc(var(--ship-mobile-nav-height) + var(--ship-space-5));
-  }
-}
-
 .footer {
   border-top: 1px solid var(--ship-color-border);
   background-color: var(--ship-color-surface);
@@ -32,10 +25,4 @@
 .footerInner {
   max-width: var(--ship-content-max);
   margin: 0 auto;
-}
-
-@media (max-width: 768px) {
-  .footer {
-    padding-bottom: calc(var(--ship-mobile-nav-height) + var(--ship-space-4));
-  }
 }

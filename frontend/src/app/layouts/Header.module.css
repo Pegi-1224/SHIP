@@ -43,28 +43,33 @@
 }
 
 .search {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: var(--ship-space-2);
   flex: 1 1 auto;
   min-width: 0;
-  max-width: 520px;
+  max-width: 420px;
 }
 
 .nav {
   display: flex;
   align-items: center;
   gap: var(--ship-space-1);
+  margin-left: auto;
   flex-shrink: 0;
 }
 
 .navLink {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--ship-space-1);
   padding: var(--ship-space-2) var(--ship-space-3);
+  border: 0;
   border-radius: var(--ship-radius-sm);
+  background: none;
   color: var(--ship-color-text-muted);
+  font: inherit;
   font-size: var(--ship-text-sm);
   font-weight: 600;
   text-decoration: none;
+  cursor: pointer;
 }
 
 .navLink:hover {
@@ -77,47 +82,15 @@
   background-color: var(--ship-primary-50);
 }
 
-.actions {
-  display: flex;
-  align-items: center;
-  gap: var(--ship-space-2);
-  margin-left: auto;
-  flex-shrink: 0;
-}
+/* Narrow browser windows: the search bar moves to its own row below. */
+@media (max-width: 640px) {
+  .inner {
+    flex-wrap: wrap;
+  }
 
-.accountLabel {
-  max-width: 120px;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
-
-.burger {
-  display: none;
-}
-
-/* Tablet and below: collapse the inline search and nav into the drawer. */
-@media (max-width: 1024px) {
   .search {
-    max-width: 320px;
-    grid-template-columns: 1fr;
-  }
-
-  .nav {
-    display: none;
-  }
-
-  .burger {
-    display: block;
-  }
-}
-
-@media (max-width: 768px) {
-  .search {
-    display: none;
-  }
-
-  .accountLabel {
-    display: none;
+    order: 1;
+    flex-basis: 100%;
+    max-width: none;
   }
 }

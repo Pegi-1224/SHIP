@@ -79,7 +79,7 @@ does not mean for what is on screen today.
       strategies
 - [x] Shared UI: loading, empty, error, confirm dialog, submit button, source label, metric card,
       data point, avatar, tag pill, company card, post card, search input, tag selector, page header
-- [x] Router with guards, layouts, header, mobile navigation
+- [x] Router with guards, layouts, header (top navigation bar)
 
 ### Mock backend
 - [x] Stateful database with `localStorage` persistence, versioning and reset
