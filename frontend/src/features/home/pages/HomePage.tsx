@@ -1,10 +1,12 @@
 import { useState } from 'react';
-import { Button, Group, Stack, Text, TextInput } from '@mantine/core';
+import { useSearchParams } from 'react-router-dom';
+import { Button, Group, Stack, Text, TextInput, Title } from '@mantine/core';
 import { env } from '@/shared/config/env';
 import { paths } from '@/shared/config/paths';
 import { FormErrorAlert, RelatedLinks, StarterPage } from '@/shared/ui';
 import { useAuth } from '@/app/providers/useAuth';
 import { useDevSignIn, useSignOut } from '@/features/auth';
+import { CompanyDemoResults } from '@/features/companies';
 import { useDevCompleteAssessment } from '@/features/onboarding';
 
 /**
@@ -18,16 +20,31 @@ import { useDevCompleteAssessment } from '@/features/onboarding';
  */
 export function HomePage() {
   const { status, user } = useAuth();
+  // Typed into the header's company search, which keeps `?q=` up to date.
+  const [searchParams] = useSearchParams();
 
   return (
-    <StarterPage
-      title="Home"
-      description="This page will provide the company and discussion search entry points, along with personalized recommendations for signed-in users."
-      sourceFile="src/features/home/pages/HomePage.tsx"
-    >
-      <SessionPanel status={status} email={user?.email} hasCompletedAssessment={user?.hasCompletedAssessment} />
-      <DevIndex />
-    </StarterPage>
+    <Stack gap="xl">
+      <Stack component="section" gap="sm" maw={760} aria-labelledby="home-company-results">
+        <Title order={2} size="var(--ship-text-xl)" id="home-company-results">
+          Companies
+        </Title>
+        <CompanyDemoResults query={searchParams.get('q') ?? ''} />
+      </Stack>
+
+      <StarterPage
+        title="Home"
+        description="This page will provide the company and discussion search entry points, along with personalized recommendations for signed-in users."
+        sourceFile="src/features/home/pages/HomePage.tsx"
+      >
+        <SessionPanel
+          status={status}
+          email={user?.email}
+          hasCompletedAssessment={user?.hasCompletedAssessment}
+        />
+        <DevIndex />
+      </StarterPage>
+    </Stack>
   );
 }
 
@@ -56,7 +73,12 @@ function SessionPanel({ status, email, hasCompletedAssessment }: SessionPanelPro
             ? 'Assessment completed.'
             : 'Assessment not completed yet - open the Assessment starter page below.'}
         </Text>
-        <Button size="xs" variant="light" onClick={() => signOut.mutate()} loading={signOut.isPending}>
+        <Button
+          size="xs"
+          variant="light"
+          onClick={() => signOut.mutate()}
+          loading={signOut.isPending}
+        >
           Sign out
         </Button>
       </Group>
@@ -141,8 +163,8 @@ function DevIndex() {
         All starter pages
       </Text>
       <Text size="xs" c="dimmed">
-        Routes marked "guarded" need a signed-in session; routes marked "+ assessment" also need
-        the assessment completed. Use the dev sign-in shortcut above to reach them.
+        Routes marked "guarded" need a signed-in session; routes marked "+ assessment" also need the
+        assessment completed. Use the dev sign-in shortcut above to reach them.
       </Text>
 
       <RelatedLinks
@@ -155,7 +177,10 @@ function DevIndex() {
       />
 
       <div>
-        <RelatedLinks heading="Onboarding (guarded)" links={[{ to: paths.assessment(), label: 'Assessment' }]} />
+        <RelatedLinks
+          heading="Onboarding (guarded)"
+          links={[{ to: paths.assessment(), label: 'Assessment' }]}
+        />
         <AssessmentShortcut />
       </div>
 

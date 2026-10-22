@@ -1,0 +1,309 @@
+[
+  {
+    "id": "lumen-harbor-analytics",
+    "name": "Lumen Harbor Analytics",
+    "website": "https://lumen-harbor.example",
+    "intro": "A data analytics consultancy that builds forecasting dashboards for mid-sized retailers and logistics firms.",
+    "mainFocus": ["Data analytics", "Supply-chain forecasting", "Business intelligence"],
+    "location": "Seattle, WA",
+    "email": "hello@lumen-harbor.example",
+    "phone": "+1 206-555-0142",
+    "address": "1200 Harbor Steps Ave, Suite 400, Seattle, WA 98101",
+    "contacts": [
+      { "name": "Recruiting team", "role": "Talent acquisition", "email": "careers@lumen-harbor.example" },
+      { "name": "People team", "role": "HR and benefits", "email": "people@lumen-harbor.example" }
+    ],
+    "sources": [
+      { "label": "Company careers page", "url": "https://lumen-harbor.example/careers" },
+      { "label": "2025 benefits guide", "url": "https://lumen-harbor.example/benefits-2025.pdf" }
+    ],
+    "dataCollectedAt": "2026-09-28",
+    "verification": {
+      "status": "verified",
+      "checkedBy": "ai",
+      "checkedAt": "2026-10-02",
+      "confidence": 0.92,
+      "notes": "Address, phone and benefits list matched the company's own pages."
+    },
+    "salary": {
+      "averageAnnualUsd": 128000,
+      "rangeUsd": { "min": 92000, "max": 175000 },
+      "basis": "Base salary, US data roles",
+      "sourceUrl": "https://lumen-harbor.example/careers"
+    },
+    "womenSupport": {
+      "womenWorkforcePct": 44,
+      "womenLeadershipPct": 36,
+      "programs": ["Women in Data employee network", "Sponsorship program", "Return-to-work program"]
+    },
+    "benefits": ["Health insurance", "Dental and vision", "401(k) match 5%", "Remote-friendly", "Learning budget $2,000/yr"],
+    "paidMaternityLeave": { "paidWeeks": 16, "payPercent": 100, "notes": "Full pay; applies after 6 months of employment." }
+  },
+  {
+    "id": "brightfern-health",
+    "name": "Brightfern Health",
+    "website": "https://brightfern-health.example",
+    "intro": "A digital-health startup offering virtual prenatal and postpartum care through employer health plans.",
+    "mainFocus": ["Digital health", "Women's health", "Telemedicine"],
+    "location": "Austin, TX",
+    "email": "contact@brightfern-health.example",
+    "phone": "+1 512-555-0187",
+    "address": "88 Congress Ave, Floor 9, Austin, TX 78701",
+    "contacts": [
+      { "name": "Talent team", "role": "Recruiting", "email": "jobs@brightfern-health.example" }
+    ],
+    "sources": [
+      { "label": "About page", "url": "https://brightfern-health.example/about" },
+      { "label": "Impact report 2025", "url": "https://brightfern-health.example/impact-2025" }
+    ],
+    "dataCollectedAt": "2026-09-15",
+    "verification": {
+      "status": "verified",
+      "checkedBy": "ai",
+      "checkedAt": "2026-09-20",
+      "confidence": 0.88,
+      "notes": "Leave policy matched the published impact report."
+    },
+    "salary": {
+      "averageAnnualUsd": 141000,
+      "rangeUsd": { "min": 98000, "max": 210000 },
+      "basis": "Base salary, all US roles",
+      "sourceUrl": "https://brightfern-health.example/impact-2025"
+    },
+    "womenSupport": {
+      "womenWorkforcePct": 63,
+      "womenLeadershipPct": 58,
+      "programs": ["Lactation rooms", "Fertility support", "Flexible hours"]
+    },
+    "benefits": ["Health insurance", "Fertility benefit $20,000", "Childcare stipend", "Mental health app"],
+    "paidMaternityLeave": { "paidWeeks": 20, "payPercent": 100, "notes": "Plus 4 weeks of part-time return." }
+  },
+  {
+    "id": "quillstone-legal-tech",
+    "name": "Quillstone Legal Tech",
+    "website": "https://quillstone.example",
+    "intro": "Builds contract-review software for in-house legal teams.",
+    "mainFocus": ["Legal tech", "SaaS", "Document automation"],
+    "location": "New York, NY",
+    "email": "info@quillstone.example",
+    "phone": "+1 212-555-0119",
+    "address": "410 Park Row, 12th Floor, New York, NY 10038",
+    "contacts": [
+      { "name": "Recruiting", "role": "Talent acquisition", "email": "talent@quillstone.example" },
+      { "name": "Press office", "role": "Communications", "email": "press@quillstone.example" }
+    ],
+    "sources": [
+      { "label": "Careers page", "url": "https://quillstone.example/careers" }
+    ],
+    "dataCollectedAt": "2026-08-30",
+    "verification": {
+      "status": "needs_review",
+      "checkedBy": "ai",
+      "checkedAt": "2026-09-04",
+      "confidence": 0.61,
+      "notes": "Phone number on the careers page differs from the contact page. A person should confirm it."
+    },
+    "salary": {
+      "averageAnnualUsd": 152000,
+      "rangeUsd": { "min": 110000, "max": 230000 },
+      "basis": "Base salary, engineering roles (job postings)",
+      "sourceUrl": "https://quillstone.example/careers"
+    },
+    "womenSupport": {
+      "womenWorkforcePct": 35,
+      "womenLeadershipPct": 22,
+      "programs": ["Mentorship circles"]
+    },
+    "benefits": ["Health insurance", "Dental and vision", "Hybrid work (3 days office)"],
+    "paidMaternityLeave": { "paidWeeks": 12, "payPercent": 100, "notes": null }
+  },
+  {
+    "id": "marigold-mobility",
+    "name": "Marigold Mobility",
+    "website": "https://marigold-mobility.example",
+    "intro": "Designs electric cargo bikes and fleet software for last-mile delivery.",
+    "mainFocus": ["Electric vehicles", "Hardware", "Logistics"],
+    "location": "Portland, OR",
+    "email": "team@marigold-mobility.example",
+    "phone": "+1 503-555-0163",
+    "address": "2300 NW Industrial St, Portland, OR 97210",
+    "contacts": [
+      { "name": "Hiring team", "role": "Recruiting", "email": "hiring@marigold-mobility.example" }
+    ],
+    "sources": [
+      { "label": "Company blog: our benefits", "url": "https://marigold-mobility.example/blog/benefits" }
+    ],
+    "dataCollectedAt": "2026-07-12",
+    "verification": {
+      "status": "unverified",
+      "checkedBy": "ai",
+      "checkedAt": null,
+      "confidence": null,
+      "notes": "Not checked yet."
+    },
+    "salary": null,
+    "womenSupport": {
+      "womenWorkforcePct": 27,
+      "womenLeadershipPct": null,
+      "programs": ["Women in Engineering meetup"]
+    },
+    "benefits": ["Health insurance", "Free bike and e-bike repairs", "Commuter benefit"],
+    "paidMaternityLeave": { "paidWeeks": 8, "payPercent": 60, "notes": "Topped up from state paid leave." }
+  },
+  {
+    "id": "orchid-ridge-bank",
+    "name": "Orchid Ridge Bank",
+    "website": "https://orchid-ridge-bank.example",
+    "intro": "A regional community bank focused on small-business lending and personal banking.",
+    "mainFocus": ["Banking", "Small-business lending", "Financial services"],
+    "location": "Charlotte, NC",
+    "email": "service@orchid-ridge-bank.example",
+    "phone": "+1 704-555-0101",
+    "address": "500 Tryon Plaza, Charlotte, NC 28202",
+    "contacts": [
+      { "name": "Human resources", "role": "HR", "email": "hr@orchid-ridge-bank.example" },
+      { "name": "Campus recruiting", "role": "Early careers", "email": "campus@orchid-ridge-bank.example" }
+    ],
+    "sources": [
+      { "label": "Annual report 2025", "url": "https://orchid-ridge-bank.example/annual-report-2025" },
+      { "label": "Diversity statement", "url": "https://orchid-ridge-bank.example/diversity" }
+    ],
+    "dataCollectedAt": "2026-09-30",
+    "verification": {
+      "status": "verified",
+      "checkedBy": "ai",
+      "checkedAt": "2026-10-05",
+      "confidence": 0.95,
+      "notes": "Figures matched the annual report."
+    },
+    "salary": {
+      "averageAnnualUsd": 96000,
+      "rangeUsd": { "min": 52000, "max": 185000 },
+      "basis": "Base salary, all employees (annual report)",
+      "sourceUrl": "https://orchid-ridge-bank.example/annual-report-2025"
+    },
+    "womenSupport": {
+      "womenWorkforcePct": 57,
+      "womenLeadershipPct": 41,
+      "programs": ["Women's leadership program", "Pay equity audit (yearly)", "Harassment reporting hotline"]
+    },
+    "benefits": ["Health insurance", "Pension plan", "Tuition reimbursement", "Backup childcare"],
+    "paidMaternityLeave": { "paidWeeks": 14, "payPercent": 100, "notes": null }
+  },
+  {
+    "id": "pinecrest-learning",
+    "name": "Pinecrest Learning",
+    "website": "https://pinecrest-learning.example",
+    "intro": "An online learning platform for adult career changers, focusing on UX design and data skills.",
+    "mainFocus": ["Education", "EdTech", "Career training"],
+    "location": "Remote (US)",
+    "email": "support@pinecrest-learning.example",
+    "phone": "+1 415-555-0178",
+    "address": "PO Box 2214, San Francisco, CA 94126",
+    "contacts": [
+      { "name": "People operations", "role": "HR", "email": "people@pinecrest-learning.example" }
+    ],
+    "sources": [
+      { "label": "Remote work handbook", "url": "https://pinecrest-learning.example/handbook" }
+    ],
+    "dataCollectedAt": "2026-10-01",
+    "verification": {
+      "status": "verified",
+      "checkedBy": "ai",
+      "checkedAt": "2026-10-03",
+      "confidence": 0.84,
+      "notes": "Benefits matched the public handbook. Salary range taken from job postings."
+    },
+    "salary": {
+      "averageAnnualUsd": 112000,
+      "rangeUsd": { "min": 78000, "max": 160000 },
+      "basis": "Base salary range from job postings",
+      "sourceUrl": "https://pinecrest-learning.example/handbook"
+    },
+    "womenSupport": {
+      "womenWorkforcePct": 52,
+      "womenLeadershipPct": 50,
+      "programs": ["Fully remote", "Caregiver leave", "Mentorship program"]
+    },
+    "benefits": ["Health insurance", "Home-office stipend", "Unlimited PTO (minimum 15 days)", "Learning budget"],
+    "paidMaternityLeave": { "paidWeeks": 18, "payPercent": 100, "notes": null }
+  },
+  {
+    "id": "saltmarsh-foods",
+    "name": "Saltmarsh Foods Co.",
+    "website": "https://saltmarsh-foods.example",
+    "intro": "A packaged-food maker producing plant-based snacks sold in grocery chains across the Northeast.",
+    "mainFocus": ["Food and beverage", "Manufacturing", "Consumer goods"],
+    "location": "Boston, MA",
+    "email": "info@saltmarsh-foods.example",
+    "phone": "+1 617-555-0134",
+    "address": "75 Dockside Way, Boston, MA 02210",
+    "contacts": [
+      { "name": "HR office", "role": "HR", "email": "hr@saltmarsh-foods.example" }
+    ],
+    "sources": [
+      { "label": "Sustainability report", "url": "https://saltmarsh-foods.example/sustainability" }
+    ],
+    "dataCollectedAt": "2026-06-20",
+    "verification": {
+      "status": "needs_review",
+      "checkedBy": "ai",
+      "checkedAt": "2026-06-25",
+      "confidence": 0.55,
+      "notes": "The source is more than 3 months old; the maternity leave policy may have changed."
+    },
+    "salary": {
+      "averageAnnualUsd": 68000,
+      "rangeUsd": { "min": 41000, "max": 120000 },
+      "basis": "Base salary, plant and office staff",
+      "sourceUrl": "https://saltmarsh-foods.example/sustainability"
+    },
+    "womenSupport": {
+      "womenWorkforcePct": 46,
+      "womenLeadershipPct": 30,
+      "programs": ["Shift-swap program for caregivers"]
+    },
+    "benefits": ["Health insurance", "Employee product discount", "401(k) match 3%"],
+    "paidMaternityLeave": { "paidWeeks": 6, "payPercent": 70, "notes": "Short-term disability pay." }
+  },
+  {
+    "id": "kestrel-cloudworks",
+    "name": "Kestrel Cloudworks",
+    "website": "https://kestrel-cloudworks.example",
+    "intro": "Provides managed cloud hosting and security monitoring for healthcare and fintech clients.",
+    "mainFocus": ["Cloud infrastructure", "Cybersecurity", "SaaS"],
+    "location": "Denver, CO",
+    "email": "sales@kestrel-cloudworks.example",
+    "phone": "+1 303-555-0155",
+    "address": "1601 Wewatta St, Suite 700, Denver, CO 80202",
+    "contacts": [
+      { "name": "Recruiting", "role": "Talent acquisition", "email": "careers@kestrel-cloudworks.example" },
+      { "name": "Security team", "role": "Responsible disclosure", "email": "security@kestrel-cloudworks.example" }
+    ],
+    "sources": [
+      { "label": "Careers page", "url": "https://kestrel-cloudworks.example/careers" },
+      { "label": "Pay transparency page", "url": "https://kestrel-cloudworks.example/pay" }
+    ],
+    "dataCollectedAt": "2026-09-10",
+    "verification": {
+      "status": "verified",
+      "checkedBy": "ai",
+      "checkedAt": "2026-09-12",
+      "confidence": 0.9,
+      "notes": "Salary bands matched the pay transparency page."
+    },
+    "salary": {
+      "averageAnnualUsd": 158000,
+      "rangeUsd": { "min": 115000, "max": 240000 },
+      "basis": "Base salary bands, engineering",
+      "sourceUrl": "https://kestrel-cloudworks.example/pay"
+    },
+    "womenSupport": {
+      "womenWorkforcePct": 29,
+      "womenLeadershipPct": 25,
+      "programs": ["Women in Security network", "Conference sponsorship"]
+    },
+    "benefits": ["Health insurance", "Dental and vision", "Equity", "On-call pay"],
+    "paidMaternityLeave": null
+  }
+]

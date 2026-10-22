@@ -1,3 +1,8 @@
+/*
+ * Measurements follow the UI design's 1440px frame: 64.8px tall bar, search
+ * field starting at x=144 (812 x 43), nav text ending ~55px from the right.
+ */
+
 .header {
   position: sticky;
   top: 0;
@@ -10,10 +15,10 @@
   display: flex;
   align-items: center;
   gap: var(--ship-space-4);
-  max-width: var(--ship-content-max);
+  max-width: var(--ship-header-max);
   min-height: var(--ship-header-height);
   margin: 0 auto;
-  padding: var(--ship-space-2) var(--ship-space-4);
+  padding: 0 44px;
 }
 
 .brand {
@@ -43,15 +48,31 @@
 }
 
 .search {
-  flex: 1 1 auto;
+  flex: 0 1 var(--ship-header-search-width);
   min-width: 0;
-  max-width: 420px;
+}
+
+/* Doubled class beats Mantine's own input selector without !important. */
+.searchInput.searchInput {
+  height: var(--ship-header-search-height);
+  min-height: var(--ship-header-search-height);
+  border: 1px solid transparent;
+  border-radius: var(--ship-header-search-radius);
+  background-color: var(--ship-header-search-bg);
+  font-size: 15px;
+}
+
+.searchInput.searchInput:focus {
+  border-color: var(--ship-primary-500);
+}
+
+.searchSection {
+  color: var(--ship-color-text-muted);
 }
 
 .nav {
   display: flex;
   align-items: center;
-  gap: var(--ship-space-1);
   margin-left: auto;
   flex-shrink: 0;
 }
@@ -59,15 +80,15 @@
 .navLink {
   display: inline-flex;
   align-items: center;
-  gap: var(--ship-space-1);
-  padding: var(--ship-space-2) var(--ship-space-3);
+  padding: 6px 10px;
   border: 0;
   border-radius: var(--ship-radius-sm);
   background: none;
   color: var(--ship-color-text-muted);
   font: inherit;
-  font-size: var(--ship-text-sm);
+  font-size: 15px;
   font-weight: 600;
+  line-height: 18px;
   text-decoration: none;
   cursor: pointer;
 }
@@ -82,15 +103,42 @@
   background-color: var(--ship-primary-50);
 }
 
+/* Avatar circle and "Profile" label, set apart from the two text links. */
+.profile {
+  gap: 10.8px;
+  margin-left: 22px;
+  padding-block: 4px;
+}
+
+.signUp {
+  margin-left: 22px;
+}
+
+@media (max-width: 1024px) {
+  .inner {
+    padding: 0 var(--ship-space-4);
+  }
+
+  .profile,
+  .signUp {
+    margin-left: var(--ship-space-2);
+  }
+}
+
 /* Narrow browser windows: the search bar moves to its own row below. */
 @media (max-width: 640px) {
   .inner {
     flex-wrap: wrap;
+    row-gap: var(--ship-space-2);
+    padding-block: var(--ship-space-2);
+  }
+
+  .brandName {
+    display: none;
   }
 
   .search {
     order: 1;
     flex-basis: 100%;
-    max-width: none;
   }
 }

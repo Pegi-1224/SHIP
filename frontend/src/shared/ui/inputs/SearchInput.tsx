@@ -17,6 +17,10 @@ export interface SearchInputProps {
   size?: 'sm' | 'md';
   autoFocus?: boolean;
   name?: string;
+  /** Style hooks for a custom look, e.g. the header's search field. */
+  classNames?: { wrapper?: string; input?: string; section?: string };
+  /** Width of the area holding the search icon; the text starts after it. */
+  leftSectionWidth?: number;
 }
 
 /**
@@ -36,6 +40,8 @@ export function SearchInput({
   size = 'md',
   autoFocus = false,
   name = 'q',
+  classNames,
+  leftSectionWidth,
 }: SearchInputProps) {
   const [value, setValue] = useState(defaultValue);
   const [syncedDefault, setSyncedDefault] = useState(defaultValue);
@@ -70,6 +76,8 @@ export function SearchInput({
         size={size}
         autoFocus={autoFocus}
         autoComplete="off"
+        classNames={classNames}
+        leftSectionWidth={leftSectionWidth}
         leftSection={<Search size={16} aria-hidden="true" />}
         rightSection={
           value ? (

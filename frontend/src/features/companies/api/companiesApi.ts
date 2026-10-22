@@ -18,6 +18,7 @@ import type {
   SubmissionHistoryEntry,
   SubmissionSections,
 } from '@/shared/types/company';
+import type { CompanyRecord, SearchHit } from '@/shared/types/demoSearch';
 
 export function searchCompanies(
   params: CompanySearchParams,
@@ -96,4 +97,12 @@ export function updateSubmission(
 
 export function fetchMySubmissions(signal?: AbortSignal): Promise<SubmissionHistoryEntry[]> {
   return api.get<SubmissionHistoryEntry[]>('/me/submissions', { signal });
+}
+
+/** Demo company search over `src/mocks/data/companies.json`. Public, so it works on Home. */
+export function searchDemoCompanies(
+  q: string,
+  signal?: AbortSignal,
+): Promise<{ items: SearchHit<CompanyRecord>[]; total: number }> {
+  return api.get('/demo/companies', { query: { q }, auth: false, signal });
 }

@@ -6,7 +6,7 @@
  * caches are invalidated, which is what makes a newly crossed privacy
  * threshold appear without a page reload (spec 6.6, AC-6).
  */
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import { keepPreviousData, useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { queryKeys } from '@/shared/api';
 import type {
   CompanySearchParams,
@@ -22,6 +22,7 @@ import {
   fetchSimilarCompanies,
   fetchSubmissionEligibility,
   searchCompanies,
+  searchDemoCompanies,
   updateSubmission,
 } from '../api/companiesApi';
 
@@ -30,6 +31,15 @@ export function useCompanySearch(params: CompanySearchParams, enabled = true) {
     queryKey: queryKeys.companies.search(params),
     queryFn: ({ signal }) => searchCompanies(params, signal),
     enabled,
+  });
+}
+
+/** Live demo search; `keepPreviousData` stops the list flashing empty between keystrokes. */
+export function useDemoCompanySearch(q: string) {
+  return useQuery({
+    queryKey: queryKeys.demoSearch.companies(q),
+    queryFn: ({ signal }) => searchDemoCompanies(q, signal),
+    placeholderData: keepPreviousData,
   });
 }
 

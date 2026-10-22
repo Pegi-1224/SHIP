@@ -1,0 +1,122 @@
+[
+  {
+    "id": "post_0001",
+    "authorRefId": "anon_7f3k2a",
+    "title": "How did you negotiate your first offer?",
+    "content": "I just got an offer from a data analytics company and the base is lower than I expected. Did anyone negotiate successfully as a new grad? What did you say?",
+    "tags": ["negotiation", "pay gap", "new grad"],
+    "relatedCompanyIds": ["lumen-harbor-analytics"],
+    "createdAt": "2026-10-18T14:20:00Z",
+    "updatedAt": null,
+    "commentCount": 6,
+    "status": "published"
+  },
+  {
+    "id": "post_0002",
+    "authorRefId": "anon_q91mzd",
+    "title": "Coming back from maternity leave - tips?",
+    "content": "My 16-week leave ends next month. I'm nervous about catching up and pumping at work. How did your team support your return to work?",
+    "tags": ["maternity leave", "return to work"],
+    "relatedCompanyIds": [],
+    "createdAt": "2026-10-17T09:05:00Z",
+    "updatedAt": "2026-10-17T10:12:00Z",
+    "commentCount": 11,
+    "status": "published"
+  },
+  {
+    "id": "post_0003",
+    "authorRefId": "anon_c4p8wn",
+    "title": "Is a fertility benefit worth a lower salary?",
+    "content": "One offer has a big fertility benefit and childcare stipend, the other pays about 12% more but has basic benefits. How do you compare total value?",
+    "tags": ["benefits", "pay gap"],
+    "relatedCompanyIds": ["brightfern-health"],
+    "createdAt": "2026-10-15T21:40:00Z",
+    "updatedAt": null,
+    "commentCount": 4,
+    "status": "published"
+  },
+  {
+    "id": "post_0004",
+    "authorRefId": "anon_7f3k2a",
+    "title": "Only woman on my engineering team",
+    "content": "I'm the only woman on a team of nine. Everyone is nice, but I get interrupted in meetings a lot. Has anyone found a good way to handle this with a manager?",
+    "tags": ["supportive manager", "women in tech"],
+    "relatedCompanyIds": [],
+    "createdAt": "2026-10-14T16:00:00Z",
+    "updatedAt": null,
+    "commentCount": 15,
+    "status": "published"
+  },
+  {
+    "id": "post_0005",
+    "authorRefId": "anon_h2v6rt",
+    "title": "Remote companies with good parental leave?",
+    "content": "Looking for fully remote employers that offer at least 16 weeks of fully paid parental leave. Please share any you know of.",
+    "tags": ["remote work", "maternity leave", "job search"],
+    "relatedCompanyIds": ["pinecrest-learning"],
+    "createdAt": "2026-10-12T11:30:00Z",
+    "updatedAt": null,
+    "commentCount": 8,
+    "status": "published"
+  },
+  {
+    "id": "post_0006",
+    "authorRefId": "anon_m8x1ke",
+    "title": "Asking for a promotion after 2 years",
+    "content": "I have exceeded my goals two cycles in a row but was told to wait another year for a promotion. Is that normal? How did you build your case?",
+    "tags": ["promotion", "career goals"],
+    "relatedCompanyIds": [],
+    "createdAt": "2026-10-10T08:15:00Z",
+    "updatedAt": null,
+    "commentCount": 9,
+    "status": "published"
+  },
+  {
+    "id": "post_0007",
+    "authorRefId": "anon_q91mzd",
+    "title": "Reporting harassment - what actually happened?",
+    "content": "For people who used their company's harassment reporting hotline: did HR take it seriously, and was the process confidential?",
+    "tags": ["harassment support", "hr"],
+    "relatedCompanyIds": ["orchid-ridge-bank"],
+    "createdAt": "2026-10-08T19:45:00Z",
+    "updatedAt": null,
+    "commentCount": 5,
+    "status": "published"
+  },
+  {
+    "id": "post_0008",
+    "authorRefId": "anon_r5t0ya",
+    "title": "Salary bands in cloud security",
+    "content": "Kestrel-style companies publish pay bands for engineering. What base salary range is fair for a mid-level security engineer in Denver?",
+    "tags": ["salary", "women in tech", "negotiation"],
+    "relatedCompanyIds": ["kestrel-cloudworks"],
+    "createdAt": "2026-10-05T13:10:00Z",
+    "updatedAt": null,
+    "commentCount": 3,
+    "status": "published"
+  },
+  {
+    "id": "post_0009",
+    "authorRefId": "anon_h2v6rt",
+    "title": "Work-life balance on shift schedules",
+    "content": "Working in food manufacturing with rotating shifts and a toddler. Does anyone have a shift-swap arrangement that actually works?",
+    "tags": ["work life balance", "caregiving"],
+    "relatedCompanyIds": ["saltmarsh-foods"],
+    "createdAt": "2026-10-02T06:50:00Z",
+    "updatedAt": null,
+    "commentCount": 2,
+    "status": "published"
+  },
+  {
+    "id": "post_0010",
+    "authorRefId": "anon_c4p8wn",
+    "title": "Changing careers into UX design at 35",
+    "content": "Thinking of an online bootcamp to switch from teaching to UX design. Did anyone make this switch? How long until your first job?",
+    "tags": ["career change", "career goals"],
+    "relatedCompanyIds": ["pinecrest-learning"],
+    "createdAt": "2026-09-29T17:25:00Z",
+    "updatedAt": null,
+    "commentCount": 7,
+    "status": "published"
+  }
+]

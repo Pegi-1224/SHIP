@@ -4,7 +4,7 @@
  * Mutations invalidate the feed and the home recommendations, because a new or
  * deleted post changes both.
  */
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import { keepPreviousData, useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { queryKeys } from '@/shared/api';
 import type {
   CreateCommentInput,
@@ -24,8 +24,18 @@ import {
   fetchPublicPreview,
   fetchTags,
   markPostRead,
+  searchDemoPosts,
   updatePost,
 } from '../api/discussionsApi';
+
+/** Live demo search; `keepPreviousData` stops the list flashing empty between keystrokes. */
+export function useDemoPostSearch(q: string) {
+  return useQuery({
+    queryKey: queryKeys.demoSearch.posts(q),
+    queryFn: ({ signal }) => searchDemoPosts(q, signal),
+    placeholderData: keepPreviousData,
+  });
+}
 
 export function usePosts(params: PostListParams) {
   return useQuery({

@@ -13,6 +13,7 @@ export { ComparePage } from './pages/ComparePage';
 
 export { useCompanySearch, useMySubmissions } from './hooks/useCompanies';
 export { CompanyPicker } from './components/CompanyPicker';
+export { CompanyDemoResults } from './components/CompanyDemoResults';
 
 // Used by tests to arrange company state without driving the UI.
 export { createSubmission, fetchCompanyProfile } from './api/companiesApi';

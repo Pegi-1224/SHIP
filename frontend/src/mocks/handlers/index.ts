@@ -9,6 +9,7 @@
 import { authHandlers } from './auth';
 import { assessmentHandlers } from './assessment';
 import { companyHandlers } from './companies';
+import { demoSearchHandlers } from './demoSearch';
 import { discussionHandlers } from './discussions';
 import { homeHandlers } from './home';
 import { messageHandlers } from './messages';
@@ -18,6 +19,7 @@ export const handlers = [
   ...authHandlers,
   ...assessmentHandlers,
   ...companyHandlers,
+  ...demoSearchHandlers,
   ...discussionHandlers,
   ...homeHandlers,
   ...messageHandlers,

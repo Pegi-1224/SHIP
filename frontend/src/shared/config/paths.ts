@@ -32,6 +32,8 @@ export const routePatterns = {
 
 export const paths = {
   home: () => '/',
+  /** Home with the header's company search applied. */
+  homeSearch: (query: string) => (query ? `/?q=${encodeURIComponent(query)}` : '/'),
   login: () => '/login',
   /** `?redirectTo=` sends the user back where they were after signing in. */
   loginWithRedirect: (redirectTo: string) =>

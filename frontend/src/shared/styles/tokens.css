@@ -38,7 +38,7 @@
   --ship-neutral-900: #171d1a;
 
   /* --- Semantic colours --------------------------------------------------- */
-  --ship-color-bg: var(--ship-primary-50);
+  --ship-color-bg: #f3f3f7;
   --ship-color-surface: var(--ship-neutral-0);
   --ship-color-surface-muted: var(--ship-neutral-100);
   --ship-color-border: var(--ship-neutral-200);
@@ -104,7 +104,13 @@
 
   /* --- Layout ------------------------------------------------------------- */
   --ship-content-max: 1120px;
-  --ship-header-height: 64px;
+  --ship-header-height: 64.8px;
+  --ship-header-max: 1440px;
+  /* Header search field (UI design, Oct 2026). */
+  --ship-header-search-bg: #f4effc;
+  --ship-header-search-width: 812px;
+  --ship-header-search-height: 43px;
+  --ship-header-search-radius: 10.8px;
 
   /* --- Breakpoints (documented; media queries must repeat the literal) ----- */
   /* sm 480px | md 768px | lg 1024px | xl 1280px */

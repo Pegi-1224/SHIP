@@ -11,6 +11,7 @@ import type {
   Tag,
   UpdatePostInput,
 } from '@/shared/types/discussion';
+import type { PostRecord, SearchHit } from '@/shared/types/demoSearch';
 
 export function fetchPosts(
   params: PostListParams,
@@ -81,4 +82,12 @@ export function createTag(name: string): Promise<Tag> {
 /** Records that the user opened a post, which excludes it from recommendations. */
 export function markPostRead(postId: string): Promise<void> {
   return api.post<void>('/me/read-posts', { postId });
+}
+
+/** Demo discussion search over `src/mocks/data/posts.json`. */
+export function searchDemoPosts(
+  q: string,
+  signal?: AbortSignal,
+): Promise<{ items: SearchHit<PostRecord>[]; total: number }> {
+  return api.get('/demo/posts', { query: { q }, auth: false, signal });
 }

@@ -35,6 +35,11 @@ export const queryKeys = {
     comments: (postId: string) => ['discussions', 'comments', postId] as const,
     tags: (search: string) => ['discussions', 'tags', search] as const,
   },
+  demoSearch: {
+    all: ['demo-search'] as const,
+    companies: (q: string) => ['demo-search', 'companies', q] as const,
+    posts: (q: string) => ['demo-search', 'posts', q] as const,
+  },
   home: {
     all: ['home'] as const,
     recommendations: ['home', 'recommendations'] as const,
