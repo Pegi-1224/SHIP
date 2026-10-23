@@ -8,29 +8,31 @@ function renderAt(route: string) {
 }
 
 describe('header search on Home', () => {
-  it('lists every demo company before anything is typed', async () => {
+  it('shows discussion posts, not companies, before anything is typed', async () => {
     renderAt('/');
-    expect(await screen.findByText('All 8 demo companies')).toBeInTheDocument();
+    expect(await screen.findByText('All 10 demo posts, newest first')).toBeInTheDocument();
+    expect(screen.queryByRole('heading', { name: 'Companies' })).not.toBeInTheDocument();
   });
 
-  it('shows companies with a similar name as the user types, with every field on demand', async () => {
+  it('shows companies with a similar name as the user types, and opens the company page', async () => {
     const { user } = renderAt('/');
-    await screen.findByText('All 8 demo companies');
+    await screen.findByText('All 10 demo posts, newest first');
 
     await user.type(screen.getByRole('textbox', { name: 'Search companies' }), 'orchid');
 
     expect(await screen.findByText('1 company similar to "orchid"')).toBeInTheDocument();
     const card = screen.getByRole('article');
-    expect(within(card).getByRole('heading', { name: 'Orchid Ridge Bank' })).toBeInTheDocument();
+    await user.click(within(card).getByRole('link', { name: 'Orchid Ridge Bank' }));
 
-    await user.click(within(card).getByRole('button', { name: 'Show details' }));
-    expect(within(card).getByText(/14 weeks at 100% pay/)).toBeInTheDocument();
-    expect(within(card).getByText('hr@orchid-ridge-bank.example')).toBeInTheDocument();
+    expect(
+      await screen.findByRole('heading', { level: 1, name: 'Orchid Ridge Bank' }),
+    ).toBeInTheDocument();
+    expect(screen.getByRole('region', { name: 'Salary' })).toBeInTheDocument();
   });
 
   it('keeps the space between two words while typing', async () => {
     const { user } = renderAt('/');
-    await screen.findByText('All 8 demo companies');
+    await screen.findByText('All 10 demo posts, newest first');
     const input = screen.getByRole('textbox', { name: 'Search companies' });
 
     await user.type(input, 'orchid ');
@@ -42,7 +44,7 @@ describe('header search on Home', () => {
 
   it('says so when nothing is similar', async () => {
     const { user } = renderAt('/');
-    await screen.findByText('All 8 demo companies');
+    await screen.findByText('All 10 demo posts, newest first');
 
     await user.type(screen.getByRole('textbox', { name: 'Search companies' }), 'zzzqqq{Enter}');
 

@@ -50,7 +50,6 @@ test.describe('Dev sign-in and assessment shortcuts', () => {
     const routesAndHeadings: Array<[string, string]> = [
       ['/companies', 'Company Search'],
       ['/companies/new', 'Add Company'],
-      ['/companies/northwind-systems', 'Company Profile'],
       ['/companies/northwind-systems/submit', 'Company Data Submission'],
       ['/compare', 'Compare Companies'],
       ['/discussions', 'Discussions'],
@@ -72,7 +71,7 @@ test.describe('Dev sign-in and assessment shortcuts', () => {
     await devSignIn(page, 'e2e.params@example.com');
     await devCompleteAssessment(page);
 
-    await page.goto('/companies/northwind-systems');
+    await page.goto('/companies/northwind-systems/submit');
 
     await expect(page.getByText('companyId')).toBeVisible();
     await expect(page.getByText('northwind-systems')).toBeVisible();

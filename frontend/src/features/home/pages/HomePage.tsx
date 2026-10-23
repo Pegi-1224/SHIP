@@ -7,6 +7,7 @@ import { FormErrorAlert, RelatedLinks, StarterPage } from '@/shared/ui';
 import { useAuth } from '@/app/providers/useAuth';
 import { useDevSignIn, useSignOut } from '@/features/auth';
 import { CompanyDemoResults } from '@/features/companies';
+import { PostDemoResults } from '@/features/discussions';
 import { useDevCompleteAssessment } from '@/features/onboarding';
 
 /**
@@ -22,15 +23,26 @@ export function HomePage() {
   const { status, user } = useAuth();
   // Typed into the header's company search, which keeps `?q=` up to date.
   const [searchParams] = useSearchParams();
+  const companyQuery = (searchParams.get('q') ?? '').trim();
 
   return (
     <Stack gap="xl">
-      <Stack component="section" gap="sm" maw={760} aria-labelledby="home-company-results">
-        <Title order={2} size="var(--ship-text-xl)" id="home-company-results">
-          Companies
-        </Title>
-        <CompanyDemoResults query={searchParams.get('q') ?? ''} />
-      </Stack>
+      {/* Discussion posts by default; matching companies only while searching. */}
+      {companyQuery ? (
+        <Stack component="section" gap="sm" maw={760} aria-labelledby="home-company-results">
+          <Title order={2} size="var(--ship-text-xl)" id="home-company-results">
+            Companies
+          </Title>
+          <CompanyDemoResults query={companyQuery} />
+        </Stack>
+      ) : (
+        <Stack component="section" gap="sm" maw={760} aria-labelledby="home-latest-posts">
+          <Title order={2} size="var(--ship-text-xl)" id="home-latest-posts">
+            Latest discussions
+          </Title>
+          <PostDemoResults query="" />
+        </Stack>
+      )}
 
       <StarterPage
         title="Home"
@@ -153,6 +165,8 @@ function AssessmentShortcut() {
 }
 
 const EXAMPLE_COMPANY_ID = 'northwind-systems';
+/** Company pages read the demo JSON data, which has its own ids. */
+const EXAMPLE_DEMO_COMPANY_ID = 'lumen-harbor-analytics';
 const EXAMPLE_COMPANY_ID_B = 'harborline-financial';
 const EXAMPLE_POST_ID = 'post_seed_1';
 
@@ -190,8 +204,8 @@ function DevIndex() {
           { to: paths.companies(), label: 'Company search' },
           { to: paths.companyNew(), label: 'Add a company' },
           {
-            to: paths.companyDetail(EXAMPLE_COMPANY_ID),
-            label: `Company profile (example: ${EXAMPLE_COMPANY_ID})`,
+            to: paths.companyDetail(EXAMPLE_DEMO_COMPANY_ID),
+            label: `Company page (example: ${EXAMPLE_DEMO_COMPANY_ID})`,
           },
           {
             to: paths.companySubmit(EXAMPLE_COMPANY_ID),

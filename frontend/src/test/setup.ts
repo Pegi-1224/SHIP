@@ -11,6 +11,7 @@ import { cleanup } from '@testing-library/react';
 import { notifications } from '@mantine/notifications';
 import { server } from '@/mocks/server';
 import { resetMockDatabase } from '@/mocks/db';
+import { resetDemoSearchData } from '@/mocks/handlers/demoSearch';
 import { clearAuthToken } from '@/shared/api';
 
 // Mantine components read these; jsdom implements neither.
@@ -60,6 +61,7 @@ beforeAll(() => {
 
 beforeEach(() => {
   resetMockDatabase();
+  resetDemoSearchData();
   clearAuthToken();
 });
 

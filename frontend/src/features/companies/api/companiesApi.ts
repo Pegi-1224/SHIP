@@ -19,6 +19,7 @@ import type {
   SubmissionSections,
 } from '@/shared/types/company';
 import type { CompanyRecord, SearchHit } from '@/shared/types/demoSearch';
+import type { DemoReport } from '@/shared/utils/demoReports';
 
 export function searchCompanies(
   params: CompanySearchParams,
@@ -105,4 +106,21 @@ export function searchDemoCompanies(
   signal?: AbortSignal,
 ): Promise<{ items: SearchHit<CompanyRecord>[]; total: number }> {
   return api.get('/demo/companies', { query: { q }, auth: false, signal });
+}
+
+export function fetchDemoCompany(companyId: string, signal?: AbortSignal): Promise<CompanyRecord> {
+  return api.get(`/demo/companies/${encodeURIComponent(companyId)}`, { auth: false, signal });
+}
+
+export interface DemoReportResult {
+  company: CompanyRecord;
+  /** False when no dev server could write companies.json; the report lasts until reload. */
+  savedToFile: boolean;
+}
+
+/** One user report from the company page ("Be the first" / "Add yours"). */
+export function submitDemoReport(companyId: string, report: DemoReport): Promise<DemoReportResult> {
+  return api.post(`/demo/companies/${encodeURIComponent(companyId)}/reports`, report, {
+    auth: false,
+  });
 }

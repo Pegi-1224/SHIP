@@ -42,10 +42,72 @@ export interface CompanySalaryInfo {
   sourceUrl: string;
 }
 
+export interface CompanyPromotionInfo {
+  womenPromotionRatePct: number | null;
+  /** Share of management roles held by women. */
+  womenInManagementPct: number | null;
+  sourceUrl: string;
+}
+
 export interface CompanyWomenSupport {
   womenWorkforcePct: number | null;
-  womenLeadershipPct: number | null;
   programs: string[];
+}
+
+/*
+ * User-reported aggregates. `submissions` is always present; the numbers are
+ * `null` until it reaches MIN_ELIGIBLE_CONTRIBUTORS, and the backend must
+ * withhold them rather than send them for the UI to hide (spec 3.5, AC-6).
+ */
+
+export interface UserReportedSalary {
+  submissions: number;
+  /** Average annual base salary across reports. */
+  averageAnnualUsd: number | null;
+}
+
+export interface UserReportedPromotion {
+  submissions: number;
+  avgMonthsToPromotion: number | null;
+}
+
+export interface UserReportedDiversity {
+  submissions: number;
+  /** Share of respondents whose direct manager is a woman. */
+  womanManagerPct: number | null;
+  /** Share of respondents who report a woman in the C-suite. */
+  womanInCSuitePct: number | null;
+  /** Average share of women on respondents' teams. */
+  womenOnTeamPct: number | null;
+  /** Share of respondents who feel included at work. */
+  feelIncludedPct: number | null;
+}
+
+export interface UserReportedMaternity {
+  submissions: number;
+  avgPaidWeeks: number | null;
+  /** Average share of normal pay received during leave. */
+  avgPayPercent: number | null;
+}
+
+export interface ReportedBenefit {
+  name: string;
+  /** How many reports mention it. */
+  reports: number;
+}
+
+export interface UserReportedBenefits {
+  submissions: number;
+  /** Most reported first. */
+  items: ReportedBenefit[] | null;
+}
+
+export interface CompanyUserReported {
+  salary: UserReportedSalary | null;
+  promotion: UserReportedPromotion | null;
+  diversity: UserReportedDiversity | null;
+  maternity: UserReportedMaternity | null;
+  benefits: UserReportedBenefits | null;
 }
 
 export interface CompanyMaternityLeave {
@@ -70,9 +132,12 @@ export interface CompanyRecord {
   dataCollectedAt: string;
   verification: CompanyVerification;
   salary: CompanySalaryInfo | null;
+  promotion: CompanyPromotionInfo | null;
   womenSupport: CompanyWomenSupport | null;
   benefits: string[];
   paidMaternityLeave: CompanyMaternityLeave | null;
+  /** `null` for an area means nobody has reported it yet. */
+  userReported: CompanyUserReported;
 }
 
 export type PostStatus = 'published' | 'hidden' | 'removed';

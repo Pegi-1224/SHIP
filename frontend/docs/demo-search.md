@@ -42,12 +42,75 @@ and the record types are in `src/shared/types/demoSearch.ts`.
 | `sources` | `{ label, url }[]` | Where the information came from |
 | `dataCollectedAt` | `YYYY-MM-DD` | When the information was gathered |
 | `verification` | `{ status, checkedBy, checkedAt, confidence, notes }` | `status`: `verified` / `needs_review` / `unverified`; `checkedBy`: `ai` / `human` |
-| `salary` | `{ averageAnnualUsd, rangeUsd: {min,max}, basis, sourceUrl }` or `null` | `basis` says what the figure covers |
-| `womenSupport` | `{ womenWorkforcePct, womenLeadershipPct, programs[] }` or `null` | |
+| `salary` | `{ averageAnnualUsd, rangeUsd: {min,max}, basis, sourceUrl }` or `null` | Public. `basis` says what the figure covers |
+| `promotion` | `{ womenPromotionRatePct, womenInManagementPct, sourceUrl }` or `null` | Public |
+| `womenSupport` | `{ womenWorkforcePct, programs[] }` or `null` | Public |
 | `benefits` | string[] | |
-| `paidMaternityLeave` | `{ paidWeeks, payPercent, notes }` or `null` | |
+| `paidMaternityLeave` | `{ paidWeeks, payPercent, notes }` or `null` | Public policy |
+| `userReported` | `{ salary, promotion, diversity, maternity, benefits }` | User-reported aggregates; each area is `null` until someone reports it (see below) |
 
-Missing information is `null`, never `0` or `""`, so the UI shows "Not published".
+User-reported areas (made up in the demo data, plus whatever users submit):
+
+| Area | Fields | One report asks for |
+|---|---|---|
+| `salary` | `submissions`, `averageAnnualUsd` | Annual base salary |
+| `promotion` | `submissions`, `avgMonthsToPromotion` | Months until the most recent promotion |
+| `diversity` | `submissions`, `womanManagerPct`, `womanInCSuitePct`, `womenOnTeamPct`, `feelIncludedPct` | Woman manager? Woman in C-suite? Share of women on the team, Feel included? (yes/no answers become the share of "yes") |
+| `maternity` | `submissions`, `avgPaidWeeks`, `avgPayPercent` | Paid weeks, pay during leave (%) |
+| `benefits` | `submissions`, `items: { name, reports }[]` (most reported first) | Benefits they actually get |
+
+The file stores the real aggregates even below the threshold, so new reports can be added to them.
+
+**Privacy threshold:** while `submissions` is below 5 (`MIN_ELIGIBLE_CONTRIBUTORS`), the backend
+must send the count but `null` for every number (spec 3.5, AC-6). The mock does this in
+`withPrivacyThreshold`; `kestrel-cloudworks` has 3 diversity submissions to show the state.
+
+Example companies for the edge cases:
+
+| Company | Shows |
+|---|---|
+| `lumen-harbor-analytics` | Everything filled in, public and user reported |
+| `juniper-atlas-energy` | Public data only: every box shows "No data yet / Be the first" |
+| `wrenfield-studios` | User reports only: every public value shows "Not published" |
+| `marigold-mobility` | Partly missing on both sides |
+| `kestrel-cloudworks` | Below the privacy threshold ("Not enough data yet") |
+
+Missing information is `null`, never `0` or `""`, so the UI shows "Not published" or a dash.
+
+### Company page
+
+`GET /demo/companies/:id` returns one record (404 if unknown), rendered by
+`features/companies/pages/CompanyProfilePage.tsx` at `/companies/:id`. Clicking a company in the
+Home search results opens it.
+
+Five boxes: Salary, Promotion & leadership, Women support & diversity, then Paid maternity leave
+and Welfare benefits below them. When an area has no user reports, its user-reported part becomes a
+"No data yet / Be the first" box. Below the threshold it says "Not enough data yet / Add yours",
+and once numbers show, the footnote has an "Add yours" link.
+
+### User reports
+
+Each of those buttons opens a form (`components/profile/ReportModal.tsx`) that sends:
+
+```
+POST /demo/companies/:id/reports
+{ "area": "maternity", "paidWeeks": 16, "payPercent": 100 }
+-> 201 { "company": <record, threshold applied>, "savedToFile": true }
+```
+
+Validation and the averaging live in `src/shared/utils/demoReports.ts`, shared by the form, the
+mock and the dev server. Invalid input gets a 422 with `fieldErrors`.
+
+**Saved to `companies.json`:** under `npm run dev`, the mock forwards each accepted report to the
+Vite plugin `vite/demoDataPlugin.ts`, which writes it into `src/mocks/data/companies.json`. The page
+does not reload for its own writes, and the report is still there after a reload. A production
+build or `vite preview` cannot write files, so reports there last until the page reloads
+(`savedToFile: false`). Run `git checkout src/mocks/data/companies.json` to discard test reports.
+
+Averages are updated as running averages, so the file keeps no individual reports. That is fine
+for the demo. The real backend should store each submission, tied to the signed-in account (one per
+person per area, spec 6.5), and compute aggregates from those. The demo endpoint needs no sign-in
+and does not stop repeat reports.
 
 ## Post record
 

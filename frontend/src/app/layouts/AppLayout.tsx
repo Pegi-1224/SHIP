@@ -4,8 +4,8 @@ import { DemoDataBanner } from '@/shared/ui';
 import { Header } from './Header';
 import styles from './AppLayout.module.css';
 
-/** Routes that benefit from the full page width (side-by-side comparison). */
-const WIDE_ROUTES = ['/compare'];
+/** Routes that benefit from the full page width (comparison, company page boxes). */
+const WIDE_ROUTES = ['/compare', '/companies/'];
 
 /**
  * The frame every page renders inside: skip link, demo banner, header, main

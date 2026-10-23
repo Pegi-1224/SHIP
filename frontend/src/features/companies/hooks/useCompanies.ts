@@ -8,6 +8,7 @@
  */
 import { keepPreviousData, useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { queryKeys } from '@/shared/api';
+import type { DemoReport } from '@/shared/utils/demoReports';
 import type {
   CompanySearchParams,
   CreateCompanyInput,
@@ -23,6 +24,8 @@ import {
   fetchSubmissionEligibility,
   searchCompanies,
   searchDemoCompanies,
+  fetchDemoCompany,
+  submitDemoReport,
   updateSubmission,
 } from '../api/companiesApi';
 
@@ -40,6 +43,27 @@ export function useDemoCompanySearch(q: string) {
     queryKey: queryKeys.demoSearch.companies(q),
     queryFn: ({ signal }) => searchDemoCompanies(q, signal),
     placeholderData: keepPreviousData,
+  });
+}
+
+export function useDemoCompany(companyId: string | undefined) {
+  return useQuery({
+    queryKey: queryKeys.demoSearch.company(companyId ?? ''),
+    queryFn: ({ signal }) => fetchDemoCompany(companyId as string, signal),
+    enabled: Boolean(companyId),
+  });
+}
+
+/** Shows the new aggregates straight away, then refreshes the search results too. */
+export function useSubmitDemoReport(companyId: string) {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: (report: DemoReport) => submitDemoReport(companyId, report),
+    onSuccess: async (result) => {
+      queryClient.setQueryData(queryKeys.demoSearch.company(companyId), result.company);
+      await queryClient.invalidateQueries({ queryKey: queryKeys.demoSearch.all });
+    },
   });
 }
 

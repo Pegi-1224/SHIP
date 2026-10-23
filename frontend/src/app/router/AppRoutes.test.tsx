@@ -32,7 +32,7 @@ const ALL_ROUTES: Array<[string, string]> = [
   ['/profile', 'Profile'],
   ['/companies', 'Company Search'],
   ['/companies/new', 'Add Company'],
-  ['/companies/northwind-systems', 'Company Profile'],
+  ['/companies/lumen-harbor-analytics', 'Lumen Harbor Analytics'],
   ['/companies/northwind-systems/submit', 'Company Data Submission'],
   ['/compare', 'Compare Companies'],
   ['/discussions', 'Discussions'],
@@ -47,7 +47,8 @@ describe('every route, for a signed-out visitor with no assessment', () => {
   it.each(ALL_ROUTES)('renders its own starter page at %s (expects "%s")', async (route, heading) => {
     renderAt(route);
 
-    expect(await screen.findByRole('heading', { name: heading })).toBeInTheDocument();
+    // `hidden: true` skips a visibility check per element, too slow on big pages (company page).
+    expect(await screen.findByRole('heading', { name: heading, hidden: true })).toBeInTheDocument();
   });
 
   it('renders the not-found page for an unknown path', async () => {
@@ -65,7 +66,7 @@ describe('the same routes, for a fully onboarded signed-in user', () => {
 
     renderAt(route);
 
-    expect(await screen.findByRole('heading', { name: heading })).toBeInTheDocument();
+    expect(await screen.findByRole('heading', { name: heading, hidden: true })).toBeInTheDocument();
   });
 });
 

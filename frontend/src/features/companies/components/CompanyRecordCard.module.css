@@ -1,5 +1,14 @@
 .card {
+  position: relative;
   background-color: var(--ship-color-surface);
+  transition:
+    box-shadow 140ms ease,
+    border-color 140ms ease;
+}
+
+.card:hover {
+  box-shadow: var(--ship-shadow-sm);
+  border-color: var(--ship-color-border-strong);
 }
 
 .logo {
@@ -25,9 +34,28 @@
   overflow-wrap: anywhere;
 }
 
-.toggle {
-  align-self: flex-start;
-  padding-inline: 0;
+.nameLink {
+  color: var(--ship-color-text);
+  text-decoration: none;
+}
+
+/* Stretch the name link over the whole card, so anywhere on it opens the company. */
+.nameLink::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+}
+
+.card:hover .nameLink {
+  color: var(--ship-primary-700);
+  text-decoration: underline;
+}
+
+.chevron {
+  flex-shrink: 0;
+  align-self: center;
+  color: var(--ship-color-text-subtle);
 }
 
 @media (max-width: 480px) {

@@ -38,6 +38,7 @@ export const queryKeys = {
   demoSearch: {
     all: ['demo-search'] as const,
     companies: (q: string) => ['demo-search', 'companies', q] as const,
+    company: (companyId: string) => ['demo-search', 'company', companyId] as const,
     posts: (q: string) => ['demo-search', 'posts', q] as const,
   },
   home: {
