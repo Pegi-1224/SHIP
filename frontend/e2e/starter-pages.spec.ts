@@ -14,12 +14,14 @@ import { devCompleteAssessment, devSignIn } from './helpers';
  */
 
 test.describe('Signed-out visitor', () => {
-  test('sees the Home starter page and dev index, and guarded routes redirect to login', async ({
+  test('sees the Home page and dev index, and guarded routes redirect to login', async ({
     page,
   }) => {
     await page.goto('/');
 
-    await expect(page.getByRole('heading', { name: 'Home' })).toBeVisible();
+    await expect(
+      page.getByRole('heading', { name: 'Find a workplace that has your back.' }),
+    ).toBeVisible();
     await expect(page.getByText('Demonstration mode.')).toBeVisible();
     await expect(page.getByText('Not signed in.')).toBeVisible();
     await expect(page.getByRole('link', { name: /Company profile \(example/ })).toBeVisible();
@@ -52,9 +54,9 @@ test.describe('Dev sign-in and assessment shortcuts', () => {
       ['/companies/new', 'Add Company'],
       ['/companies/northwind-systems/submit', 'Company Data Submission'],
       ['/compare', 'Compare Companies'],
-      ['/discussions', 'Discussions'],
+      ['/discussions', 'Latest discussions'],
       ['/discussions/new', 'New Post'],
-      ['/discussions/post_seed_1', 'Post Detail'],
+      ['/discussions/post_0001', 'How did you negotiate your first offer?'],
       ['/discussions/post_seed_1/edit', 'Edit Post'],
       ['/messages', 'Messages'],
       ['/profile', 'Profile'],
@@ -63,7 +65,9 @@ test.describe('Dev sign-in and assessment shortcuts', () => {
     for (const [route, heading] of routesAndHeadings) {
       await page.goto(route);
       await expect(page.getByRole('heading', { name: heading })).toBeVisible();
-      await expect(page.getByText('Replace this placeholder when the UI design is ready.')).toBeVisible();
+      await expect(
+        page.getByText('Replace this placeholder when the UI design is ready.'),
+      ).toBeVisible();
     }
   });
 

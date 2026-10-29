@@ -1,0 +1,87 @@
+/*
+ * Measurements follow the UI design's 1440px frame: 1123.2 x 158.4 banner,
+ * text inset 46.8px, a 147.6 x 54 button 46.8px from the right edge.
+ */
+
+.banner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--ship-space-5);
+  min-height: 158.4px;
+  padding: 32.4px 46.8px;
+  border-radius: 21.6px;
+  background: var(--ship-gradient-banner);
+}
+
+.text {
+  min-width: 0;
+}
+
+.title {
+  margin: 0;
+  color: #ffffff;
+  font-family: var(--ship-font-display);
+  font-size: 39.6px;
+  font-weight: 700;
+  line-height: 1.4;
+}
+
+.subtitle {
+  margin: 6px 0 0;
+  color: #e8ddf9;
+  font-size: 15.48px;
+  font-weight: 400;
+  line-height: 1.4;
+}
+
+.cta {
+  display: inline-flex;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+  width: 147.6px;
+  height: 54px;
+  padding: 10px;
+  border: 1.8px solid var(--ship-primary-200);
+  border-radius: 10.8px;
+  background-color: #ffffff;
+  color: var(--ship-primary-600);
+  font-size: 15.48px;
+  font-weight: 700;
+  text-decoration: none;
+  transition:
+    background-color 120ms ease,
+    transform 120ms ease;
+}
+
+.cta:hover {
+  background-color: var(--ship-primary-50);
+}
+
+.cta:active {
+  background-color: var(--ship-primary-100);
+  transform: translateY(1px);
+}
+
+@media (max-width: 900px) {
+  .banner {
+    flex-direction: column;
+    align-items: flex-start;
+    padding: var(--ship-space-5);
+  }
+
+  .title {
+    font-size: 30px;
+  }
+}
+
+@media (max-width: 480px) {
+  .title {
+    font-size: 26px;
+  }
+
+  .cta {
+    width: 100%;
+  }
+}

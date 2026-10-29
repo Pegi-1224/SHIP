@@ -4,7 +4,12 @@
  *   GET /demo/companies?q=  - companies whose name (or focus, location) is similar to `q`
  *   GET /demo/companies/:id - one company, for the company page
  *   POST /demo/companies/:id/reports - add one user report (see shared/utils/demoReports)
- *   GET /demo/posts?q=      - published posts whose title, tags or content match `q`
+ *   GET /demo/posts?q=&tag=&limit= - published posts whose title, tags or content match `q`,
+ *                            optionally only those tagged `tag` (limit: default 20, max 100);
+ *                            each comes with its `author`
+ *   GET /demo/posts/:id     - one published post, for the discussion page
+ *   GET /demo/posts/:id/comments  - its published comments, newest first
+ *   POST /demo/posts/:id/comments - add a comment as the signed-in user (in memory only)
  *
  * The searches return `{ items: SearchHit<T>[], total }`, best match first. An empty `q`
  * returns everything, so the page has something to show before the user types.
@@ -18,28 +23,56 @@
  */
 import { bypass, http, HttpResponse } from 'msw';
 import { MIN_ELIGIBLE_CONTRIBUTORS } from '@/shared/config/constants';
-import type { CompanyRecord, PostRecord, SearchHit } from '@/shared/types/demoSearch';
+import type {
+  CommentPreview,
+  CommentRecord,
+  CompanyRecord,
+  DemoUserRecord,
+  PostPreview,
+  PostRecord,
+  SearchHit,
+} from '@/shared/types/demoSearch';
 import { applyReport, validateReport, type DemoReport } from '@/shared/utils/demoReports';
 import { nameSimilarity, normalizeCompanyName } from '@/shared/utils/text';
 import companiesJson from '../data/companies.json';
 import postsJson from '../data/posts.json';
-import { notFound, searchParam, simulateLatency, url, validationError } from '../helpers';
+import usersJson from '../data/users.json';
+import commentsJson from '../data/comments.json';
+import { createAnonymousIdentity } from '../fixtures/identities';
+import {
+  currentUser,
+  notFound,
+  searchParam,
+  simulateLatency,
+  unauthorized,
+  url,
+  validationError,
+} from '../helpers';
 
 /** Mutable copy, so reports show up without a reload. */
 let companies = structuredClone(companiesJson) as CompanyRecord[];
+/** Mutable copy, so new comments show up without a reload. */
+let comments = structuredClone(commentsJson) as CommentRecord[];
 
-/** Back to the file's contents. Called between tests. */
+/** Back to the files' contents. Called between tests. */
 export function resetDemoSearchData(): void {
   companies = structuredClone(companiesJson) as CompanyRecord[];
+  comments = structuredClone(commentsJson) as CommentRecord[];
 }
+
+/** Longest comment the composer accepts; the real backend must enforce it too. */
+const MAX_COMMENT_LENGTH = 2000;
 
 /** Served by `vite/demoDataPlugin.ts` on the dev server only. */
 const PERSIST_PATH = '/__demo-data/companies';
 const posts = postsJson as PostRecord[];
+const users = usersJson as DemoUserRecord[];
 
 /** Results below this score are not similar enough to show. */
 const MIN_SCORE = 0.3;
 const MAX_RESULTS = 20;
+/** Highest `limit` a post list may ask for, so the Discussions feed can show every post. */
+const MAX_POST_LIMIT = 100;
 
 function words(text: string): string[] {
   return text
@@ -139,14 +172,48 @@ async function saveToFile(companyId: string, report: DemoReport): Promise<Compan
   }
 }
 
-function rank<T>(items: T[], query: string, score: (item: T, query: string) => number) {
+function rank<T>(
+  items: T[],
+  query: string,
+  score: (item: T, query: string) => number,
+  limit = MAX_RESULTS,
+) {
   const hits: SearchHit<T>[] = query
     ? items
         .map((item) => ({ item, score: Number(score(item, query).toFixed(2)) }))
         .filter((hit) => hit.score >= MIN_SCORE)
         .sort((a, b) => b.score - a.score)
     : items.map((item) => ({ item, score: 1 }));
-  return { items: hits.slice(0, MAX_RESULTS), total: hits.length };
+  return { items: hits.slice(0, limit), total: hits.length };
+}
+
+/** The public face of an author, from users.json. Unknown handles show as "Anonymous". */
+function authorFor(refId: string) {
+  const user = users.find((item) => item.refId === refId);
+  return {
+    refId,
+    displayName: user?.displayName ?? 'Anonymous',
+    avatarUrl: user?.avatarUrl ?? null,
+    industry: user?.industry ?? null,
+    location: user?.location ?? null,
+  };
+}
+
+function publishedComments(postId: string): CommentRecord[] {
+  return comments.filter((item) => item.postId === postId && item.status === 'published');
+}
+
+/** Joins the author and counts the comments, as the real backend would. */
+function withAuthor(post: PostRecord): PostPreview {
+  return {
+    ...post,
+    commentCount: publishedComments(post.id).length,
+    author: authorFor(post.authorRefId),
+  };
+}
+
+function findPublishedPost(postId: unknown): PostRecord | undefined {
+  return posts.find((item) => item.id === postId && item.status === 'published');
 }
 
 export const demoSearchHandlers = [
@@ -194,9 +261,66 @@ export const demoSearchHandlers = [
   http.get(url('/demo/posts'), async ({ request }) => {
     await simulateLatency(150);
     const query = searchParam(request, 'q');
+    const tag = searchParam(request, 'tag').toLowerCase().replace(/^#/, '');
+    const limit = Number(searchParam(request, 'limit')) || MAX_RESULTS;
     const published = posts
-      .filter((post) => post.status === 'published')
+      .filter((post) => post.status === 'published' && (!tag || post.tags.includes(tag)))
       .sort((a, b) => b.createdAt.localeCompare(a.createdAt));
-    return HttpResponse.json(rank(published, query, scorePost));
+    const result = rank(published, query, scorePost, Math.min(limit, MAX_POST_LIMIT));
+    return HttpResponse.json({
+      ...result,
+      items: result.items.map((hit) => ({ ...hit, item: withAuthor(hit.item) })),
+    });
+  }),
+
+  http.get(url('/demo/posts/:postId'), async ({ params }) => {
+    await simulateLatency(150);
+    const post = findPublishedPost(params.postId);
+    if (!post) return notFound('We could not find that discussion.');
+    return HttpResponse.json(withAuthor(post));
+  }),
+
+  http.get(url('/demo/posts/:postId/comments'), async ({ params }) => {
+    await simulateLatency(150);
+    const post = findPublishedPost(params.postId);
+    if (!post) return notFound('We could not find that discussion.');
+    const items: CommentPreview[] = publishedComments(post.id)
+      .sort((a, b) => b.createdAt.localeCompare(a.createdAt))
+      .map((comment) => ({ ...comment, author: authorFor(comment.authorRefId) }));
+    return HttpResponse.json({ items, total: items.length });
+  }),
+
+  http.post(url('/demo/posts/:postId/comments'), async ({ params, request }) => {
+    await simulateLatency(200);
+    const viewer = currentUser(request);
+    if (!viewer) return unauthorized('Sign in to join the conversation.');
+    const post = findPublishedPost(params.postId);
+    if (!post) return notFound('We could not find that discussion.');
+
+    const body = (await request.json().catch(() => null)) as { content?: unknown } | null;
+    const content = typeof body?.content === 'string' ? body.content.trim() : '';
+    if (!content || content.length > MAX_COMMENT_LENGTH) {
+      return validationError('Please check your comment.', {
+        content: [
+          content
+            ? `Keep comments under ${MAX_COMMENT_LENGTH} characters.`
+            : 'Write something first.',
+        ],
+      });
+    }
+
+    // Comments carry the viewer's anonymous handle, never their account id or email.
+    const comment: CommentRecord = {
+      id: `cmt_${Date.now().toString(36)}`,
+      postId: post.id,
+      authorRefId: createAnonymousIdentity(viewer.id).id,
+      content,
+      createdAt: new Date().toISOString(),
+      status: 'published',
+    };
+    comments.push(comment);
+
+    const created: CommentPreview = { ...comment, author: authorFor(comment.authorRefId) };
+    return HttpResponse.json(created, { status: 201 });
   }),
 ];

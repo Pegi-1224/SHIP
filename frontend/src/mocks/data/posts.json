@@ -20,7 +20,7 @@
     "relatedCompanyIds": [],
     "createdAt": "2026-10-17T09:05:00Z",
     "updatedAt": "2026-10-17T10:12:00Z",
-    "commentCount": 11,
+    "commentCount": 7,
     "status": "published"
   },
   {
@@ -44,7 +44,7 @@
     "relatedCompanyIds": [],
     "createdAt": "2026-10-14T16:00:00Z",
     "updatedAt": null,
-    "commentCount": 15,
+    "commentCount": 7,
     "status": "published"
   },
   {
@@ -56,7 +56,7 @@
     "relatedCompanyIds": ["pinecrest-learning"],
     "createdAt": "2026-10-12T11:30:00Z",
     "updatedAt": null,
-    "commentCount": 8,
+    "commentCount": 2,
     "status": "published"
   },
   {
@@ -68,7 +68,7 @@
     "relatedCompanyIds": [],
     "createdAt": "2026-10-10T08:15:00Z",
     "updatedAt": null,
-    "commentCount": 9,
+    "commentCount": 3,
     "status": "published"
   },
   {
@@ -80,7 +80,7 @@
     "relatedCompanyIds": ["orchid-ridge-bank"],
     "createdAt": "2026-10-08T19:45:00Z",
     "updatedAt": null,
-    "commentCount": 5,
+    "commentCount": 6,
     "status": "published"
   },
   {
@@ -92,7 +92,7 @@
     "relatedCompanyIds": ["kestrel-cloudworks"],
     "createdAt": "2026-10-05T13:10:00Z",
     "updatedAt": null,
-    "commentCount": 3,
+    "commentCount": 4,
     "status": "published"
   },
   {
@@ -104,7 +104,7 @@
     "relatedCompanyIds": ["saltmarsh-foods"],
     "createdAt": "2026-10-02T06:50:00Z",
     "updatedAt": null,
-    "commentCount": 2,
+    "commentCount": 3,
     "status": "published"
   },
   {
@@ -116,7 +116,199 @@
     "relatedCompanyIds": ["pinecrest-learning"],
     "createdAt": "2026-09-29T17:25:00Z",
     "updatedAt": null,
+    "commentCount": 4,
+    "status": "published"
+  },
+  {
+    "id": "post_0011",
+    "authorRefId": "anon_b3n7lu",
+    "title": "Found out a male colleague with the same title earns 18% more",
+    "content": "We compared offers over coffee and the gap is real. Same level, same start date. Has anyone raised this with HR and gotten an adjustment? How did you bring it up?",
+    "tags": ["pay gap", "negotiation"],
+    "relatedCompanyIds": [],
+    "createdAt": "2026-10-28T09:10:00Z",
+    "updatedAt": null,
     "commentCount": 7,
     "status": "published"
+  },
+  {
+    "id": "post_0012",
+    "authorRefId": "anon_7f3k2a",
+    "title": "Does posting salary ranges actually close the pay gap?",
+    "content": "My state now requires ranges in job ads. The ranges at my company are huge ($90k-$160k). Curious whether anyone has seen it change offers for women in practice.",
+    "tags": ["pay gap", "salary"],
+    "relatedCompanyIds": ["lumen-harbor-analytics"],
+    "createdAt": "2026-10-28T04:30:00Z",
+    "updatedAt": null,
+    "commentCount": 7,
+    "status": "published"
+  },
+  {
+    "id": "post_0013",
+    "authorRefId": "anon_t6w2qe",
+    "title": "How much paid maternity leave did your company really give?",
+    "content": "The handbook says 16 weeks but my manager is hinting I should come back after 10. Is that normal? What did you actually take?",
+    "tags": ["maternity leave", "benefits"],
+    "relatedCompanyIds": [],
+    "createdAt": "2026-10-28T08:00:00Z",
+    "updatedAt": null,
+    "commentCount": 5,
+    "status": "published"
+  },
+  {
+    "id": "post_0014",
+    "authorRefId": "anon_h2v6rt",
+    "title": "Telling my manager I'm pregnant - when did you do it?",
+    "content": "I'm 14 weeks and have a performance review coming up. Should I tell them before or after the review? Worried it will affect my rating.",
+    "tags": ["maternity leave", "supportive manager"],
+    "relatedCompanyIds": [],
+    "createdAt": "2026-10-27T22:15:00Z",
+    "updatedAt": "2026-10-27T23:02:00Z",
+    "commentCount": 6,
+    "status": "published"
+  },
+  {
+    "id": "post_0015",
+    "authorRefId": "anon_z1k9fs",
+    "title": "Moving from engineer to engineering manager at 29",
+    "content": "I was offered a team lead role. I love coding but I also want to grow. For those who made the switch, what do you wish you had known in your first year?",
+    "tags": ["career goals", "promotion", "women in tech"],
+    "relatedCompanyIds": [],
+    "createdAt": "2026-10-28T07:45:00Z",
+    "updatedAt": null,
+    "commentCount": 2,
+    "status": "published"
+  },
+  {
+    "id": "post_0016",
+    "authorRefId": "anon_p4d8vg",
+    "title": "Is a 5-year plan still a thing? How do you set career goals?",
+    "content": "Every mentor asks where I see myself in five years and I honestly don't know. How do you set goals when the industry changes this fast?",
+    "tags": ["career goals"],
+    "relatedCompanyIds": [],
+    "createdAt": "2026-10-27T18:20:00Z",
+    "updatedAt": null,
+    "commentCount": 6,
+    "status": "published"
+  },
+  {
+    "id": "post_0017",
+    "authorRefId": "anon_m8x1ke",
+    "title": "Asked for a raise and was told 'next cycle' - again",
+    "content": "This is the third time. I have written feedback saying I exceed expectations. Is it time to look elsewhere, or is there another way to push?",
+    "tags": ["pay gap", "negotiation", "promotion"],
+    "relatedCompanyIds": [],
+    "createdAt": "2026-10-26T15:40:00Z",
+    "updatedAt": null,
+    "commentCount": 4,
+    "status": "published"
+  },
+  {
+    "id": "post_0018",
+    "authorRefId": "anon_r5t0ya",
+    "title": "Pumping rooms: what does your office actually have?",
+    "content": "Ours is a converted storage closet with no lock. Looking for examples of good lactation rooms to show facilities what to ask for.",
+    "tags": ["maternity leave", "return to work", "benefits"],
+    "relatedCompanyIds": [],
+    "createdAt": "2026-10-26T11:05:00Z",
+    "updatedAt": null,
+    "commentCount": 4,
+    "status": "published"
+  },
+  {
+    "id": "post_0019",
+    "authorRefId": "anon_c4p8wn",
+    "title": "Going back to school for a master's at 34 - worth it?",
+    "content": "I'm a product analyst thinking about a part-time MBA or a data science master's. Did the degree change your career trajectory or salary?",
+    "tags": ["career goals", "career change"],
+    "relatedCompanyIds": [],
+    "createdAt": "2026-10-25T20:30:00Z",
+    "updatedAt": null,
+    "commentCount": 6,
+    "status": "published"
+  },
+  {
+    "id": "post_0020",
+    "authorRefId": "anon_q91mzd",
+    "title": "Managers who made a real difference - what did they do?",
+    "content": "Collecting examples of things good managers did for you. Mine blocked meetings during school pickup without me having to ask.",
+    "tags": ["supportive manager", "work life balance"],
+    "relatedCompanyIds": [],
+    "createdAt": "2026-10-25T13:00:00Z",
+    "updatedAt": null,
+    "commentCount": 8,
+    "status": "published"
+  },
+  {
+    "id": "post_0021",
+    "authorRefId": "anon_b3n7lu",
+    "title": "Reported harassment and now I'm left out of meetings",
+    "content": "HR closed the case as 'resolved' but my manager stopped inviting me to planning meetings. Is this retaliation? What are my options?",
+    "tags": ["harassment support", "hr"],
+    "relatedCompanyIds": [],
+    "createdAt": "2026-10-24T17:50:00Z",
+    "updatedAt": null,
+    "commentCount": 5,
+    "status": "published"
+  },
+  {
+    "id": "post_0022",
+    "authorRefId": "anon_t6w2qe",
+    "title": "Four-day week pilots - has your company tried one?",
+    "content": "Ours starts in January. Wondering how it went elsewhere, especially for parents and people with caregiving duties.",
+    "tags": ["work life balance", "benefits"],
+    "relatedCompanyIds": [],
+    "createdAt": "2026-10-23T10:25:00Z",
+    "updatedAt": null,
+    "commentCount": 3,
+    "status": "published"
+  },
+  {
+    "id": "post_0023",
+    "authorRefId": "anon_z1k9fs",
+    "title": "First job offer: how do I know if the salary is fair?",
+    "content": "Graduating in December. The offer is $72k for a junior UX role in Chicago. I can't tell if that's good. Where do you look for real numbers?",
+    "tags": ["salary", "new grad", "negotiation"],
+    "relatedCompanyIds": [],
+    "createdAt": "2026-10-22T16:10:00Z",
+    "updatedAt": null,
+    "commentCount": 6,
+    "status": "published"
+  },
+  {
+    "id": "post_0024",
+    "authorRefId": "anon_p4d8vg",
+    "title": "Remote work made it easier to get promoted - anyone else?",
+    "content": "Since going fully remote my work is judged on output, not who is in the room. I got promoted twice in two years. Curious if others had the opposite experience.",
+    "tags": ["remote work", "promotion", "career goals"],
+    "relatedCompanyIds": [],
+    "createdAt": "2026-10-21T12:00:00Z",
+    "updatedAt": null,
+    "commentCount": 3,
+    "status": "published"
+  },
+  {
+    "id": "post_0025",
+    "authorRefId": "anon_h2v6rt",
+    "title": "Childcare stipends - how much is yours?",
+    "content": "Mine is $250/month, which barely covers a week. Trying to gather data before our benefits survey closes.",
+    "tags": ["benefits", "caregiving"],
+    "relatedCompanyIds": ["brightfern-health"],
+    "createdAt": "2026-10-20T09:35:00Z",
+    "updatedAt": null,
+    "commentCount": 6,
+    "status": "published"
+  },
+  {
+    "id": "post_0026",
+    "authorRefId": "anon_m8x1ke",
+    "title": "Removed: off-topic post",
+    "content": "This post was removed by a moderator.",
+    "tags": ["job search"],
+    "relatedCompanyIds": [],
+    "createdAt": "2026-10-19T08:00:00Z",
+    "updatedAt": null,
+    "commentCount": 0,
+    "status": "removed"
   }
 ]

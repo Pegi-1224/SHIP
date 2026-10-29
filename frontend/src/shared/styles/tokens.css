@@ -6,45 +6,44 @@
  * place. Mantine components read the same palette through the theme defined in
  * `src/app/providers/theme.ts`.
  *
- * The design input for this project was a single hand-drawn sketch of the
- * comparison page, so the rest of the system is an assumption recorded in
- * docs/decisions-and-questions.md (DQ-02).
+ * Colours and type follow the UI design (Oct 2026): violet brand, Manrope
+ * for text, Fraunces for display headlines.
  */
 
 :root {
-  /* --- Brand palette: forest green (#f2f6f0 / #315d48 / #22372e) ------- */
-  --ship-primary-50: #f2f6f0;
-  --ship-primary-100: #dfe9db;
-  --ship-primary-200: #bfd3b9;
-  --ship-primary-300: #9cbb98;
-  --ship-primary-400: #78a07c;
-  --ship-primary-500: #4f7f62;
-  --ship-primary-600: #315d48;
-  --ship-primary-700: #2b513f;
-  --ship-primary-800: #264536;
-  --ship-primary-900: #22372e;
+  /* --- Brand palette: violet (UI design, Oct 2026; #5b2acf is the main purple) */
+  --ship-primary-50: #f6f2fd;
+  --ship-primary-100: #efe9fc;
+  --ship-primary-200: #e4dbfa;
+  --ship-primary-300: #c9b6f4;
+  --ship-primary-400: #9f7de6;
+  --ship-primary-500: #7a4fdb;
+  --ship-primary-600: #5b2acf;
+  --ship-primary-700: #4b20b0;
+  --ship-primary-800: #402093;
+  --ship-primary-900: #2a1566;
 
-  /* --- Neutrals ----------------------------------------------------------- */
+  /* --- Neutrals (violet-tinted; 500 and 900 are the design's grey and ink) */
   --ship-neutral-0: #ffffff;
-  --ship-neutral-50: #f8faf7;
-  --ship-neutral-100: #eef2ec;
-  --ship-neutral-200: #dfe5dc;
-  --ship-neutral-300: #c6cfc3;
-  --ship-neutral-400: #9aa597;
-  --ship-neutral-500: #6c786a;
-  --ship-neutral-600: #525d51;
-  --ship-neutral-700: #3b4540;
-  --ship-neutral-800: #29312d;
-  --ship-neutral-900: #171d1a;
+  --ship-neutral-50: #faf9fd;
+  --ship-neutral-100: #f3f1f8;
+  --ship-neutral-200: #e6e3ef;
+  --ship-neutral-300: #d0cbdd;
+  --ship-neutral-400: #a49eb6;
+  --ship-neutral-500: #746d88;
+  --ship-neutral-600: #5c5570;
+  --ship-neutral-700: #423b57;
+  --ship-neutral-800: #2c2546;
+  --ship-neutral-900: #1c1538;
 
   /* --- Semantic colours --------------------------------------------------- */
-  --ship-color-bg: #f3f3f7;
+  --ship-color-bg: #f7f5fc;
   --ship-color-surface: var(--ship-neutral-0);
   --ship-color-surface-muted: var(--ship-neutral-100);
   --ship-color-border: var(--ship-neutral-200);
   --ship-color-border-strong: var(--ship-neutral-300);
   --ship-color-text: var(--ship-neutral-900);
-  --ship-color-text-muted: var(--ship-neutral-600);
+  --ship-color-text-muted: var(--ship-neutral-500);
   --ship-color-text-subtle: var(--ship-neutral-500);
 
   /* Contrast-checked against --ship-color-surface (#ffffff) for body text. */
@@ -66,7 +65,7 @@
 
   /* Chart series. Company A / company B on the comparison page. */
   --ship-chart-a: var(--ship-primary-600);
-  --ship-chart-b: #b3532a;
+  --ship-chart-b: #237f70;
   --ship-chart-grid: var(--ship-neutral-200);
 
   /* --- Spacing scale (4px base) ------------------------------------------- */
@@ -86,13 +85,32 @@
   --ship-radius-pill: 999px;
 
   /* --- Elevation ---------------------------------------------------------- */
-  --ship-shadow-sm: 0 1px 2px rgb(23 29 26 / 6%), 0 1px 3px rgb(23 29 26 / 4%);
-  --ship-shadow-md: 0 2px 8px rgb(23 29 26 / 8%), 0 1px 3px rgb(23 29 26 / 5%);
+  --ship-shadow-sm: 0 1px 2px rgb(36 16 79 / 6%), 0 1px 3px rgb(36 16 79 / 4%);
+  --ship-shadow-md: 0 2px 8px rgb(36 16 79 / 8%), 0 1px 3px rgb(36 16 79 / 5%);
+  /* Discussion preview cards (UI design). */
+  --ship-shadow-card: 0 10px 28px 0 #24104f08;
+
+  /* Panels on the Discussions page (UI design). */
+  --ship-shadow-panel: 0 10.8px 28.8px 0 #24104f08;
+
+  /* Blue call-to-action buttons such as "+ New post" (UI design). */
+  --ship-accent-blue: #2f6fed;
+  --ship-accent-blue-hover: #2963d6;
+  --ship-accent-blue-pressed: #2152b8;
+
+  /* Every #tag pill in the app (UI design): light violet with violet text. */
+  --ship-tag-bg: var(--ship-primary-100);
+  --ship-tag-fg: var(--ship-primary-600);
+
+  /* Home welcome banner (UI design). */
+  --ship-gradient-banner: linear-gradient(90deg, #603383 0%, #402093 50%, #6752e8 100%);
 
   /* --- Typography --------------------------------------------------------- */
   --ship-font-body:
-    'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial,
+    'Manrope', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial,
     sans-serif;
+  /* Headlines such as the Home banner title. */
+  --ship-font-display: 'Fraunces', Georgia, 'Times New Roman', serif;
   --ship-font-mono: ui-monospace, SFMono-Regular, 'SF Mono', Menlo, Consolas, monospace;
   --ship-text-xs: 0.75rem;
   --ship-text-sm: 0.875rem;
@@ -103,7 +121,8 @@
   --ship-text-3xl: 2.25rem;
 
   /* --- Layout ------------------------------------------------------------- */
-  --ship-content-max: 1120px;
+  /* Content column in the UI design's 1440px frame (x = 158.4 to 1281.6). */
+  --ship-content-max: 1123.2px;
   --ship-header-height: 64.8px;
   --ship-header-max: 1440px;
   /* Header search field (UI design, Oct 2026). */

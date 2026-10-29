@@ -1,4 +1,4 @@
-import { Link, NavLink, useLocation, useNavigate, useSearchParams } from 'react-router-dom';
+import { NavLink, useLocation, useNavigate, useSearchParams } from 'react-router-dom';
 import { Avatar, Button, Menu } from '@mantine/core';
 import { useDebouncedCallback } from '@mantine/hooks';
 import { LogOut, MessageCircle, User } from 'lucide-react';
@@ -50,7 +50,7 @@ const DISCUSSION_SEARCH = {
  * discussion search on Discussions, none elsewhere.
  */
 function useHeaderSearch(): HeaderSearchConfig | null {
-  const { pathname } = useLocation();
+  const { pathname, search } = useLocation();
   if (pathname === routePatterns.home) {
     return { ...COMPANY_SEARCH, toPath: paths.homeSearch, live: true };
   }
@@ -58,7 +58,15 @@ function useHeaderSearch(): HeaderSearchConfig | null {
     return { ...COMPANY_SEARCH, toPath: paths.companiesSearch, live: false };
   }
   if (pathname === routePatterns.discussions) {
-    return { ...DISCUSSION_SEARCH, toPath: paths.discussionsSearch, live: true };
+    // Keep the sidebar's `?tag=` while typing, so search works inside a tag.
+    const toPath = (query: string) => {
+      const params = new URLSearchParams(search);
+      if (query) params.set('q', query);
+      else params.delete('q');
+      const queryString = params.toString();
+      return queryString ? `${paths.discussions()}?${queryString}` : paths.discussions();
+    };
+    return { ...DISCUSSION_SEARCH, toPath, live: true };
   }
   if (pathname.startsWith(routePatterns.discussions)) {
     return { ...DISCUSSION_SEARCH, toPath: paths.discussionsSearch, live: false };
@@ -67,8 +75,8 @@ function useHeaderSearch(): HeaderSearchConfig | null {
 }
 
 /**
- * Top navigation bar (spec 3.11): brand on the left, a page-specific search bar
- * next to it, and Home / Discussion / Profile on the right.
+ * Top navigation bar (spec 3.11): a page-specific search bar on the left, and
+ * Home / Discussion / Profile on the right. No logo, per the UI design.
  *
  * The search bar is shown to signed-out visitors too, because the Home search
  * runs on the public demo data (docs/demo-search.md). The other pages that
@@ -94,13 +102,6 @@ export function Header() {
   return (
     <header className={styles.header}>
       <div className={styles.inner}>
-        <Link to={paths.home()} className={styles.brand} aria-label="SHIP home">
-          <span className={styles.brandMark} aria-hidden="true">
-            S
-          </span>
-          <span className={styles.brandName}>SHIP</span>
-        </Link>
-
         {search ? (
           <div className={styles.search}>
             <SearchInput

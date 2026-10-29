@@ -18,22 +18,62 @@ import {
   createTag,
   deleteComment,
   deletePost,
+  createDemoComment,
   fetchComments,
+  fetchDemoComments,
+  fetchDemoPost,
+  fetchDemoPostFeed,
+  fetchLatestDemoPostsByTag,
   fetchPost,
   fetchPosts,
   fetchPublicPreview,
   fetchTags,
   markPostRead,
-  searchDemoPosts,
   updatePost,
 } from '../api/discussionsApi';
 
-/** Live demo search; `keepPreviousData` stops the list flashing empty between keystrokes. */
-export function useDemoPostSearch(q: string) {
+/** The newest demo posts for one tag, for the Home "Latest discussions" columns. */
+export function useLatestDemoPostsByTag(tag: string, limit: number) {
   return useQuery({
-    queryKey: queryKeys.demoSearch.posts(q),
-    queryFn: ({ signal }) => searchDemoPosts(q, signal),
+    queryKey: queryKeys.demoSearch.postsByTag(tag, limit),
+    queryFn: ({ signal }) => fetchLatestDemoPostsByTag(tag, limit, signal),
+  });
+}
+
+/** Posts in the Discussions feed shown at once; the demo has fewer than this. */
+const FEED_LIMIT = 100;
+
+/** The Discussions feed for a search and/or tag; keeps the old list visible while switching. */
+export function useDemoPostFeed(q: string, tag: string) {
+  return useQuery({
+    queryKey: queryKeys.demoSearch.feed(q, tag),
+    queryFn: ({ signal }) => fetchDemoPostFeed({ q, tag, limit: FEED_LIMIT }, signal),
     placeholderData: keepPreviousData,
+  });
+}
+
+export function useDemoPost(postId: string | undefined) {
+  return useQuery({
+    queryKey: queryKeys.demoSearch.post(postId ?? ''),
+    queryFn: ({ signal }) => fetchDemoPost(postId as string, signal),
+    enabled: Boolean(postId),
+  });
+}
+
+export function useDemoComments(postId: string | undefined) {
+  return useQuery({
+    queryKey: queryKeys.demoSearch.comments(postId ?? ''),
+    queryFn: ({ signal }) => fetchDemoComments(postId as string, signal),
+    enabled: Boolean(postId),
+  });
+}
+
+/** Posting a comment changes the list and every comment count shown for the post. */
+export function useCreateDemoComment(postId: string) {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: (content: string) => createDemoComment(postId, content),
+    onSuccess: () => queryClient.invalidateQueries({ queryKey: queryKeys.demoSearch.all }),
   });
 }
 
@@ -160,8 +200,7 @@ export function useCreateTag() {
     mutationFn: (name: string) => createTag(name),
     onSuccess: () =>
       queryClient.invalidateQueries({
-        predicate: (query) =>
-          query.queryKey[0] === 'discussions' && query.queryKey[1] === 'tags',
+        predicate: (query) => query.queryKey[0] === 'discussions' && query.queryKey[1] === 'tags',
       }),
   });
 }

@@ -1,23 +1,27 @@
 import { useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
-import { Button, Group, Stack, Text, TextInput, Title } from '@mantine/core';
+import { Button, Group, Paper, Stack, Text, TextInput, Title } from '@mantine/core';
 import { env } from '@/shared/config/env';
 import { paths } from '@/shared/config/paths';
-import { FormErrorAlert, RelatedLinks, StarterPage } from '@/shared/ui';
+import { FormErrorAlert, RelatedLinks } from '@/shared/ui';
 import { useAuth } from '@/app/providers/useAuth';
 import { useDevSignIn, useSignOut } from '@/features/auth';
 import { CompanyDemoResults } from '@/features/companies';
-import { PostDemoResults } from '@/features/discussions';
+import { TagDiscussionColumn } from '@/features/discussions';
 import { useDevCompleteAssessment } from '@/features/onboarding';
+import { WelcomeBanner } from '../components/WelcomeBanner';
+import styles from './HomePage.module.css';
+
+/** The three "Latest discussions" columns, left to right. */
+const HOME_TAG_COLUMNS = ['pay gap', 'maternity leave', 'career goals'] as const;
 
 /**
  * Home (`/`).
  *
- * This is also the development index for the whole app: every registered
- * route is listed below, with worked examples for the routes that need an
- * id. Routes behind a guard are listed anyway - following one while signed
- * out, or before finishing the assessment, exercises the guard's redirect,
- * which is useful to see too.
+ * Below the designed page sits the development index for the whole app:
+ * every registered route, with worked examples for the routes that need an
+ * id, plus the dev sign-in shortcut (the Login page has no form yet). Remove
+ * that box once every page is built.
  */
 export function HomePage() {
   const { status, user } = useAuth();
@@ -26,8 +30,10 @@ export function HomePage() {
   const companyQuery = (searchParams.get('q') ?? '').trim();
 
   return (
-    <Stack gap="xl">
-      {/* Discussion posts by default; matching companies only while searching. */}
+    <Stack gap="xl" className={styles.page}>
+      {status === 'unauthenticated' ? <WelcomeBanner /> : null}
+
+      {/* Latest discussions by default; matching companies only while searching. */}
       {companyQuery ? (
         <Stack component="section" gap="sm" maw={760} aria-labelledby="home-company-results">
           <Title order={2} size="var(--ship-text-xl)" id="home-company-results">
@@ -36,26 +42,28 @@ export function HomePage() {
           <CompanyDemoResults query={companyQuery} />
         </Stack>
       ) : (
-        <Stack component="section" gap="sm" maw={760} aria-labelledby="home-latest-posts">
-          <Title order={2} size="var(--ship-text-xl)" id="home-latest-posts">
+        <section aria-labelledby="home-latest-posts">
+          <h2 id="home-latest-posts" className={styles.sectionTitle}>
             Latest discussions
-          </Title>
-          <PostDemoResults query="" />
-        </Stack>
+          </h2>
+          <div className={styles.columns}>
+            {HOME_TAG_COLUMNS.map((tag) => (
+              <TagDiscussionColumn key={tag} tag={tag} />
+            ))}
+          </div>
+        </section>
       )}
 
-      <StarterPage
-        title="Home"
-        description="This page will provide the company and discussion search entry points, along with personalized recommendations for signed-in users."
-        sourceFile="src/features/home/pages/HomePage.tsx"
-      >
-        <SessionPanel
-          status={status}
-          email={user?.email}
-          hasCompletedAssessment={user?.hasCompletedAssessment}
-        />
-        <DevIndex />
-      </StarterPage>
+      <Paper component="section" p="lg" withBorder aria-label="Developer tools">
+        <Stack gap="lg">
+          <SessionPanel
+            status={status}
+            email={user?.email}
+            hasCompletedAssessment={user?.hasCompletedAssessment}
+          />
+          <DevIndex />
+        </Stack>
+      </Paper>
     </Stack>
   );
 }
@@ -168,7 +176,7 @@ const EXAMPLE_COMPANY_ID = 'northwind-systems';
 /** Company pages read the demo JSON data, which has its own ids. */
 const EXAMPLE_DEMO_COMPANY_ID = 'lumen-harbor-analytics';
 const EXAMPLE_COMPANY_ID_B = 'harborline-financial';
-const EXAMPLE_POST_ID = 'post_seed_1';
+const EXAMPLE_POST_ID = 'post_0001';
 
 function DevIndex() {
   return (

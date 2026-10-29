@@ -8,23 +8,25 @@
 import { createTheme, type MantineColorsTuple } from '@mantine/core';
 
 const ship: MantineColorsTuple = [
-  '#f2f6f0',
-  '#dfe9db',
-  '#bfd3b9',
-  '#9cbb98',
-  '#78a07c',
-  '#4f7f62',
-  '#315d48',
-  '#2b513f',
-  '#264536',
-  '#22372e',
+  '#f6f2fd',
+  '#efe9fc',
+  '#e4dbfa',
+  '#c9b6f4',
+  '#9f7de6',
+  '#7a4fdb',
+  '#5b2acf',
+  '#4b20b0',
+  '#402093',
+  '#2a1566',
 ];
 
 export const theme = createTheme({
   primaryColor: 'ship',
-  // Shade 6 (#315d48) passes WCAG AA for white text at body size.
+  // Shade 6 (#5b2acf) passes WCAG AA for white text at body size.
   primaryShade: { light: 6, dark: 5 },
   colors: { ship },
+  // Default text colour: the design's ink, not Mantine's pure black.
+  black: '#1c1538',
   fontFamily: 'var(--ship-font-body)',
   fontFamilyMonospace: 'var(--ship-font-mono)',
   defaultRadius: 'md',

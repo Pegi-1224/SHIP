@@ -7,7 +7,8 @@
 .main {
   flex: 1;
   width: 100%;
-  max-width: var(--ship-content-max);
+  /* Padding sits inside the max width, so add it back to keep the content column exact. */
+  max-width: calc(var(--ship-content-max) + 2 * var(--ship-space-4));
   margin: 0 auto;
   padding: var(--ship-space-5) var(--ship-space-4);
 }

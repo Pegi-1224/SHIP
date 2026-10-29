@@ -39,7 +39,11 @@ export const queryKeys = {
     all: ['demo-search'] as const,
     companies: (q: string) => ['demo-search', 'companies', q] as const,
     company: (companyId: string) => ['demo-search', 'company', companyId] as const,
-    posts: (q: string) => ['demo-search', 'posts', q] as const,
+    postsByTag: (tag: string, limit: number) =>
+      ['demo-search', 'posts', 'tag', tag, limit] as const,
+    feed: (q: string, tag: string) => ['demo-search', 'posts', 'feed', q, tag] as const,
+    post: (postId: string) => ['demo-search', 'post', postId] as const,
+    comments: (postId: string) => ['demo-search', 'post', postId, 'comments'] as const,
   },
   home: {
     all: ['home'] as const,

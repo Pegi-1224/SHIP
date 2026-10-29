@@ -1,0 +1,293 @@
+/*
+ * Discussions page. Measurements follow the UI design's 1440px frame: a
+ * 241.2px tag sidebar at x = 158.4, then the feed from x = 428.4 to 1278
+ * (849.6px wide), each post card 198px tall when its text fits one line.
+ */
+
+.layout {
+  display: grid;
+  grid-template-columns: 241.2px minmax(0, 1fr);
+  gap: 28.8px;
+  align-items: start;
+  /* The layout already pads 24px; the design wants 36px above the sidebar. */
+  margin-top: 12px;
+}
+
+/* --- Tag sidebar ---------------------------------------------------------- */
+
+.tagNav {
+  position: sticky;
+  top: calc(var(--ship-header-height) + 24px);
+  min-height: 360px;
+  padding: 21.6px 25.2px;
+  border-radius: 18px;
+  background-color: var(--ship-color-surface);
+  box-shadow: var(--ship-shadow-panel);
+}
+
+.tagNavTitle {
+  margin: 0;
+  color: var(--ship-color-text-muted);
+  font-size: 12.96px;
+  font-weight: 700;
+  line-height: 1.4;
+}
+
+.tagNavList {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 10.8px;
+  margin: 14.4px 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.tagNavItem {
+  height: 28.8px;
+  padding: 0 10.8px;
+  border: 0;
+  border-radius: 14.4px;
+  background-color: transparent;
+  color: var(--ship-color-text);
+  font: inherit;
+  font-size: 12.96px;
+  font-weight: 700;
+  line-height: 1.4;
+  text-align: left;
+  cursor: pointer;
+}
+
+.tagNavItem:hover {
+  background-color: var(--ship-tag-bg);
+}
+
+.tagNavItem.selected {
+  background-color: var(--ship-primary-600);
+  color: #ffffff;
+}
+
+/* --- Feed heading ---------------------------------------------------------- */
+
+.feedHeader {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: var(--ship-space-4);
+  /* The title sits 7.2px higher than the sidebar in the design. */
+  margin-top: -7.2px;
+  margin-bottom: 13.4px;
+}
+
+.feedTitle {
+  margin: 0;
+  color: var(--ship-color-text);
+  font-family: var(--ship-font-display);
+  font-size: 36px;
+  font-weight: 700;
+  line-height: 1.4;
+  overflow-wrap: anywhere;
+}
+
+.feedCount {
+  margin: 7.6px 0 0;
+  color: var(--ship-color-text-muted);
+  font-size: 13.32px;
+  line-height: 1.4;
+}
+
+.newPost {
+  display: inline-flex;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+  width: 136.8px;
+  height: 46.8px;
+  margin-bottom: 4.6px;
+  border-radius: 10.8px;
+  background-color: var(--ship-accent-blue);
+  color: #ffffff;
+  font-size: 13.68px;
+  font-weight: 700;
+  line-height: 1;
+  text-decoration: none;
+  transition:
+    background-color 120ms ease,
+    transform 120ms ease;
+}
+
+.newPost:hover {
+  background-color: var(--ship-accent-blue-hover);
+}
+
+.newPost:active {
+  background-color: var(--ship-accent-blue-pressed);
+  transform: translateY(1px);
+}
+
+.feed {
+  display: flex;
+  flex-direction: column;
+  gap: 14.4px;
+}
+
+.notice {
+  margin: 0;
+  padding: var(--ship-space-6);
+  border-radius: 18px;
+  background-color: var(--ship-color-surface);
+  color: var(--ship-color-text-muted);
+  text-align: center;
+}
+
+/* --- Post card ------------------------------------------------------------ */
+
+.card {
+  position: relative;
+  min-height: 198px;
+  padding: 21.6px 21.6px 25.2px;
+  border-radius: 18px;
+  background-color: var(--ship-color-surface);
+  box-shadow: var(--ship-shadow-panel);
+  transition: box-shadow 120ms ease;
+}
+
+.card:hover {
+  box-shadow: 0 12px 32px 0 #24104f1a;
+}
+
+.cardMeta {
+  display: flex;
+  align-items: center;
+  gap: 7.2px;
+}
+
+.cardByline {
+  color: var(--ship-color-text-muted);
+  font-size: 12.96px;
+  line-height: 1.4;
+}
+
+.cardTitle {
+  margin: 14.4px 0 0;
+  color: var(--ship-color-text);
+  font-size: 18px;
+  font-weight: 800;
+  line-height: 1.4;
+}
+
+.cardLink {
+  color: inherit;
+  text-decoration: none;
+}
+
+/* Stretch the title link over the whole card. */
+.cardLink::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: 18px;
+}
+
+.card:hover .cardLink {
+  color: var(--ship-primary-600);
+}
+
+.cardContent {
+  margin: 11px 0 0;
+  overflow: hidden;
+  color: var(--ship-color-text-muted);
+  font-size: 14.76px;
+  line-height: 1.4;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.cardFooter {
+  display: flex;
+  align-items: center;
+  gap: var(--ship-space-4);
+  margin-top: 11.4px;
+}
+
+.cardTags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 7.2px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.cardTag {
+  /* Above the stretched title link, so a tag click filters instead of opening the post. */
+  position: relative;
+  z-index: 1;
+  height: 28.8px;
+  padding: 0 14.4px;
+  border: 0;
+  border-radius: 14.4px;
+  background-color: var(--ship-tag-bg);
+  color: var(--ship-tag-fg);
+  font: inherit;
+  font-size: 12.6px;
+  font-weight: 700;
+  line-height: 1.4;
+  text-align: center;
+  cursor: pointer;
+}
+
+.cardTag:hover {
+  background-color: var(--ship-primary-200);
+}
+
+.cardComments {
+  flex-shrink: 0;
+  margin-left: auto;
+  color: var(--ship-color-text-muted);
+  font-size: 11.88px;
+  line-height: 1.4;
+}
+
+@media (max-width: 900px) {
+  .layout {
+    grid-template-columns: minmax(0, 1fr);
+    margin-top: 0;
+  }
+
+  /* The sidebar becomes a row of tags above the feed. */
+  .tagNav {
+    position: static;
+    min-height: 0;
+  }
+
+  .tagNavList {
+    flex-direction: row;
+    flex-wrap: wrap;
+  }
+
+  .feedHeader {
+    margin-top: 0;
+  }
+}
+
+@media (max-width: 480px) {
+  .feedHeader {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .feedTitle {
+    font-size: 28px;
+  }
+
+  .cardFooter {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--ship-space-2);
+  }
+
+  .cardComments {
+    margin-left: 0;
+  }
+}

@@ -1,0 +1,7 @@
+.avatar {
+  display: inline-block;
+  flex-shrink: 0;
+  border-radius: 50%;
+  object-fit: cover;
+  background-color: var(--ship-primary-100);
+}

@@ -159,6 +159,54 @@ export interface PostRecord {
   status: PostStatus;
 }
 
+/**
+ * One record in `src/mocks/data/users.json`: how an author appears next to
+ * their posts. Keyed by the same opaque `authorRefId` the posts use.
+ */
+export interface DemoUserRecord {
+  refId: string;
+  /** Chosen username. `null` means the user posts as "Anonymous". */
+  displayName: string | null;
+  /** `null` means no picture; the UI draws a gradient instead. */
+  avatarUrl: string | null;
+  /** Shown under the name on a post, e.g. "Tech · Seattle". Either may be `null`. */
+  industry: string | null;
+  location: string | null;
+}
+
+/** The author as the API sends it with a post or comment. */
+export interface PostAuthor {
+  /** Opaque, stable per author; seeds the fallback avatar gradient. */
+  refId: string;
+  /** Always set: "Anonymous" when the user has no display name. */
+  displayName: string;
+  avatarUrl: string | null;
+  industry: string | null;
+  location: string | null;
+}
+
+/** A post as `GET /demo/posts` returns it: the record plus its author. */
+export interface PostPreview extends PostRecord {
+  author: PostAuthor;
+}
+
+/** One record in `src/mocks/data/comments.json`. */
+export interface CommentRecord {
+  id: string;
+  postId: string;
+  /** Same opaque handle as on posts. */
+  authorRefId: string;
+  content: string;
+  createdAt: IsoDateString;
+  /** Only `published` comments are returned or counted. */
+  status: PostStatus;
+}
+
+/** A comment as `GET /demo/posts/:id/comments` returns it. */
+export interface CommentPreview extends CommentRecord {
+  author: PostAuthor;
+}
+
 /** One search hit plus how well it matched, so results can be ranked. */
 export interface SearchHit<T> {
   item: T;

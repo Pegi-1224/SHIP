@@ -1,0 +1,232 @@
+/*
+ * Discussion page. Measurements follow the UI design's 1440px frame: a
+ * 734.4px column centred on the page (x = 352.8), "‹ Back" 46.8px below the
+ * header, then the post, the comment composer and the comments.
+ * Every box grows with its text; only widths and spacing are fixed.
+ */
+
+.page {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  max-width: 734.4px;
+  /* The layout already pads 24px; the design wants 46.8px above "Back". */
+  margin: 22.8px auto 0;
+}
+
+.page > a:first-child {
+  align-self: flex-start;
+  margin-bottom: 31.4px;
+}
+
+/* --- Post ----------------------------------------------------------------- */
+
+.post {
+  padding: 28.8px 28.8px 32.4px;
+  border-radius: 18px;
+  background-color: var(--ship-color-surface);
+}
+
+.author {
+  display: flex;
+  align-items: center;
+  gap: 14.4px;
+}
+
+.authorName {
+  margin: 0;
+  color: var(--ship-color-text);
+  font-size: 15.12px;
+  font-weight: 800;
+  line-height: 1.4;
+}
+
+.authorDetails {
+  margin: 3.4px 0 0;
+  color: var(--ship-color-text-muted);
+  font-size: 12.6px;
+  line-height: 1.4;
+}
+
+.title {
+  margin: 18px 0 0;
+  color: var(--ship-color-text);
+  font-family: var(--ship-font-display);
+  font-size: 30.6px;
+  font-weight: 700;
+  line-height: 1.15;
+  overflow-wrap: anywhere;
+}
+
+.body {
+  margin: 20px 0 0;
+  color: var(--ship-color-text);
+  font-size: 15.12px;
+  line-height: 1.65;
+  white-space: pre-line;
+  overflow-wrap: anywhere;
+}
+
+.tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10.8px;
+  margin: 24px 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.tag {
+  display: inline-flex;
+  align-items: center;
+  height: 28.8px;
+  padding: 0 14.4px;
+  border-radius: 18px;
+  background-color: var(--ship-tag-bg);
+  color: var(--ship-tag-fg);
+  font-size: 11.16px;
+  font-weight: 700;
+  line-height: 1.4;
+  text-decoration: none;
+}
+
+.tag:hover {
+  background-color: var(--ship-primary-200);
+}
+
+/* --- Comment composer ---------------------------------------------------- */
+
+.composer {
+  display: flex;
+  align-items: center;
+  gap: 14.4px;
+  min-height: 64.8px;
+  margin-top: 25.2px;
+  padding: 10.8px 10.8px 10.8px 18px;
+  border-radius: 18px;
+  background-color: var(--ship-color-surface);
+  box-shadow: var(--ship-shadow-card);
+}
+
+.composerInput,
+.composerHint {
+  flex: 1;
+  min-width: 0;
+  color: var(--ship-color-text);
+  font: inherit;
+  font-size: 14.4px;
+  line-height: 1.4;
+}
+
+.composerInput {
+  height: 43.2px;
+  border: 0;
+  background: transparent;
+  outline: none;
+}
+
+.composerInput::placeholder,
+.composerHint {
+  color: var(--ship-color-text-muted);
+}
+
+/* The composer box shows focus, since the input itself has no border. */
+.composer:focus-within {
+  box-shadow:
+    var(--ship-shadow-card),
+    0 0 0 2px var(--ship-primary-300);
+}
+
+.composerButton {
+  display: inline-flex;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+  min-width: 75.6px;
+  height: 43.2px;
+  padding: 10px;
+  border: 0;
+  border-radius: 10.8px;
+  background-color: var(--ship-primary-600);
+  color: #ffffff;
+  font: inherit;
+  font-size: 14.4px;
+  font-weight: 700;
+  line-height: 1;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.composerButton:hover {
+  background-color: var(--ship-primary-700);
+}
+
+.composerButton:disabled {
+  background-color: var(--ship-primary-300);
+  cursor: not-allowed;
+}
+
+.composerError {
+  margin: 8px 0 0 18px;
+  color: var(--ship-color-danger);
+  font-size: var(--ship-text-sm);
+}
+
+/* --- Comments ------------------------------------------------------------ */
+
+.comments {
+  display: flex;
+  flex-direction: column;
+  gap: 14.4px;
+  margin-top: 28.8px;
+}
+
+.commentsTitle {
+  margin: 0;
+  color: var(--ship-color-text);
+  font-size: 17.64px;
+  font-weight: 800;
+  line-height: 1.4;
+}
+
+.comment {
+  padding: 21.6px 21.6px 18.8px;
+  border-radius: 18px;
+  background-color: var(--ship-color-surface);
+  box-shadow: var(--ship-shadow-card);
+}
+
+.commentMeta {
+  display: flex;
+  align-items: center;
+  gap: 10.8px;
+}
+
+.commentByline {
+  color: var(--ship-color-text-muted);
+  font-size: 11.52px;
+  line-height: 1.4;
+}
+
+.commentText {
+  margin: 14.4px 0 0;
+  color: var(--ship-color-text);
+  font-size: 14.4px;
+  line-height: 1.6;
+  white-space: pre-line;
+  overflow-wrap: anywhere;
+}
+
+@media (max-width: 640px) {
+  .page {
+    margin-top: 0;
+  }
+
+  .post {
+    padding: var(--ship-space-5);
+  }
+
+  .title {
+    font-size: 24px;
+  }
+}

@@ -11,12 +11,9 @@ import type {
   Tag,
   UpdatePostInput,
 } from '@/shared/types/discussion';
-import type { PostRecord, SearchHit } from '@/shared/types/demoSearch';
+import type { CommentPreview, PostPreview, SearchHit } from '@/shared/types/demoSearch';
 
-export function fetchPosts(
-  params: PostListParams,
-  signal?: AbortSignal,
-): Promise<Paginated<Post>> {
+export function fetchPosts(params: PostListParams, signal?: AbortSignal): Promise<Paginated<Post>> {
   return api.get<Paginated<Post>>('/discussions/posts', {
     query: {
       tag: params.tag,
@@ -49,21 +46,14 @@ export function deletePost(postId: string): Promise<void> {
   return api.delete<void>(`/discussions/posts/${encodeURIComponent(postId)}`);
 }
 
-export function fetchComments(
-  postId: string,
-  signal?: AbortSignal,
-): Promise<Paginated<Comment>> {
-  return api.get<Paginated<Comment>>(
-    `/discussions/posts/${encodeURIComponent(postId)}/comments`,
-    { signal },
-  );
+export function fetchComments(postId: string, signal?: AbortSignal): Promise<Paginated<Comment>> {
+  return api.get<Paginated<Comment>>(`/discussions/posts/${encodeURIComponent(postId)}/comments`, {
+    signal,
+  });
 }
 
 export function createComment(postId: string, input: CreateCommentInput): Promise<Comment> {
-  return api.post<Comment>(
-    `/discussions/posts/${encodeURIComponent(postId)}/comments`,
-    input,
-  );
+  return api.post<Comment>(`/discussions/posts/${encodeURIComponent(postId)}/comments`, input);
 }
 
 export function deleteComment(commentId: string): Promise<void> {
@@ -84,10 +74,43 @@ export function markPostRead(postId: string): Promise<void> {
   return api.post<void>('/me/read-posts', { postId });
 }
 
-/** Demo discussion search over `src/mocks/data/posts.json`. */
-export function searchDemoPosts(
-  q: string,
+export interface DemoPostFeedParams {
+  q?: string;
+  tag?: string;
+  limit?: number;
+}
+
+/** The Discussions feed: newest first, or best match first while searching. */
+export function fetchDemoPostFeed(
+  { q, tag, limit }: DemoPostFeedParams,
   signal?: AbortSignal,
-): Promise<{ items: SearchHit<PostRecord>[]; total: number }> {
-  return api.get('/demo/posts', { query: { q }, auth: false, signal });
+): Promise<{ items: SearchHit<PostPreview>[]; total: number }> {
+  return api.get('/demo/posts', { query: { q, tag, limit }, auth: false, signal });
+}
+
+/** The newest `limit` published demo posts carrying `tag`. Public, so it works on Home. */
+export function fetchLatestDemoPostsByTag(
+  tag: string,
+  limit: number,
+  signal?: AbortSignal,
+): Promise<{ items: SearchHit<PostPreview>[]; total: number }> {
+  return api.get('/demo/posts', { query: { tag, limit }, auth: false, signal });
+}
+
+/** One published demo post with its author, for the discussion page. */
+export function fetchDemoPost(postId: string, signal?: AbortSignal): Promise<PostPreview> {
+  return api.get(`/demo/posts/${encodeURIComponent(postId)}`, { auth: false, signal });
+}
+
+/** A demo post's comments, newest first. */
+export function fetchDemoComments(
+  postId: string,
+  signal?: AbortSignal,
+): Promise<{ items: CommentPreview[]; total: number }> {
+  return api.get(`/demo/posts/${encodeURIComponent(postId)}/comments`, { auth: false, signal });
+}
+
+/** Adds a comment as the signed-in user. */
+export function createDemoComment(postId: string, content: string): Promise<CommentPreview> {
+  return api.post(`/demo/posts/${encodeURIComponent(postId)}/comments`, { content });
 }

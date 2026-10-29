@@ -18,33 +18,8 @@
   max-width: var(--ship-header-max);
   min-height: var(--ship-header-height);
   margin: 0 auto;
-  padding: 0 44px;
-}
-
-.brand {
-  display: inline-flex;
-  align-items: center;
-  gap: var(--ship-space-2);
-  text-decoration: none;
-  color: var(--ship-color-text);
-  flex-shrink: 0;
-}
-
-.brandMark {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 32px;
-  height: 32px;
-  border-radius: var(--ship-radius-sm);
-  background-color: var(--ship-primary-600);
-  color: #ffffff;
-  font-weight: 800;
-}
-
-.brandName {
-  font-weight: 800;
-  letter-spacing: 0.06em;
+  /* No logo any more: the search field itself starts at x=144. */
+  padding: 0 44px 0 144px;
 }
 
 .search {
@@ -131,10 +106,6 @@
     flex-wrap: wrap;
     row-gap: var(--ship-space-2);
     padding-block: var(--ship-space-2);
-  }
-
-  .brandName {
-    display: none;
   }
 
   .search {

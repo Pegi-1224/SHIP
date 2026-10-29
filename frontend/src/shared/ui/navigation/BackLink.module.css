@@ -1,0 +1,14 @@
+.back {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--ship-primary-600);
+  font-size: 13.68px;
+  font-weight: 700;
+  line-height: 1.4;
+  text-decoration: none;
+}
+
+.back:hover {
+  text-decoration: underline;
+}

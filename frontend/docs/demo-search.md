@@ -5,7 +5,8 @@ Two live search bars backed by JSON data files:
 | Page | Search bar | Results component | Endpoint | Data file |
 |---|---|---|---|---|
 | Home (`/`) | Header, "Search companies" | `features/companies/components/CompanyDemoResults.tsx` | `GET /demo/companies?q=` | `src/mocks/data/companies.json` |
-| Discussions (`/discussions`) | Header, "Search discussions" | `features/discussions/components/PostDemoResults.tsx` | `GET /demo/posts?q=` | `src/mocks/data/posts.json` |
+| Home (`/`), no `q` | none | `features/discussions/components/TagDiscussionColumn.tsx` | `GET /demo/posts?tag=&limit=2` | `src/mocks/data/posts.json` + `users.json` |
+| Discussions (`/discussions`) | Header, "Search discussions", plus the TAGS sidebar (`?tag=`) | `features/discussions/pages/DiscussionsPage.tsx` | `GET /demo/posts?q=&tag=&limit=100` | `src/mocks/data/posts.json` + `users.json` |
 
 The search bar lives in the header (`src/app/layouts/Header.tsx`). On these two pages it keeps
 the URL's `?q=` up to date as you type (250 ms debounce, replacing the history entry), and the
@@ -127,3 +128,53 @@ and does not stop repeat reports.
 | `status` | `published` / `hidden` / `removed` | Moderation: hide a post without deleting it |
 
 Worth adding later if needed: `likeCount`, `reportCount` (for moderation), and `language`.
+
+`GET /demo/posts` also accepts `tag` (exact tag, newest first) and `limit` (max 20). Home uses
+`?tag=pay%20gap&limit=2` and so on for its three "Latest discussions" columns. Each returned post
+carries an `author`, joined from `src/mocks/data/users.json` by `authorRefId`:
+
+```
+"author": { "refId": "anon_7f3k2a", "displayName": "Alice_122", "avatarUrl": "/demo-avatars/alice_122.svg" }
+```
+
+## User record (`users.json`)
+
+| Field | Type | Notes |
+|---|---|---|
+| `refId` | string | Same opaque handle as `authorRefId` on posts |
+| `displayName` | string or `null` | Chosen username; `null` is sent as `"Anonymous"` |
+| `avatarUrl` | string or `null` | `null` draws a gradient that is fixed per `refId` (`shared/utils/avatar.ts`) |
+| `industry`, `location` | string or `null` | Shown under the name on a post, e.g. "Tech · Seattle" |
+
+The demo pictures live in `public/demo-avatars/`. The real backend must never send an email or
+real name here.
+
+## Discussion page (`/discussions/:postId`)
+
+Rendered by `features/discussions/pages/PostDetailPage.tsx`. Home preview cards and Discussions
+search results link to it.
+
+```
+GET  /demo/posts/:id            -> <post with author and commentCount>   (404 unless published)
+GET  /demo/posts/:id/comments   -> { "items": [<comment with author>], "total": 6 }   newest first
+POST /demo/posts/:id/comments   { "content": "..." }  -> 201 <comment with author>   needs sign-in
+```
+
+Comments live in `src/mocks/data/comments.json`:
+
+| Field | Type | Notes |
+|---|---|---|
+| `id`, `postId` | string | |
+| `authorRefId` | string | Opaque handle, joined with `users.json` like posts |
+| `content` | string | 1-2000 characters after trimming (422 with `fieldErrors.content` otherwise) |
+| `createdAt` | ISO datetime | |
+| `status` | `published` / `hidden` / `removed` | Only `published` comments are returned or counted |
+
+`commentCount` on a post is **computed from the published comments**, so the "6 comments" heading
+always matches the number of comment boxes. A real backend may store it as a counter, but must keep
+it in sync. New comments are posted under the viewer's anonymous handle and shown as "Anonymous".
+The mock keeps them in memory only, so they disappear on reload.
+
+"‹ Back" uses the browser history (`shared/ui/navigation/BackLink.tsx`): nothing is stored. When
+the page was opened directly (no earlier page in the tab), it goes to `/discussions` instead.
+

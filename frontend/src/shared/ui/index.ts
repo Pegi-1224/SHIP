@@ -28,12 +28,17 @@ export { SourceLabel } from './data-display/SourceLabel';
 export { MetricCard } from './data-display/MetricCard';
 export { DataPoint, MissingDataNotice, ThresholdNotice } from './data-display/DataPoint';
 export { AnonymousAvatar } from './data-display/AnonymousAvatar';
+export { UserAvatar } from './data-display/UserAvatar';
+export type { UserAvatarProps } from './data-display/UserAvatar';
 export { TagPill } from './data-display/TagPill';
 export { CompanyCard } from './data-display/CompanyCard';
 export { PostCard } from './data-display/PostCard';
 
 export { SearchInput } from './inputs/SearchInput';
 export { TagSelector } from './inputs/TagSelector';
+
+export { BackLink } from './navigation/BackLink';
+export type { BackLinkProps } from './navigation/BackLink';
 
 export { PageHeader } from './layout/PageHeader';
 export { DemoDataBanner } from './layout/DemoDataBanner';

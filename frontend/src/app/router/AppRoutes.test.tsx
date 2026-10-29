@@ -26,7 +26,7 @@ function renderAt(route: string) {
 }
 
 const ALL_ROUTES: Array<[string, string]> = [
-  ['/', 'Home'],
+  ['/', 'Latest discussions'],
   ['/login', 'Login'],
   ['/assessment', 'Assessment'],
   ['/profile', 'Profile'],
@@ -35,21 +35,26 @@ const ALL_ROUTES: Array<[string, string]> = [
   ['/companies/lumen-harbor-analytics', 'Lumen Harbor Analytics'],
   ['/companies/northwind-systems/submit', 'Company Data Submission'],
   ['/compare', 'Compare Companies'],
-  ['/discussions', 'Discussions'],
+  ['/discussions', 'Latest discussions'],
   ['/discussions/new', 'New Post'],
-  ['/discussions/post_seed_1', 'Post Detail'],
+  ['/discussions/post_0001', 'How did you negotiate your first offer?'],
   ['/discussions/post_seed_1/edit', 'Edit Post'],
   ['/messages', 'Messages'],
   ['/messages/conv_1', 'Conversation'],
 ];
 
 describe('every route, for a signed-out visitor with no assessment', () => {
-  it.each(ALL_ROUTES)('renders its own starter page at %s (expects "%s")', async (route, heading) => {
-    renderAt(route);
+  it.each(ALL_ROUTES)(
+    'renders its own starter page at %s (expects "%s")',
+    async (route, heading) => {
+      renderAt(route);
 
-    // `hidden: true` skips a visibility check per element, too slow on big pages (company page).
-    expect(await screen.findByRole('heading', { name: heading, hidden: true })).toBeInTheDocument();
-  });
+      // `hidden: true` skips a visibility check per element, too slow on big pages (company page).
+      expect(
+        await screen.findByRole('heading', { name: heading, hidden: true }),
+      ).toBeInTheDocument();
+    },
+  );
 
   it('renders the not-found page for an unknown path', async () => {
     renderAt('/this-route-does-not-exist');
@@ -82,6 +87,6 @@ describe('RedirectIfAuthenticated (still applied to /login)', () => {
 
     renderAt('/login');
 
-    expect(await screen.findByRole('heading', { name: 'Home' })).toBeInTheDocument();
+    expect(await screen.findByRole('heading', { name: 'Latest discussions' })).toBeInTheDocument();
   });
 });
