@@ -1,0 +1,37 @@
+{
+  "name": "backend",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "description": "SHIP backend - HTTP + JSON API for the SHIP frontend.",
+  "engines": {
+    "node": ">=22.13.0",
+    "npm": ">=10.0.0"
+  },
+  "scripts": {
+    "dev": "tsx watch src/server.ts",
+    "build": "prisma generate && tsc -p tsconfig.json",
+    "start": "node dist/server.js",
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "db:up": "docker start ship-postgres",
+    "db:generate": "prisma generate",
+    "db:migrate": "prisma migrate dev",
+    "db:studio": "prisma studio"
+  },
+  "dependencies": {
+    "@fastify/cors": "^11.4.0",
+    "@prisma/adapter-pg": "^7.10.1",
+    "@prisma/client": "^7.10.1",
+    "dotenv": "^18.0.9",
+    "fastify": "^5.12.8",
+    "pg": "^8.23.1",
+    "zod": "^4.6.7"
+  },
+  "devDependencies": {
+    "@types/node": "^24.0.0",
+    "@types/pg": "^8.23.1",
+    "prisma": "^7.10.1",
+    "tsx": "^4.23.15",
+    "typescript": "~5.9.3"
+  }
+}

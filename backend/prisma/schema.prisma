@@ -1,0 +1,20 @@
+// Database schema. Only the minimum needed to prove the pipeline works.
+// Real fields are added feature by feature, following frontend/src/shared/types/.
+
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model Company {
+  id        String   @id @default(cuid())
+  name      String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([name])
+}

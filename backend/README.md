@@ -1,8 +1,10 @@
 # SHIP — backend
 
-**Status: not started.** This folder is reserved for the backend. There is no server code,
-dependency file or database yet. Today the frontend talks to a **mock backend that runs inside the
-browser** (Mock Service Worker, in `frontend/src/mocks/`).
+**Status: skeleton only.** The server starts, connects to PostgreSQL and answers
+`GET /api/health`. No business endpoints exist yet. Today the frontend still talks to a **mock
+backend that runs inside the browser** (Mock Service Worker, in `frontend/src/mocks/`).
+
+**Stack:** Node.js · TypeScript · Fastify · Prisma · PostgreSQL · Zod.
 
 ---
 
@@ -71,4 +73,52 @@ The frontend's checks are only for user convenience. The backend must enforce:
 
 ## 7. Running the backend
 
-Not possible yet. Add the install/run commands here once the backend exists.
+Requires Node ≥ 22.13 and Docker.
+
+**1. Start PostgreSQL** (first time only; port 5433 avoids clashing with a local Postgres on 5432):
+
+```bash
+docker run -d --name ship-postgres -e POSTGRES_USER=ship -e POSTGRES_PASSWORD=ship_dev_password -e POSTGRES_DB=ship -p 5433:5432 -v ship_pgdata:/var/lib/postgresql/data postgres:16
+```
+
+Later sessions: `npm run db:up` (runs `docker start ship-postgres`).
+
+**2. Install, configure, migrate, run:**
+
+```bash
+cd backend
+npm install
+cp .env.example .env
+npx prisma migrate dev
+npm run dev
+```
+
+**3. Check it works:** `curl http://localhost:3000/api/health` returns `{"ok":true}`.
+
+### Scripts
+
+| Command | Does |
+| --- | --- |
+| `npm run dev` | Start with auto-reload |
+| `npm run typecheck` | Type-check without emitting |
+| `npm run build` / `npm start` | Compile to `dist/` and run it |
+| `npm run db:migrate` | Create/apply a migration after editing `prisma/schema.prisma` |
+| `npm run db:studio` | Browse the database in the browser |
+
+### Layout
+
+```
+backend/
+├── prisma/schema.prisma    database schema (only a minimal Company table so far)
+├── prisma.config.ts        Prisma CLI config (reads DATABASE_URL)
+└── src/
+    ├── server.ts           entry point
+    ├── app.ts              builds the Fastify app; every route lives under /api
+    ├── config.ts           validated environment variables
+    ├── db/client.ts        the Prisma client
+    ├── lib/errors.ts       error format { code, message, fieldErrors }
+    ├── lib/pagination.ts   page/pageSize parsing and { items, page, pageSize, total, hasMore }
+    └── routes/             one file per area (only health.ts so far)
+```
+
+`src/generated/` (the Prisma client) is created by `prisma generate` and is not committed.
