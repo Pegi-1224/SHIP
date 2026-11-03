@@ -1,0 +1,994 @@
+[
+  {
+    "id": "cmt_0001_01",
+    "postId": "post_0001",
+    "authorRefId": "anon_q91mzd",
+    "content": "I asked for the top of the posted range and got it. The worst they can say is no.",
+    "createdAt": "2026-10-20T00:17:08Z",
+    "status": "published"
+  },
+  {
+    "id": "cmt_0001_02",
+    "postId": "post_0001",
+    "authorRefId": "anon_m8x1ke",
+    "content": "Write down your accomplishments with numbers before the conversation. It made me so much calmer.",
+    "createdAt": "2026-10-21T10:14:17Z",
+    "status": "published"
+  },
+  {
+    "id": "cmt_0001_03",
+    "postId": "post_0001",
+    "authorRefId": "anon_t6w2qe",
+    "content": "Levels.fyi and our salary channel at work helped me see I was 15% under for my level.",
+    "createdAt": "2026-10-22T20:11:25Z",
+    "status": "published"
+  },
+  {
+    "id": "cmt_0001_04",
+    "postId": "post_0001",
+    "authorRefId": "anon_q91mzd",
+    "content": "HR adjusted my pay after I showed them the data. It took two months but it happened.",
+    "createdAt": "2026-10-24T06:08:34Z",
+    "status": "published"
+  },
+  {
+    "id": "cmt_0001_05",
+    "postId": "post_0001",
+    "authorRefId": "anon_m8x1ke",
+    "content": "Same thing happened to me. I brought a peer comparison and asked what the plan was to close it.",
+    "createdAt": "2026-10-25T16:05:42Z",
+    "status": "published"
+  },
+  {
+    "id": "cmt_0001_06",
+    "postId": "post_0001",
+    "authorRefId": "anon_t6w2qe",
+    "content": "Practice the ask out loud with a friend. Saying the number the first time is the hardest part.",
+    "createdAt": "2026-10-27T02:02:51Z",
+    "status": "published"
+  },
+  {
+    "id": "cmt_0002_01",
+    "postId": "post_0002",
+    "authorRefId": "anon_c4p8wn",
+    "content": "Talk to HR in writing. If your manager pressures you to come back early, that needs to be on record.",
+    "createdAt": "2026-10-18T18:26:52Z",
+    "status": "published"
+  },
+  {
+    "id": "cmt_0002_02",
+    "postId": "post_0002",
+    "authorRefId": "anon_r5t0ya",
+    "content": "I told my manager at 13 weeks, right after my review. In hindsight I would do the same.",
+    "createdAt": "2026-10-20T03:48:45Z",
+    "status": "published"
+  },
+  {
+    "id": "cmt_0002_03",
+    "postId": "post_0002",
+    "authorRefId": "anon_z1k9fs",
+    "content": "Ask whether your bonus is prorated for leave. Mine was and nobody mentioned it.",
+    "createdAt": "2026-10-21T13:10:37Z",
+    "status": "published"
+  },
+  {
+    "id": "cmt_0002_04",
+    "postId": "post_0002",
+    "authorRefId": "anon_c4p8wn",
+    "content": "Find another parent at work. Having someone who had done it before helped me the most.",
+    "createdAt": "2026-10-22T22:32:30Z",
+    "status": "published"
+  },
+  {
+    "id": "cmt_0002_05",
+    "postId": "post_0002",
+    "authorRefId": "anon_r5t0ya",
+    "content": "The first two weeks back were hard. It gets easier, I promise.",
+    "createdAt": "2026-10-24T07:54:22Z",
+    "status": "published"
+  },
+  {
+    "id": "cmt_0002_06",
+    "postId": "post_0002",
+    "authorRefId": "anon_z1k9fs",
+    "content": "A keep-in-touch day before returning helped me catch up without the pressure of a full week.",
+    "createdAt": "2026-10-25T17:16:15Z",
+    "status": "published"
+  },
+  {
+    "id": "cmt_0002_07",
+    "postId": "post_0002",
+    "authorRefId": "anon_c4p8wn",
+    "content": "Our ERG put together a return-to-work guide. Maybe your company has one too?",
+    "createdAt": "2026-10-27T02:38:07Z",
+    "status": "published"
+  },
+  {
+    "id": "cmt_0003_01",
+    "postId": "post_0003",
+    "authorRefId": "anon_h2v6rt",
+    "content": "If they say the budget is fixed, ask about a signing bonus or an earlier review date instead.",
+    "createdAt": "2026-10-18T10:08:00Z",
+    "status": "published"
+  },
+  {
+    "id": "cmt_0003_02",
+    "postId": "post_0003",
+    "authorRefId": "anon_b3n7lu",
+    "content": "Thank you for posting this. I had no idea how common it was until I read these replies.",
+    "createdAt": "2026-10-20T22:36:00Z",
+    "status": "published"
+  },
+  {
+    "id": "cmt_0003_03",
+    "postId": "post_0003",
+    "authorRefId": "anon_p4d8vg",
+    "content": "Our company publishes bands internally now. It did not fix everything but it helped.",
+    "createdAt": "2026-10-23T11:04:00Z",
+    "status": "published"
+  },
+  {
+    "id": "cmt_0003_04",
+    "postId": "post_0003",
+    "authorRefId": "anon_h2v6rt",
+    "content": "Get everything in writing, including any promise about a review in six months.",
+    "createdAt": "2026-10-25T23:32:00Z",
+    "status": "published"
+  },
+  {
+    "id": "cmt_0004_01",
+    "postId": "post_0004",
+    "authorRefId": "anon_m8x1ke",
+    "content": "Great question. Saving this thread.",
+    "createdAt": "2026-10-16T09:30:00Z",
+    "status": "published"
+  },
+  {
+    "id": "cmt_0004_02",
+    "postId": "post_0004",
+    "authorRefId": "anon_t6w2qe",
+    "content": "I made the switch two years ago. The hardest part was letting go of doing the work myself.",
+    "createdAt": "2026-10-18T03:00:00Z",
+    "status": "published"
+  },
+  {
+    "id": "cmt_0004_03",
+    "postId": "post_0004",
+    "authorRefId": "anon_q91mzd",
+    "content": "Ask for a mentor who has already done the role. Mine saved me from a lot of mistakes.",
+    "createdAt": "2026-10-19T20:30:00Z",
+    "status": "published"
+  },
+  {
+    "id": "cmt_0004_04",
+    "postId": "post_0004",
+    "authorRefId": "anon_m8x1ke",
+    "content": "I set one-year goals instead of five. Things change too fast to plan further than that.",
+    "createdAt": "2026-10-21T14:00:00Z",
+    "status": "published"
+  },
+  {
+    "id": "cmt_0004_05",
+    "postId": "post_0004",
+    "authorRefId": "anon_t6w2qe",
+    "content": "Writing a brag document every Friday made my promotion case so much easier.",
+    "createdAt": "2026-10-23T07:30:00Z",
+    "status": "published"
+  },
+  {
+    "id": "cmt_0004_06",
+    "postId": "post_0004",
+    "authorRefId": "anon_q91mzd",
+    "content": "You can always go back. Plenty of people move between IC and management.",
+    "createdAt": "2026-10-25T01:00:00Z",
+    "status": "published"
+  },
+  {
+    "id": "cmt_0004_07",
+    "postId": "post_0004",
+    "authorRefId": "anon_m8x1ke",
+    "content": "Talk to your skip-level about what the next level actually looks like. It is often not written down.",
+    "createdAt": "2026-10-26T18:30:00Z",
+    "status": "published"
+  },
+  {
+    "id": "cmt_0005_01",
+    "postId": "post_0005",
+    "authorRefId": "anon_r5t0ya",
+    "content": "I set one-year goals instead of five. Things change too fast to plan further than that.",
+    "createdAt": "2026-10-17T19:40:00Z",
+    "status": "published"
+  },
+  {
+    "id": "cmt_0005_02",
+    "postId": "post_0005",
+    "authorRefId": "anon_z1k9fs",
+    "content": "Writing a brag document every Friday made my promotion case so much easier.",
+    "createdAt": "2026-10-23T03:50:00Z",
+    "status": "published"
+  },
+  {
+    "id": "cmt_0006_01",
+    "postId": "post_0006",
+    "authorRefId": "anon_b3n7lu",
+    "content": "Talk to your skip-level about what the next level actually looks like. It is often not written down.",
+    "createdAt": "2026-10-14T21:11:15Z",
+    "status": "published"
+  },
+  {
+    "id": "cmt_0006_02",
+    "postId": "post_0006",
+    "authorRefId": "anon_p4d8vg",
+    "content": "A part-time program worked for me because my employer paid half. Worth asking about.",
+    "createdAt": "2026-10-19T10:07:30Z",
+    "status": "published"
+  },
+  {
+    "id": "cmt_0006_03",
+    "postId": "post_0006",
+    "authorRefId": "anon_c4p8wn",
+    "content": "I would focus on skills, not titles. The titles followed for me.",
+    "createdAt": "2026-10-23T23:03:45Z",
+    "status": "published"
+  },
+  {
+    "id": "cmt_0007_01",
+    "postId": "post_0007",
+    "authorRefId": "anon_t6w2qe",
+    "content": "Thank you for sharing. You are not alone in this.",
+    "createdAt": "2026-10-11T15:12:51Z",
+    "status": "published"
+  },
+  {
+    "id": "cmt_0007_02",
+    "postId": "post_0007",
+    "authorRefId": "anon_7f3k2a",
+    "content": "Our benefits survey actually led to changes last year, so it is worth filling in.",
+    "createdAt": "2026-10-14T10:40:42Z",
+    "status": "published"
+  },
+  {
+    "id": "cmt_0007_03",
+    "postId": "post_0007",
+    "authorRefId": "anon_m8x1ke",
+    "content": "My best manager asked how I was doing and actually waited for the answer.",
+    "createdAt": "2026-10-17T06:08:34Z",
+    "status": "published"
+  },
+  {
+    "id": "cmt_0007_04",
+    "postId": "post_0007",
+    "authorRefId": "anon_t6w2qe",
+    "content": "Document everything with dates. It matters if you ever need to escalate.",
+    "createdAt": "2026-10-20T01:36:25Z",
+    "status": "published"
+  },
+  {
+    "id": "cmt_0007_05",
+    "postId": "post_0007",
+    "authorRefId": "anon_7f3k2a",
+    "content": "Our four-day pilot went well. The key was cutting meetings, not squeezing five days into four.",
+    "createdAt": "2026-10-22T21:04:17Z",
+    "status": "published"
+  },
+  {
+    "id": "cmt_0007_06",
+    "postId": "post_0007",
+    "authorRefId": "anon_m8x1ke",
+    "content": "The childcare stipend at my company is $400 a month. Still not enough, but better than nothing.",
+    "createdAt": "2026-10-25T16:32:08Z",
+    "status": "published"
+  },
+  {
+    "id": "cmt_0008_01",
+    "postId": "post_0008",
+    "authorRefId": "anon_z1k9fs",
+    "content": "Write down your accomplishments with numbers before the conversation. It made me so much calmer.",
+    "createdAt": "2026-10-10T03:20:00Z",
+    "status": "published"
+  },
+  {
+    "id": "cmt_0008_02",
+    "postId": "post_0008",
+    "authorRefId": "anon_q91mzd",
+    "content": "Levels.fyi and our salary channel at work helped me see I was 15% under for my level.",
+    "createdAt": "2026-10-14T17:30:00Z",
+    "status": "published"
+  },
+  {
+    "id": "cmt_0008_03",
+    "postId": "post_0008",
+    "authorRefId": "anon_m8x1ke",
+    "content": "HR adjusted my pay after I showed them the data. It took two months but it happened.",
+    "createdAt": "2026-10-19T07:40:00Z",
+    "status": "published"
+  },
+  {
+    "id": "cmt_0008_04",
+    "postId": "post_0008",
+    "authorRefId": "anon_z1k9fs",
+    "content": "Same thing happened to me. I brought a peer comparison and asked what the plan was to close it.",
+    "createdAt": "2026-10-23T21:50:00Z",
+    "status": "published"
+  },
+  {
+    "id": "cmt_0009_01",
+    "postId": "post_0009",
+    "authorRefId": "anon_p4d8vg",
+    "content": "I told my manager at 13 weeks, right after my review. In hindsight I would do the same.",
+    "createdAt": "2026-10-08T20:07:30Z",
+    "status": "published"
+  },
+  {
+    "id": "cmt_0009_02",
+    "postId": "post_0009",
+    "authorRefId": "anon_c4p8wn",
+    "content": "Ask whether your bonus is prorated for leave. Mine was and nobody mentioned it.",
+    "createdAt": "2026-10-15T09:25:00Z",
+    "status": "published"
+  },
+  {
+    "id": "cmt_0009_03",
+    "postId": "post_0009",
+    "authorRefId": "anon_b3n7lu",
+    "content": "Find another parent at work. Having someone who had done it before helped me the most.",
+    "createdAt": "2026-10-21T22:42:30Z",
+    "status": "published"
+  },
+  {
+    "id": "cmt_0010_01",
+    "postId": "post_0010",
+    "authorRefId": "anon_7f3k2a",
+    "content": "I would focus on skills, not titles. The titles followed for me.",
+    "createdAt": "2026-10-05T11:32:00Z",
+    "status": "published"
+  },
+  {
+    "id": "cmt_0010_02",
+    "postId": "post_0010",
+    "authorRefId": "anon_m8x1ke",
+    "content": "Remote helped me too. My work was judged by results, not by who stayed latest.",
+    "createdAt": "2026-10-11T05:39:00Z",
+    "status": "published"
+  },
+  {
+    "id": "cmt_0010_03",
+    "postId": "post_0010",
+    "authorRefId": "anon_t6w2qe",
+    "content": "Great question. Saving this thread.",
+    "createdAt": "2026-10-16T23:46:00Z",
+    "status": "published"
+  },
+  {
+    "id": "cmt_0010_04",
+    "postId": "post_0010",
+    "authorRefId": "anon_7f3k2a",
+    "content": "I made the switch two years ago. The hardest part was letting go of doing the work myself.",
+    "createdAt": "2026-10-22T17:53:00Z",
+    "status": "published"
+  },
+  {
+    "id": "cmt_0011_01",
+    "postId": "post_0011",
+    "authorRefId": "anon_q91mzd",
+    "content": "I asked for the top of the posted range and got it. The worst they can say is no.",
+    "createdAt": "2026-10-28T09:31:15Z",
+    "status": "published"
+  },
+  {
+    "id": "cmt_0011_02",
+    "postId": "post_0011",
+    "authorRefId": "anon_m8x1ke",
+    "content": "Write down your accomplishments with numbers before the conversation. It made me so much calmer.",
+    "createdAt": "2026-10-28T09:52:30Z",
+    "status": "published"
+  },
+  {
+    "id": "cmt_0011_03",
+    "postId": "post_0011",
+    "authorRefId": "anon_z1k9fs",
+    "content": "Levels.fyi and our salary channel at work helped me see I was 15% under for my level.",
+    "createdAt": "2026-10-28T10:13:45Z",
+    "status": "published"
+  },
+  {
+    "id": "cmt_0011_04",
+    "postId": "post_0011",
+    "authorRefId": "anon_q91mzd",
+    "content": "HR adjusted my pay after I showed them the data. It took two months but it happened.",
+    "createdAt": "2026-10-28T10:35:00Z",
+    "status": "published"
+  },
+  {
+    "id": "cmt_0011_05",
+    "postId": "post_0011",
+    "authorRefId": "anon_m8x1ke",
+    "content": "Same thing happened to me. I brought a peer comparison and asked what the plan was to close it.",
+    "createdAt": "2026-10-28T10:56:15Z",
+    "status": "published"
+  },
+  {
+    "id": "cmt_0011_06",
+    "postId": "post_0011",
+    "authorRefId": "anon_z1k9fs",
+    "content": "Practice the ask out loud with a friend. Saying the number the first time is the hardest part.",
+    "createdAt": "2026-10-28T11:17:30Z",
+    "status": "published"
+  },
+  {
+    "id": "cmt_0011_07",
+    "postId": "post_0011",
+    "authorRefId": "anon_q91mzd",
+    "content": "If they say the budget is fixed, ask about a signing bonus or an earlier review date instead.",
+    "createdAt": "2026-10-28T11:38:45Z",
+    "status": "published"
+  },
+  {
+    "id": "cmt_0012_01",
+    "postId": "post_0012",
+    "authorRefId": "anon_h2v6rt",
+    "content": "HR adjusted my pay after I showed them the data. It took two months but it happened.",
+    "createdAt": "2026-10-28T05:26:15Z",
+    "status": "published"
+  },
+  {
+    "id": "cmt_0012_02",
+    "postId": "post_0012",
+    "authorRefId": "anon_b3n7lu",
+    "content": "Same thing happened to me. I brought a peer comparison and asked what the plan was to close it.",
+    "createdAt": "2026-10-28T06:22:30Z",
+    "status": "published"
+  },
+  {
+    "id": "cmt_0012_03",
+    "postId": "post_0012",
+    "authorRefId": "anon_p4d8vg",
+    "content": "Practice the ask out loud with a friend. Saying the number the first time is the hardest part.",
+    "createdAt": "2026-10-28T07:18:45Z",
+    "status": "published"
+  },
+  {
+    "id": "cmt_0012_04",
+    "postId": "post_0012",
+    "authorRefId": "anon_h2v6rt",
+    "content": "If they say the budget is fixed, ask about a signing bonus or an earlier review date instead.",
+    "createdAt": "2026-10-28T08:15:00Z",
+    "status": "published"
+  },
+  {
+    "id": "cmt_0012_05",
+    "postId": "post_0012",
+    "authorRefId": "anon_b3n7lu",
+    "content": "Thank you for posting this. I had no idea how common it was until I read these replies.",
+    "createdAt": "2026-10-28T09:11:15Z",
+    "status": "published"
+  },
+  {
+    "id": "cmt_0012_06",
+    "postId": "post_0012",
+    "authorRefId": "anon_p4d8vg",
+    "content": "Our company publishes bands internally now. It did not fix everything but it helped.",
+    "createdAt": "2026-10-28T10:07:30Z",
+    "status": "published"
+  },
+  {
+    "id": "cmt_0012_07",
+    "postId": "post_0012",
+    "authorRefId": "anon_h2v6rt",
+    "content": "Get everything in writing, including any promise about a review in six months.",
+    "createdAt": "2026-10-28T11:03:45Z",
+    "status": "published"
+  },
+  {
+    "id": "cmt_0013_01",
+    "postId": "post_0013",
+    "authorRefId": "anon_h2v6rt",
+    "content": "Find another parent at work. Having someone who had done it before helped me the most.",
+    "createdAt": "2026-10-28T08:40:00Z",
+    "status": "published"
+  },
+  {
+    "id": "cmt_0013_02",
+    "postId": "post_0013",
+    "authorRefId": "anon_b3n7lu",
+    "content": "The first two weeks back were hard. It gets easier, I promise.",
+    "createdAt": "2026-10-28T09:20:00Z",
+    "status": "published"
+  },
+  {
+    "id": "cmt_0013_03",
+    "postId": "post_0013",
+    "authorRefId": "anon_7f3k2a",
+    "content": "A keep-in-touch day before returning helped me catch up without the pressure of a full week.",
+    "createdAt": "2026-10-28T10:00:00Z",
+    "status": "published"
+  },
+  {
+    "id": "cmt_0013_04",
+    "postId": "post_0013",
+    "authorRefId": "anon_h2v6rt",
+    "content": "Our ERG put together a return-to-work guide. Maybe your company has one too?",
+    "createdAt": "2026-10-28T10:40:00Z",
+    "status": "published"
+  },
+  {
+    "id": "cmt_0013_05",
+    "postId": "post_0013",
+    "authorRefId": "anon_b3n7lu",
+    "content": "My manager let me start back at three days a week for the first month. It made a huge difference.",
+    "createdAt": "2026-10-28T11:20:00Z",
+    "status": "published"
+  },
+  {
+    "id": "cmt_0014_01",
+    "postId": "post_0014",
+    "authorRefId": "anon_r5t0ya",
+    "content": "Our ERG put together a return-to-work guide. Maybe your company has one too?",
+    "createdAt": "2026-10-28T00:12:51Z",
+    "status": "published"
+  },
+  {
+    "id": "cmt_0014_02",
+    "postId": "post_0014",
+    "authorRefId": "anon_z1k9fs",
+    "content": "My manager let me start back at three days a week for the first month. It made a huge difference.",
+    "createdAt": "2026-10-28T02:10:42Z",
+    "status": "published"
+  },
+  {
+    "id": "cmt_0014_03",
+    "postId": "post_0014",
+    "authorRefId": "anon_q91mzd",
+    "content": "Book the lactation room for the whole week ahead. Otherwise it fills up.",
+    "createdAt": "2026-10-28T04:08:34Z",
+    "status": "published"
+  },
+  {
+    "id": "cmt_0014_04",
+    "postId": "post_0014",
+    "authorRefId": "anon_r5t0ya",
+    "content": "I took the full 16 weeks and nobody said a word. Check what your policy says, not what people hint.",
+    "createdAt": "2026-10-28T06:06:25Z",
+    "status": "published"
+  },
+  {
+    "id": "cmt_0014_05",
+    "postId": "post_0014",
+    "authorRefId": "anon_z1k9fs",
+    "content": "Talk to HR in writing. If your manager pressures you to come back early, that needs to be on record.",
+    "createdAt": "2026-10-28T08:04:17Z",
+    "status": "published"
+  },
+  {
+    "id": "cmt_0014_06",
+    "postId": "post_0014",
+    "authorRefId": "anon_q91mzd",
+    "content": "I told my manager at 13 weeks, right after my review. In hindsight I would do the same.",
+    "createdAt": "2026-10-28T10:02:08Z",
+    "status": "published"
+  },
+  {
+    "id": "cmt_0015_01",
+    "postId": "post_0015",
+    "authorRefId": "anon_r5t0ya",
+    "content": "I set one-year goals instead of five. Things change too fast to plan further than that.",
+    "createdAt": "2026-10-28T09:10:00Z",
+    "status": "published"
+  },
+  {
+    "id": "cmt_0015_02",
+    "postId": "post_0015",
+    "authorRefId": "anon_p4d8vg",
+    "content": "Writing a brag document every Friday made my promotion case so much easier.",
+    "createdAt": "2026-10-28T10:35:00Z",
+    "status": "published"
+  },
+  {
+    "id": "cmt_0016_01",
+    "postId": "post_0016",
+    "authorRefId": "anon_b3n7lu",
+    "content": "Talk to your skip-level about what the next level actually looks like. It is often not written down.",
+    "createdAt": "2026-10-27T20:51:25Z",
+    "status": "published"
+  },
+  {
+    "id": "cmt_0016_02",
+    "postId": "post_0016",
+    "authorRefId": "anon_7f3k2a",
+    "content": "A part-time program worked for me because my employer paid half. Worth asking about.",
+    "createdAt": "2026-10-27T23:22:51Z",
+    "status": "published"
+  },
+  {
+    "id": "cmt_0016_03",
+    "postId": "post_0016",
+    "authorRefId": "anon_h2v6rt",
+    "content": "I would focus on skills, not titles. The titles followed for me.",
+    "createdAt": "2026-10-28T01:54:17Z",
+    "status": "published"
+  },
+  {
+    "id": "cmt_0016_04",
+    "postId": "post_0016",
+    "authorRefId": "anon_b3n7lu",
+    "content": "Remote helped me too. My work was judged by results, not by who stayed latest.",
+    "createdAt": "2026-10-28T04:25:42Z",
+    "status": "published"
+  },
+  {
+    "id": "cmt_0016_05",
+    "postId": "post_0016",
+    "authorRefId": "anon_7f3k2a",
+    "content": "Great question. Saving this thread.",
+    "createdAt": "2026-10-28T06:57:08Z",
+    "status": "published"
+  },
+  {
+    "id": "cmt_0016_06",
+    "postId": "post_0016",
+    "authorRefId": "anon_h2v6rt",
+    "content": "I made the switch two years ago. The hardest part was letting go of doing the work myself.",
+    "createdAt": "2026-10-28T09:28:34Z",
+    "status": "published"
+  },
+  {
+    "id": "cmt_0017_01",
+    "postId": "post_0017",
+    "authorRefId": "anon_z1k9fs",
+    "content": "Our company publishes bands internally now. It did not fix everything but it helped.",
+    "createdAt": "2026-10-27T00:32:00Z",
+    "status": "published"
+  },
+  {
+    "id": "cmt_0017_02",
+    "postId": "post_0017",
+    "authorRefId": "anon_q91mzd",
+    "content": "Get everything in writing, including any promise about a review in six months.",
+    "createdAt": "2026-10-27T09:24:00Z",
+    "status": "published"
+  },
+  {
+    "id": "cmt_0017_03",
+    "postId": "post_0017",
+    "authorRefId": "anon_r5t0ya",
+    "content": "I asked for the top of the posted range and got it. The worst they can say is no.",
+    "createdAt": "2026-10-27T18:16:00Z",
+    "status": "published"
+  },
+  {
+    "id": "cmt_0017_04",
+    "postId": "post_0017",
+    "authorRefId": "anon_z1k9fs",
+    "content": "Write down your accomplishments with numbers before the conversation. It made me so much calmer.",
+    "createdAt": "2026-10-28T03:08:00Z",
+    "status": "published"
+  },
+  {
+    "id": "cmt_0018_01",
+    "postId": "post_0018",
+    "authorRefId": "anon_p4d8vg",
+    "content": "Book the lactation room for the whole week ahead. Otherwise it fills up.",
+    "createdAt": "2026-10-26T20:52:00Z",
+    "status": "published"
+  },
+  {
+    "id": "cmt_0018_02",
+    "postId": "post_0018",
+    "authorRefId": "anon_c4p8wn",
+    "content": "I took the full 16 weeks and nobody said a word. Check what your policy says, not what people hint.",
+    "createdAt": "2026-10-27T06:39:00Z",
+    "status": "published"
+  },
+  {
+    "id": "cmt_0018_03",
+    "postId": "post_0018",
+    "authorRefId": "anon_b3n7lu",
+    "content": "Talk to HR in writing. If your manager pressures you to come back early, that needs to be on record.",
+    "createdAt": "2026-10-27T16:26:00Z",
+    "status": "published"
+  },
+  {
+    "id": "cmt_0018_04",
+    "postId": "post_0018",
+    "authorRefId": "anon_p4d8vg",
+    "content": "I told my manager at 13 weeks, right after my review. In hindsight I would do the same.",
+    "createdAt": "2026-10-28T02:13:00Z",
+    "status": "published"
+  },
+  {
+    "id": "cmt_0019_01",
+    "postId": "post_0019",
+    "authorRefId": "anon_7f3k2a",
+    "content": "You can always go back. Plenty of people move between IC and management.",
+    "createdAt": "2026-10-26T05:34:17Z",
+    "status": "published"
+  },
+  {
+    "id": "cmt_0019_02",
+    "postId": "post_0019",
+    "authorRefId": "anon_m8x1ke",
+    "content": "Talk to your skip-level about what the next level actually looks like. It is often not written down.",
+    "createdAt": "2026-10-26T14:38:34Z",
+    "status": "published"
+  },
+  {
+    "id": "cmt_0019_03",
+    "postId": "post_0019",
+    "authorRefId": "anon_t6w2qe",
+    "content": "A part-time program worked for me because my employer paid half. Worth asking about.",
+    "createdAt": "2026-10-26T23:42:51Z",
+    "status": "published"
+  },
+  {
+    "id": "cmt_0019_04",
+    "postId": "post_0019",
+    "authorRefId": "anon_7f3k2a",
+    "content": "I would focus on skills, not titles. The titles followed for me.",
+    "createdAt": "2026-10-27T08:47:08Z",
+    "status": "published"
+  },
+  {
+    "id": "cmt_0019_05",
+    "postId": "post_0019",
+    "authorRefId": "anon_m8x1ke",
+    "content": "Remote helped me too. My work was judged by results, not by who stayed latest.",
+    "createdAt": "2026-10-27T17:51:25Z",
+    "status": "published"
+  },
+  {
+    "id": "cmt_0019_06",
+    "postId": "post_0019",
+    "authorRefId": "anon_t6w2qe",
+    "content": "Great question. Saving this thread.",
+    "createdAt": "2026-10-28T02:55:42Z",
+    "status": "published"
+  },
+  {
+    "id": "cmt_0020_01",
+    "postId": "post_0020",
+    "authorRefId": "anon_c4p8wn",
+    "content": "I left a job over this and do not regret it. Your well-being comes first.",
+    "createdAt": "2026-10-25T20:53:20Z",
+    "status": "published"
+  },
+  {
+    "id": "cmt_0020_02",
+    "postId": "post_0020",
+    "authorRefId": "anon_r5t0ya",
+    "content": "Thank you for sharing. You are not alone in this.",
+    "createdAt": "2026-10-26T04:46:40Z",
+    "status": "published"
+  },
+  {
+    "id": "cmt_0020_03",
+    "postId": "post_0020",
+    "authorRefId": "anon_z1k9fs",
+    "content": "Our benefits survey actually led to changes last year, so it is worth filling in.",
+    "createdAt": "2026-10-26T12:40:00Z",
+    "status": "published"
+  },
+  {
+    "id": "cmt_0020_04",
+    "postId": "post_0020",
+    "authorRefId": "anon_c4p8wn",
+    "content": "My best manager asked how I was doing and actually waited for the answer.",
+    "createdAt": "2026-10-26T20:33:20Z",
+    "status": "published"
+  },
+  {
+    "id": "cmt_0020_05",
+    "postId": "post_0020",
+    "authorRefId": "anon_r5t0ya",
+    "content": "Document everything with dates. It matters if you ever need to escalate.",
+    "createdAt": "2026-10-27T04:26:40Z",
+    "status": "published"
+  },
+  {
+    "id": "cmt_0020_06",
+    "postId": "post_0020",
+    "authorRefId": "anon_z1k9fs",
+    "content": "Our four-day pilot went well. The key was cutting meetings, not squeezing five days into four.",
+    "createdAt": "2026-10-27T12:20:00Z",
+    "status": "published"
+  },
+  {
+    "id": "cmt_0020_07",
+    "postId": "post_0020",
+    "authorRefId": "anon_c4p8wn",
+    "content": "The childcare stipend at my company is $400 a month. Still not enough, but better than nothing.",
+    "createdAt": "2026-10-27T20:13:20Z",
+    "status": "published"
+  },
+  {
+    "id": "cmt_0020_08",
+    "postId": "post_0020",
+    "authorRefId": "anon_r5t0ya",
+    "content": "If HR is not helping, an employment lawyer consultation is often free the first time.",
+    "createdAt": "2026-10-28T04:06:40Z",
+    "status": "published"
+  },
+  {
+    "id": "cmt_0021_01",
+    "postId": "post_0021",
+    "authorRefId": "anon_c4p8wn",
+    "content": "My best manager asked how I was doing and actually waited for the answer.",
+    "createdAt": "2026-10-25T08:51:40Z",
+    "status": "published"
+  },
+  {
+    "id": "cmt_0021_02",
+    "postId": "post_0021",
+    "authorRefId": "anon_r5t0ya",
+    "content": "Document everything with dates. It matters if you ever need to escalate.",
+    "createdAt": "2026-10-25T23:53:20Z",
+    "status": "published"
+  },
+  {
+    "id": "cmt_0021_03",
+    "postId": "post_0021",
+    "authorRefId": "anon_p4d8vg",
+    "content": "Our four-day pilot went well. The key was cutting meetings, not squeezing five days into four.",
+    "createdAt": "2026-10-26T14:55:00Z",
+    "status": "published"
+  },
+  {
+    "id": "cmt_0021_04",
+    "postId": "post_0021",
+    "authorRefId": "anon_c4p8wn",
+    "content": "The childcare stipend at my company is $400 a month. Still not enough, but better than nothing.",
+    "createdAt": "2026-10-27T05:56:40Z",
+    "status": "published"
+  },
+  {
+    "id": "cmt_0021_05",
+    "postId": "post_0021",
+    "authorRefId": "anon_r5t0ya",
+    "content": "If HR is not helping, an employment lawyer consultation is often free the first time.",
+    "createdAt": "2026-10-27T20:58:20Z",
+    "status": "published"
+  },
+  {
+    "id": "cmt_0022_01",
+    "postId": "post_0022",
+    "authorRefId": "anon_h2v6rt",
+    "content": "The childcare stipend at my company is $400 a month. Still not enough, but better than nothing.",
+    "createdAt": "2026-10-24T16:48:45Z",
+    "status": "published"
+  },
+  {
+    "id": "cmt_0022_02",
+    "postId": "post_0022",
+    "authorRefId": "anon_b3n7lu",
+    "content": "If HR is not helping, an employment lawyer consultation is often free the first time.",
+    "createdAt": "2026-10-25T23:12:30Z",
+    "status": "published"
+  },
+  {
+    "id": "cmt_0022_03",
+    "postId": "post_0022",
+    "authorRefId": "anon_7f3k2a",
+    "content": "Retaliation after a report is illegal in most places. Please write down every change you notice.",
+    "createdAt": "2026-10-27T05:36:15Z",
+    "status": "published"
+  },
+  {
+    "id": "cmt_0023_01",
+    "postId": "post_0023",
+    "authorRefId": "anon_m8x1ke",
+    "content": "If they say the budget is fixed, ask about a signing bonus or an earlier review date instead.",
+    "createdAt": "2026-10-23T12:08:34Z",
+    "status": "published"
+  },
+  {
+    "id": "cmt_0023_02",
+    "postId": "post_0023",
+    "authorRefId": "anon_t6w2qe",
+    "content": "Thank you for posting this. I had no idea how common it was until I read these replies.",
+    "createdAt": "2026-10-24T08:07:08Z",
+    "status": "published"
+  },
+  {
+    "id": "cmt_0023_03",
+    "postId": "post_0023",
+    "authorRefId": "anon_q91mzd",
+    "content": "Our company publishes bands internally now. It did not fix everything but it helped.",
+    "createdAt": "2026-10-25T04:05:42Z",
+    "status": "published"
+  },
+  {
+    "id": "cmt_0023_04",
+    "postId": "post_0023",
+    "authorRefId": "anon_m8x1ke",
+    "content": "Get everything in writing, including any promise about a review in six months.",
+    "createdAt": "2026-10-26T00:04:17Z",
+    "status": "published"
+  },
+  {
+    "id": "cmt_0023_05",
+    "postId": "post_0023",
+    "authorRefId": "anon_t6w2qe",
+    "content": "I asked for the top of the posted range and got it. The worst they can say is no.",
+    "createdAt": "2026-10-26T20:02:51Z",
+    "status": "published"
+  },
+  {
+    "id": "cmt_0023_06",
+    "postId": "post_0023",
+    "authorRefId": "anon_q91mzd",
+    "content": "Write down your accomplishments with numbers before the conversation. It made me so much calmer.",
+    "createdAt": "2026-10-27T16:01:25Z",
+    "status": "published"
+  },
+  {
+    "id": "cmt_0024_01",
+    "postId": "post_0024",
+    "authorRefId": "anon_r5t0ya",
+    "content": "Great question. Saving this thread.",
+    "createdAt": "2026-10-23T06:00:00Z",
+    "status": "published"
+  },
+  {
+    "id": "cmt_0024_02",
+    "postId": "post_0024",
+    "authorRefId": "anon_z1k9fs",
+    "content": "I made the switch two years ago. The hardest part was letting go of doing the work myself.",
+    "createdAt": "2026-10-25T00:00:00Z",
+    "status": "published"
+  },
+  {
+    "id": "cmt_0024_03",
+    "postId": "post_0024",
+    "authorRefId": "anon_c4p8wn",
+    "content": "Ask for a mentor who has already done the role. Mine saved me from a lot of mistakes.",
+    "createdAt": "2026-10-26T18:00:00Z",
+    "status": "published"
+  },
+  {
+    "id": "cmt_0025_01",
+    "postId": "post_0025",
+    "authorRefId": "anon_t6w2qe",
+    "content": "I took the full 16 weeks and nobody said a word. Check what your policy says, not what people hint.",
+    "createdAt": "2026-10-21T13:21:25Z",
+    "status": "published"
+  },
+  {
+    "id": "cmt_0025_02",
+    "postId": "post_0025",
+    "authorRefId": "anon_7f3k2a",
+    "content": "Talk to HR in writing. If your manager pressures you to come back early, that needs to be on record.",
+    "createdAt": "2026-10-22T17:07:51Z",
+    "status": "published"
+  },
+  {
+    "id": "cmt_0025_03",
+    "postId": "post_0025",
+    "authorRefId": "anon_m8x1ke",
+    "content": "I told my manager at 13 weeks, right after my review. In hindsight I would do the same.",
+    "createdAt": "2026-10-23T20:54:17Z",
+    "status": "published"
+  },
+  {
+    "id": "cmt_0025_04",
+    "postId": "post_0025",
+    "authorRefId": "anon_t6w2qe",
+    "content": "Ask whether your bonus is prorated for leave. Mine was and nobody mentioned it.",
+    "createdAt": "2026-10-25T00:40:42Z",
+    "status": "published"
+  },
+  {
+    "id": "cmt_0025_05",
+    "postId": "post_0025",
+    "authorRefId": "anon_7f3k2a",
+    "content": "Find another parent at work. Having someone who had done it before helped me the most.",
+    "createdAt": "2026-10-26T04:27:08Z",
+    "status": "published"
+  },
+  {
+    "id": "cmt_0025_06",
+    "postId": "post_0025",
+    "authorRefId": "anon_m8x1ke",
+    "content": "The first two weeks back were hard. It gets easier, I promise.",
+    "createdAt": "2026-10-27T08:13:34Z",
+    "status": "published"
+  }
+]

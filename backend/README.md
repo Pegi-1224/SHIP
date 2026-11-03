@@ -1,8 +1,18 @@
 # SHIP — backend
 
-**Status: skeleton only.** The server starts, connects to PostgreSQL and answers
-`GET /api/health`. No business endpoints exist yet. Today the frontend still talks to a **mock
-backend that runs inside the browser** (Mock Service Worker, in `frontend/src/mocks/`).
+**Status: demo endpoints done, no authentication yet.** The server serves the `/demo/*`
+endpoints the finished frontend pages call (Home, Discussions, post detail, company profile),
+backed by PostgreSQL and seeded from the fictional demo data. The contract endpoints in
+`api-contract.md` (`/companies`, `/discussions/...`, auth, messages, profile…) are not built.
+By default the frontend still uses its in-browser mock backend (`frontend/src/mocks/`).
+
+| Endpoint | Auth | Built |
+| --- | --- | --- |
+| `GET /api/health` | none | ✅ |
+| `GET /api/demo/companies?q=` · `GET /api/demo/companies/:id` | none (must become required) | ✅ |
+| `POST /api/demo/companies/:id/reports` | none | ✅ (privacy threshold applied) |
+| `GET /api/demo/posts?q=&tag=&limit=` · `GET /api/demo/posts/:id` · `GET /api/demo/posts/:id/comments` | none | ✅ |
+| `POST /api/demo/posts/:id/comments` | signed-in user | ⬜ needs authentication first |
 
 **Stack:** Node.js · TypeScript · Fastify · Prisma · PostgreSQL · Zod.
 
@@ -90,10 +100,16 @@ cd backend
 npm install
 cp .env.example .env
 npx prisma migrate dev
+npm run db:seed
 npm run dev
 ```
 
-**3. Check it works:** `curl http://localhost:3000/api/health` returns `{"ok":true}`.
+**3. Check it works:** `curl http://localhost:3000/api/health` returns `{"ok":true}`, and
+`curl http://localhost:3000/api/demo/companies` returns 10 companies.
+
+`npm run db:seed` **deletes and reloads** all demo companies, reports, authors, posts and
+comments from `src/db/seed-data/` (a copy of `frontend/src/mocks/data`). Run it again to reset the
+demo data; never against a database holding real content.
 
 ### Scripts
 
@@ -103,22 +119,38 @@ npm run dev
 | `npm run typecheck` | Type-check without emitting |
 | `npm run build` / `npm start` | Compile to `dist/` and run it |
 | `npm run db:migrate` | Create/apply a migration after editing `prisma/schema.prisma` |
+| `npm run db:seed` | Reset the demo data from `src/db/seed-data/` |
 | `npm run db:studio` | Browse the database in the browser |
 
 ### Layout
 
 ```
 backend/
-├── prisma/schema.prisma    database schema (only a minimal Company table so far)
+├── prisma/schema.prisma    database schema: Company, CompanyReport, Author, Post, Comment
 ├── prisma.config.ts        Prisma CLI config (reads DATABASE_URL)
 └── src/
     ├── server.ts           entry point
     ├── app.ts              builds the Fastify app; every route lives under /api
     ├── config.ts           validated environment variables
     ├── db/client.ts        the Prisma client
-    ├── lib/errors.ts       error format { code, message, fieldErrors }
+    ├── db/seed.ts          loads db/seed-data/*.json (demo data copied from the frontend)
+    ├── lib/errors.ts       error format { code, message, fieldErrors } (matches api-contract.md)
     ├── lib/pagination.ts   page/pageSize parsing and { items, page, pageSize, total, hasMore }
-    └── routes/             one file per area (only health.ts so far)
+    ├── lib/search.ts       demo search ranking (port of the frontend mock; replace with DB search later)
+    ├── lib/privacy.ts      hides numbers until 5 reports exist
+    ├── lib/reports.ts      validates a user report and folds it into the aggregates
+    ├── types/demo.ts       response shapes of /demo/* (mirror frontend/src/shared/types/demoSearch.ts)
+    └── routes/             health.ts, demoCompanies.ts, demoPosts.ts
 ```
+
+### Things to know
+
+- **Report aggregates** live in `Company.userReported` (running averages, as the mock does), with
+  each report also logged in `CompanyReport`. Posting a report locks the company row, so
+  simultaneous reports cannot overwrite each other.
+- **The privacy threshold is enforced on the server:** below 5 reports an area returns its count
+  and `null` for every number. The real values stay in the database.
+- **Search scoring runs in memory** over the whole table. Fine for 10 companies and 26 posts; move
+  it into the database before the data grows.
 
 `src/generated/` (the Prisma client) is created by `prisma generate` and is not committed.

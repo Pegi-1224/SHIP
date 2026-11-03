@@ -1,0 +1,72 @@
+[
+  {
+    "refId": "anon_7f3k2a",
+    "displayName": "Alice_122",
+    "avatarUrl": "/demo-avatars/alice_122.svg",
+    "industry": "Tech",
+    "location": "Seattle"
+  },
+  {
+    "refId": "anon_q91mzd",
+    "displayName": null,
+    "avatarUrl": null,
+    "industry": "Healthcare",
+    "location": "Boston"
+  },
+  {
+    "refId": "anon_c4p8wn",
+    "displayName": "Mei.codes",
+    "avatarUrl": null,
+    "industry": "Finance",
+    "location": "New York"
+  },
+  {
+    "refId": "anon_h2v6rt",
+    "displayName": "Priya_R",
+    "avatarUrl": "/demo-avatars/priya_r.svg",
+    "industry": "Tech",
+    "location": "Austin"
+  },
+  {
+    "refId": "anon_m8x1ke",
+    "displayName": null,
+    "avatarUrl": null,
+    "industry": "Education",
+    "location": null
+  },
+  {
+    "refId": "anon_r5t0ya",
+    "displayName": "Jordan_K",
+    "avatarUrl": null,
+    "industry": "Retail",
+    "location": "Chicago"
+  },
+  {
+    "refId": "anon_b3n7lu",
+    "displayName": "Sofia.M",
+    "avatarUrl": "/demo-avatars/sofia_m.svg",
+    "industry": "Consulting",
+    "location": "San Francisco"
+  },
+  {
+    "refId": "anon_t6w2qe",
+    "displayName": null,
+    "avatarUrl": null,
+    "industry": "Healthcare",
+    "location": "Remote"
+  },
+  {
+    "refId": "anon_z1k9fs",
+    "displayName": "Hana_04",
+    "avatarUrl": null,
+    "industry": "Design",
+    "location": "Los Angeles"
+  },
+  {
+    "refId": "anon_p4d8vg",
+    "displayName": "Rosa_dev",
+    "avatarUrl": null,
+    "industry": "Tech",
+    "location": "Denver"
+  }
+]

@@ -1,5 +1,8 @@
-// Database schema. Only the minimum needed to prove the pipeline works.
-// Real fields are added feature by feature, following frontend/src/shared/types/.
+// Database schema.
+//
+// The demo tables (Company, CompanyReport, Author, Post, Comment) back the frontend's
+// `/demo/*` endpoints. Their shapes mirror frontend/src/shared/types/demoSearch.ts and the
+// JSON files in frontend/src/mocks/data, which `npm run db:seed` loads.
 
 generator client {
   provider = "prisma-client"
@@ -10,11 +13,92 @@ datasource db {
   provider = "postgresql"
 }
 
+enum PostStatus {
+  published
+  hidden
+  removed
+}
+
 model Company {
-  id        String   @id @default(cuid())
-  name      String
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  /// URL slug, e.g. "lumen-harbor-analytics".
+  id                 String   @id
+  name               String
+  website            String
+  intro              String
+  mainFocus          String[]
+  location           String
+  email              String
+  phone              String
+  address            String
+  contacts           Json
+  sources            Json
+  /// When the information was collected (date only).
+  dataCollectedAt    DateTime @db.Date
+  verification       Json
+  salary             Json?
+  promotion          Json?
+  womenSupport       Json?
+  benefits           String[]
+  paidMaternityLeave Json?
+  /// Real running aggregates per area. The API withholds numbers below the privacy
+  /// threshold (5 contributors); they are never sent to the client and hidden there.
+  userReported       Json
+  createdAt          DateTime @default(now())
+  updatedAt          DateTime @updatedAt
+
+  reports CompanyReport[]
 
   @@index([name])
+}
+
+/// One user report, kept as a log next to the running aggregates in Company.userReported.
+/// Deliberately has no user id: reports are anonymous for now.
+model CompanyReport {
+  id        String   @id @default(cuid())
+  companyId String
+  company   Company  @relation(fields: [companyId], references: [id], onDelete: Cascade)
+  area      String
+  data      Json
+  createdAt DateTime @default(now())
+
+  @@index([companyId])
+}
+
+/// How an author appears next to a post or comment, keyed by an opaque anonymous handle.
+/// Posts and comments reference it by value (no foreign key): a signed-in viewer's handle
+/// may not have a row here, and then shows as "Anonymous".
+model Author {
+  refId       String  @id
+  displayName String?
+  avatarUrl   String?
+  industry    String?
+  location    String?
+}
+
+model Post {
+  id                String     @id
+  authorRefId       String
+  title             String
+  content           String
+  tags              String[]
+  relatedCompanyIds String[]
+  createdAt         DateTime
+  updatedAt         DateTime?
+  status            PostStatus @default(published)
+
+  comments Comment[]
+
+  @@index([createdAt])
+}
+
+model Comment {
+  id          String     @id
+  postId      String
+  post        Post       @relation(fields: [postId], references: [id], onDelete: Cascade)
+  authorRefId String
+  content     String
+  createdAt   DateTime
+  status      PostStatus @default(published)
+
+  @@index([postId])
 }
