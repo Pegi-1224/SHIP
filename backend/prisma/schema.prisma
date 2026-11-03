@@ -160,7 +160,7 @@ model User {
   email                  String    @unique
   /// Visible to this user only (spec 3.6). Never returned in a response about someone else.
   displayName            String
-  /// The opaque handle other users see and use to start a conversation. Never a user id.
+  /// The opaque handle other users see next to this user's posts and comments. Never a user id.
   anonymousId            String    @unique
   anonymousLabel         String
   anonymousColor         String
@@ -170,49 +170,10 @@ model User {
   hasSeenInstructions    Boolean   @default(false)
   createdAt              DateTime  @default(now())
 
-  sessions       Session[]
-  assessment     Assessment?
-  readPosts      ReadPost[]
-  submissions    Submission[]
-  conversationsA Conversation[] @relation("ConversationA")
-  conversationsB Conversation[] @relation("ConversationB")
-  messagesSent   Message[]
-}
-
-/// A direct-message thread between exactly two accounts. The pair is stored ordered
-/// (`userAId` < `userBId`), so the unique constraint allows one thread per pair and a
-/// simultaneous "start conversation" from both sides cannot create two. Deleting either
-/// account deletes the thread for both people (spec 3.9).
-model Conversation {
-  id        String   @id @default(cuid())
-  userAId   String
-  userA     User     @relation("ConversationA", fields: [userAId], references: [id], onDelete: Cascade)
-  userBId   String
-  userB     User     @relation("ConversationB", fields: [userBId], references: [id], onDelete: Cascade)
-  createdAt DateTime @default(now())
-
-  messages Message[]
-
-  @@unique([userAId, userBId])
-  @@index([userBId])
-}
-
-model Message {
-  id              String       @id @default(cuid())
-  conversationId  String
-  conversation    Conversation @relation(fields: [conversationId], references: [id], onDelete: Cascade)
-  senderId        String
-  sender          User         @relation(fields: [senderId], references: [id], onDelete: Cascade)
-  body            String
-  createdAt       DateTime     @default(now())
-  /// Idempotency key from the client, reused on every retry. Unique per sender, so a retry
-  /// returns the stored message instead of creating a duplicate.
-  clientMessageId String?
-  /// When the recipient opened the thread. Null until then.
-  readAt          DateTime?
-
-  @@unique([senderId, clientMessageId])
-  @@index([conversationId, createdAt])
+  sessions    Session[]
+  assessment  Assessment?
+  readPosts   ReadPost[]
+  submissions Submission[]
 }
 
 /// One pending sign-in code per email. Only a keyed hash of the code is stored.

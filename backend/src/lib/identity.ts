@@ -7,7 +7,7 @@ import { randomBytes, randomInt } from 'node:crypto'
 import { prisma } from '../db/client.js'
 
 export interface AnonymousIdentity {
-  /** Opaque handle. The only thing a client can use to start a conversation. */
+  /** Opaque handle shown next to a user's posts and comments. Never a user id. */
   id: string
   label: string
   color: string

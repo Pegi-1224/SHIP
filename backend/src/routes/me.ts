@@ -42,12 +42,11 @@ export async function meRoutes(app: FastifyInstance) {
    * partial failure would orphan data.
    *
    * What goes: the user's posts and EVERY comment on them (other people's too, by cascade); their
-   * own comments elsewhere; their company submissions, including superseded history; every
-   * conversation they took part in, for both people, and its messages; their assessment, read
-   * history and all sessions; the pending sign-in code; and the account itself. Aggregates are
-   * computed from live rows on every read, so removing the submissions recomputes them at once -
-   * which can push a metric back below the five-contributor threshold, and it stops being
-   * published immediately (spec 6.6, T2).
+   * own comments elsewhere; their company submissions, including superseded history; their
+   * assessment, read history and all sessions; the pending sign-in code; and the account itself.
+   * Aggregates are computed from live rows on every read, so removing the submissions recomputes
+   * them at once - which can push a metric back below the five-contributor threshold, and it stops
+   * being published immediately (spec 6.6, T2).
    *
    * Deletion is immediate and keeps no tombstone: the contract lists a grace period and abuse
    * tombstones as open questions.
@@ -58,7 +57,7 @@ export async function meRoutes(app: FastifyInstance) {
       await tx.post.deleteMany({ where: { authorRefId: user.anonymousId } })
       await tx.comment.deleteMany({ where: { authorRefId: user.anonymousId } })
       await tx.emailCode.deleteMany({ where: { email: user.email } })
-      // Cascades to Session, Assessment, ReadPost, Submission, Conversation and Message.
+      // Cascades to Session, Assessment, ReadPost and Submission.
       await tx.user.delete({ where: { id: user.id } })
     })
     return reply.status(204).send()

@@ -21,7 +21,6 @@ export const MAX_PRIORITY_ANSWERS = 3
 export const POST_TITLE_MAX = 140
 export const POST_BODY_MAX = 5000
 export const COMMENT_MAX = 2000
-export const MESSAGE_MAX = 2000
 
 export const INDUSTRIES = [
   'Tech',

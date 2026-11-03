@@ -11,7 +11,6 @@ import { discussionRoutes } from './routes/discussions.js'
 import { healthRoutes } from './routes/health.js'
 import { homeRoutes } from './routes/home.js'
 import { meRoutes } from './routes/me.js'
-import { messageRoutes } from './routes/messages.js'
 
 export async function buildApp() {
   const app = Fastify({ logger: true })
@@ -38,7 +37,6 @@ export async function buildApp() {
       await api.register(homeRoutes)
       await api.register(discussionRoutes)
       await api.register(companyRoutes)
-      await api.register(messageRoutes)
       await api.register(demoCompanyRoutes)
       await api.register(demoPostRoutes)
     },

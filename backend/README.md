@@ -2,7 +2,7 @@
 
 **Status: the whole contract is built, except Google sign-in.** Every endpoint in
 `frontend/docs/api-contract.md` exists, is backed by PostgreSQL and is covered by the smoke tests
-(`npm run test:smoke`, 165 checks). The finished frontend pages still call the transitional
+(`npm run test:smoke`, 137 checks). The finished frontend pages still call the transitional
 `/demo/*` endpoints, which stay public until the frontend has a sign-in screen and moves over.
 By default the frontend still uses its in-browser mock backend (`frontend/src/mocks/`).
 
@@ -21,7 +21,6 @@ By default the frontend still uses its in-browser mock backend (`frontend/src/mo
 | | tags: `GET/POST /discussions/tags` | required |
 | Companies | `GET /companies` · `GET /companies/name-suggestions` · `GET /companies/compare` · `POST /companies` · `GET /companies/:id` | required |
 | Submissions | `GET /companies/:id/my-submission` · `POST /companies/:id/submissions` · `PUT /companies/:id/submissions/:sid` | required |
-| Messages | `GET/POST /messages/conversations` · `GET /messages/conversations/:id` · `POST /messages/conversations/:id/messages` | required |
 | **Transitional** | `GET /demo/companies` · `GET /demo/companies/:id` · `POST /demo/companies/:id/reports` · `GET /demo/posts` · `GET /demo/posts/:id` · `GET /demo/posts/:id/comments` | **none** |
 | | `POST /demo/posts/:id/comments` | required |
 
@@ -52,8 +51,8 @@ in the contract), and a real mail provider (see section 4).
 
 ## 3. What the backend must match
 
-- **36 endpoints** (auth, assessment, companies, discussions, home, messages, profile) — full list
-  in `api-contract.md`.
+- **The endpoints** in `api-contract.md` (auth, assessment, companies, discussions, home, profile;
+  its Messages section no longer applies) — full list above.
 - **IDs:** opaque strings. **Dates:** ISO-8601 strings (`"2026-04-10T12:00:00.000Z"`).
 - **Success:** JSON body, or `204` for no body.
 - **Errors:** JSON `{ code, message, fieldErrors }`. `message` is shown to users, so write it as a
@@ -108,8 +107,6 @@ All of these are implemented and tested (`npm run test:smoke`):
 
 - Login, and that users only edit/delete **their own** posts and comments (403), and only their own
   submissions (404, so another person's submission is not revealed to exist)
-- Private messages readable only by the two participants (anyone else gets the same 404 as for a
-  missing thread); sends are idempotent on `clientMessageId`
 - Validation of every request field, with the messages the frontend shows
 - One company submission per account per company in a 90-day window, counted from the first one;
   editing never restarts it, and a newer one past the window supersedes the old row
@@ -117,7 +114,7 @@ All of these are implemented and tested (`npm run test:smoke`):
   5 *distinct accounts* contributed; below that the response carries the count and `null`
 - Banned words on tags and company names, checked here (the frontend's list is only a courtesy)
 - Account deletion (`DELETE /me`) in one transaction: posts and every comment on them, the user's
-  other comments, submissions, both sides of every conversation, assessment, read history,
+  other comments, submissions, assessment, read history,
   sessions and the account; company aggregates then recompute from live rows
 - No response about someone else ever contains an email, name or user id - only the anonymous
   handle, label and colour
@@ -215,14 +212,14 @@ backend/
     ├── lib/search.ts       demo search ranking (port of the frontend mock; replace with DB search later)
     ├── lib/privacy.ts, reports.ts   the /demo/* report form's threshold and running aggregate
     ├── types/demo.ts       response shapes of /demo/* (mirror frontend/src/shared/types/demoSearch.ts)
-    └── routes/             auth, assessment, me, home, discussions, companies, messages,
-                            health, and the transitional demoCompanies / demoPosts
+    └── routes/             auth, assessment, me, home, discussions, companies, health,
+                            and the transitional demoCompanies / demoPosts
 ```
 
 ### Data model
 
 `User` (with its anonymous handle), `EmailCode`, `Session`, `Assessment`, `ReadPost` · `Post`,
-`Comment`, `Tag` · `Company`, `Submission` · `Conversation`, `Message` · and, for the transitional
+`Comment`, `Tag` · `Company`, `Submission` · and, for the transitional
 demo only, `CompanyReport` and `Author`. Posts and comments name their author by anonymous handle
 rather than a foreign key, because seeded demo authors are not accounts; so deleting a `User` row
 directly (instead of through `DELETE /me`) leaves its posts and comments behind.
@@ -240,8 +237,9 @@ directly (instead of through `DELETE /me`) leaves its posts and comments behind.
   `prisma migrate deploy`.
 - **Search is simple.** The demo search ranks in memory over the whole table and `GET /companies`
   filters in memory. Fine for tens of rows; move it into the database before the data grows.
-- **Messages have no abuse controls yet** (rate limits, blocking, reporting), and a thread request
-  returns up to the 1000 most recent messages because the contract has no paging for threads.
+- **Direct messages were removed from the product.** The backend has no `/messages/*` endpoints and
+  no message tables (migration `remove_messages`). `frontend/docs/api-contract.md` and the frontend
+  may still mention them until they are removed there too.
 - **The seeded contributors can be signed into in development** (`rowan@seed.invalid` and the
   others), because `AUTH_DEV_RETURN_CODE` hands the code back. In production the code is only
   mailed, and `.invalid` addresses cannot receive mail.
