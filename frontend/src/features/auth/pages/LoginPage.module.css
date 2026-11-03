@@ -1,0 +1,84 @@
+/*
+ * Login page. A single centred card in the same visual language as the Home banner and the
+ * Discussions panels: white surface, soft violet shadow, large radius, Fraunces headline.
+ */
+
+.page {
+  display: flex;
+  justify-content: center;
+  /* The layout already pads 24px; give the card some air below the header. */
+  margin-top: var(--ship-space-6);
+}
+
+.card {
+  width: 100%;
+  max-width: 460px;
+  padding: 36px 36px 32px;
+  border-radius: 21.6px;
+  background-color: var(--ship-color-surface);
+  box-shadow: var(--ship-shadow-card);
+  /* A thin brand-gradient edge ties the card to the Home banner. */
+  border-top: 4px solid transparent;
+  background-image:
+    linear-gradient(var(--ship-color-surface), var(--ship-color-surface)),
+    var(--ship-gradient-banner);
+  background-origin: border-box;
+  background-clip: padding-box, border-box;
+}
+
+.title {
+  margin: 0;
+  color: var(--ship-color-text);
+  font-family: var(--ship-font-display);
+  font-size: 28.8px;
+  font-weight: 700;
+  line-height: 1.3;
+}
+
+.subtitle {
+  margin: 10px 0 0;
+  color: var(--ship-color-text-muted);
+  font-size: 15px;
+  line-height: 1.5;
+}
+
+.eligibility {
+  margin: 24px 0;
+  padding: 16px;
+  border-radius: 14px;
+  background-color: var(--ship-primary-50);
+}
+
+.eligibilityNote {
+  margin: 8px 0 0 28px;
+  color: var(--ship-color-text-muted);
+  font-size: 12.96px;
+  line-height: 1.4;
+}
+
+.googleError {
+  margin-top: var(--ship-space-3);
+}
+
+.googleError:empty {
+  display: none;
+}
+
+.notice {
+  margin-top: var(--ship-space-5);
+}
+
+.notice:empty {
+  display: none;
+}
+
+@media (max-width: 480px) {
+  .card {
+    padding: 28px 20px 24px;
+    border-radius: 18px;
+  }
+
+  .title {
+    font-size: 24px;
+  }
+}

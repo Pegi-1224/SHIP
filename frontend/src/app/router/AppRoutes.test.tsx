@@ -27,8 +27,8 @@ function renderAt(route: string) {
 
 const ALL_ROUTES: Array<[string, string]> = [
   ['/', 'Latest discussions'],
-  ['/login', 'Login'],
-  ['/assessment', 'Assessment'],
+  ['/login', 'Sign in or create an account'],
+  ['/assessment', 'Personalize your SHIP'],
   ['/profile', 'Profile'],
   ['/companies', 'Company Search'],
   ['/companies/new', 'Add Company'],
@@ -43,8 +43,11 @@ const ALL_ROUTES: Array<[string, string]> = [
   ['/messages/conv_1', 'Conversation'],
 ];
 
+// /assessment is a real page behind RequireAuth, so a signed-out visitor is sent to log in.
+const SIGNED_OUT_ROUTES = ALL_ROUTES.filter(([route]) => route !== '/assessment');
+
 describe('every route, for a signed-out visitor with no assessment', () => {
-  it.each(ALL_ROUTES)(
+  it.each(SIGNED_OUT_ROUTES)(
     'renders its own starter page at %s (expects "%s")',
     async (route, heading) => {
       renderAt(route);
@@ -56,6 +59,14 @@ describe('every route, for a signed-out visitor with no assessment', () => {
     },
   );
 
+  it('sends a signed-out visitor from /assessment to log in, and back afterwards', async () => {
+    renderAt('/assessment');
+
+    expect(
+      await screen.findByRole('heading', { name: 'Sign in or create an account' }),
+    ).toBeInTheDocument();
+  });
+
   it('renders the not-found page for an unknown path', async () => {
     renderAt('/this-route-does-not-exist');
 
@@ -65,8 +76,11 @@ describe('every route, for a signed-out visitor with no assessment', () => {
   });
 });
 
+// A signed-in user is sent away from /login (see the RedirectIfAuthenticated tests below).
+const SIGNED_IN_ROUTES = ALL_ROUTES.filter(([route]) => route !== '/login');
+
 describe('the same routes, for a fully onboarded signed-in user', () => {
-  it.each(ALL_ROUTES)('still renders %s (expects "%s")', async (route, heading) => {
+  it.each(SIGNED_IN_ROUTES)('still renders %s (expects "%s")', async (route, heading) => {
     await signInTestUser();
 
     renderAt(route);
@@ -75,11 +89,13 @@ describe('the same routes, for a fully onboarded signed-in user', () => {
   });
 });
 
-describe('RedirectIfAuthenticated (still applied to /login)', () => {
-  it('lets a signed-out visitor see the Login starter page', async () => {
+describe('RedirectIfAuthenticated (applied to /login)', () => {
+  it('lets a signed-out visitor see the sign-in page', async () => {
     renderAt('/login');
 
-    expect(await screen.findByRole('heading', { name: 'Login' })).toBeInTheDocument();
+    expect(
+      await screen.findByRole('heading', { name: 'Sign in or create an account' }),
+    ).toBeInTheDocument();
   });
 
   it('redirects an already signed-in user away from /login', async () => {

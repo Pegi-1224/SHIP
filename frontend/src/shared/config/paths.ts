@@ -30,6 +30,22 @@ export const routePatterns = {
   notFound: '*',
 } as const;
 
+/**
+ * Where to send a user after sign-in, from a `?redirectTo=` query string, or `null` when there is
+ * nothing safe to use.
+ *
+ * The value comes from the URL, so anyone can put anything in it. Only a path on this site is
+ * accepted: a leading `//` or `/\` would be read as another host (an open redirect), and
+ * `/login` itself would loop.
+ */
+export function readRedirectTarget(search: string): string | null {
+  const target = new URLSearchParams(search).get('redirectTo');
+  if (!target || target.length > 500) return null;
+  if (!target.startsWith('/') || target.startsWith('//') || target.includes('\\')) return null;
+  if (target === routePatterns.login || target.startsWith(`${routePatterns.login}?`)) return null;
+  return target;
+}
+
 export const paths = {
   home: () => '/',
   /** Home with the header's company search applied. */

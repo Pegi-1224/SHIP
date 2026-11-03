@@ -20,7 +20,23 @@ export interface EmailSignInFormProps {
    * the same question twice.
    */
   confirmsEligibility: boolean;
-  onSignedIn: (isNewAccount: boolean) => void;
+  /**
+   * Called after a successful sign-in. Optional because the router already moves a signed-in user
+   * off /login (see `RedirectIfAuthenticated`), so the page normally has nothing to add.
+   */
+  onSignedIn?: (isNewAccount: boolean) => void;
+  /** The server wants the eligibility declaration, which the page's checkbox owns. */
+  onEligibilityError?: (message: string) => void;
+}
+
+/**
+ * A server validation error that names fields is shown next to those fields (the wrong code under
+ * the code boxes, the declaration on the checkbox), so the banner would only repeat it.
+ */
+function bannerError(error: unknown): unknown {
+  const hasFieldErrors =
+    isApiError(error) && error.fieldErrors !== undefined && Object.keys(error.fieldErrors).length > 0;
+  return hasFieldErrors ? null : error;
 }
 
 /**
@@ -29,7 +45,11 @@ export interface EmailSignInFormProps {
  * The typed email survives moving to the code step and surviving a failed
  * verification, so a wrong code never costs the user their input (spec 5.5).
  */
-export function EmailSignInForm({ confirmsEligibility, onSignedIn }: EmailSignInFormProps) {
+export function EmailSignInForm({
+  confirmsEligibility,
+  onSignedIn,
+  onEligibilityError,
+}: EmailSignInFormProps) {
   const [step, setStep] = useState<'email' | 'code'>('email');
   const [email, setEmail] = useState('');
   const [mockCode, setMockCode] = useState<string | null>(null);
@@ -70,9 +90,12 @@ export function EmailSignInForm({ confirmsEligibility, onSignedIn }: EmailSignIn
   const handleEmailSubmit = emailForm.handleSubmit(async (values) => {
     try {
       await sendCode(values.email);
-    } catch {
-      // The mutation holds the error; FormErrorAlert renders it. The typed
-      // email stays in the form so Retry resubmits the same value.
+    } catch (error) {
+      // The mutation holds the error; FormErrorAlert renders anything that is
+      // not tied to a field. The typed email stays in the form so Retry
+      // resubmits the same value.
+      const emailError = isApiError(error) ? error.fieldErrors?.['email']?.[0] : undefined;
+      if (emailError) emailForm.setError('email', { message: emailError });
     }
   });
 
@@ -83,12 +106,15 @@ export function EmailSignInForm({ confirmsEligibility, onSignedIn }: EmailSignIn
         code: values.code,
         confirmsEligibility,
       });
-      onSignedIn(session.isNewAccount);
+      onSignedIn?.(session.isNewAccount);
     } catch (error) {
-      // Map the server's field-level error back onto the code field. The
-      // eligibility error is shown by the page, which owns that checkbox.
-      const codeError = isApiError(error) ? error.fieldErrors?.['code']?.[0] : undefined;
+      // Map the server's field-level errors back onto the fields. The
+      // eligibility error belongs to the page's checkbox, so hand it up.
+      const fieldErrors = isApiError(error) ? error.fieldErrors : undefined;
+      const codeError = fieldErrors?.['code']?.[0];
       if (codeError) codeForm.setError('code', { message: codeError });
+      const eligibilityError = fieldErrors?.['confirmsEligibility']?.[0];
+      if (eligibilityError) onEligibilityError?.(eligibilityError);
     }
   });
 
@@ -108,7 +134,7 @@ export function EmailSignInForm({ confirmsEligibility, onSignedIn }: EmailSignIn
           />
 
           <FormErrorAlert
-            error={requestCode.error}
+            error={bannerError(requestCode.error)}
             onRetry={() => void handleEmailSubmit()}
             isRetrying={requestCode.isPending}
           />
@@ -145,13 +171,14 @@ export function EmailSignInForm({ confirmsEligibility, onSignedIn }: EmailSignIn
           <Alert
             color="ship"
             variant="light"
-            title="Mock code — no email was sent"
+            title="Development code — no email was sent"
             icon={<KeyRound size={18} aria-hidden="true" />}
             role="note"
           >
             <Text size="sm">
-              The mock API generated <Code>{mockCode}</Code>. A real backend would email this and
-              never return it in the response.
+              This server has no mail service, so it returned the code it generated:{' '}
+              <Code>{mockCode}</Code>. A production server emails the code and never returns it in
+              the response.
             </Text>
           </Alert>
         ) : null}
@@ -177,7 +204,7 @@ export function EmailSignInForm({ confirmsEligibility, onSignedIn }: EmailSignIn
         </div>
 
         <FormErrorAlert
-          error={verifyCode.error}
+          error={bannerError(verifyCode.error)}
           onRetry={() => void handleCodeSubmit()}
           isRetrying={verifyCode.isPending}
         />

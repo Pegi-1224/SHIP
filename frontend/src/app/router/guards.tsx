@@ -1,6 +1,6 @@
 import { Navigate, Outlet, useLocation } from 'react-router-dom';
 import { LoadingState } from '@/shared/ui';
-import { paths } from '@/shared/config/paths';
+import { paths, readRedirectTarget } from '@/shared/config/paths';
 import { useAuth } from '@/app/providers/useAuth';
 
 /**
@@ -54,16 +54,25 @@ export function RequireAssessment() {
 /**
  * Keeps signed-in users off /login. Without this, finishing sign-in and then
  * pressing Back would land on a sign-in form for an active session.
+ *
+ * It also decides where a sign-in ends up, so the login page does not have to
+ * navigate on its own (which would race this redirect): someone who has not
+ * finished the assessment, including every new account, goes to it (spec 3.3);
+ * everyone else goes back to where they were headed (`?redirectTo=`), or Home.
  */
 export function RedirectIfAuthenticated() {
-  const { status } = useAuth();
+  const { status, hasCompletedAssessment } = useAuth();
+  const { search } = useLocation();
 
   if (status === 'loading') {
     return <LoadingState label="Checking your session…" />;
   }
 
   if (status === 'authenticated') {
-    return <Navigate to={paths.home()} replace />;
+    const destination = hasCompletedAssessment
+      ? (readRedirectTarget(search) ?? paths.home())
+      : paths.assessment();
+    return <Navigate to={destination} replace />;
   }
 
   return <Outlet />;

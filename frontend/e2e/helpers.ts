@@ -20,12 +20,24 @@ export async function devSignIn(page: Page, email: string): Promise<void> {
 }
 
 /**
- * Completes the assessment using the development-only shortcut on the
- * Assessment starter page, so the `RequireAssessment` guard clears without
- * driving the real five-question form.
+ * Completes the assessment by answering the real five-question form, so the `RequireAssessment`
+ * guard clears. (It used to be a dev-only button on the starter page; the page is now real.)
  */
-export async function devCompleteAssessment(page: Page): Promise<void> {
+export async function completeAssessment(page: Page): Promise<void> {
   await page.goto('/assessment');
-  await page.getByRole('button', { name: 'Dev: complete assessment with default answers' }).click();
-  await expect(page.getByText('Assessment already completed for this session.')).toBeVisible();
+  await expect(page.getByRole('heading', { name: 'Personalize your SHIP' })).toBeVisible();
+
+  const next = page.getByRole('button', { name: 'Next' });
+  await page.getByText('Employed and looking to switch').click();
+  await next.click();
+  await page.getByText('Tech', { exact: true }).click();
+  await next.click();
+  await page.getByText('Pay equity').click();
+  await next.click();
+  await page.getByText('#pay gap').click();
+  await next.click();
+  await page.getByRole('button', { name: 'Finish' }).click();
+
+  // A new account is sent Home once the answers are saved.
+  await expect(page).toHaveURL(/\/$/);
 }

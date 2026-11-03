@@ -1,5 +1,5 @@
 import { expect, test } from '@playwright/test';
-import { devCompleteAssessment, devSignIn } from './helpers';
+import { completeAssessment, devSignIn } from './helpers';
 
 /**
  * End-to-end checks for the starter-page scaffold, in a real browser against
@@ -27,7 +27,7 @@ test.describe('Signed-out visitor', () => {
     await expect(page.getByRole('link', { name: /Company profile \(example/ })).toBeVisible();
 
     await page.goto('/companies');
-    await expect(page.getByRole('heading', { name: 'Login' })).toBeVisible();
+    await expect(page.getByRole('heading', { name: 'Sign in or create an account' })).toBeVisible();
   });
 
   test('an unknown route renders the not-found page', async ({ page }) => {
@@ -45,9 +45,9 @@ test.describe('Dev sign-in and assessment shortcuts', () => {
 
     // Assessment-gated route redirects to /assessment first.
     await page.goto('/companies');
-    await expect(page.getByRole('heading', { name: 'Assessment' })).toBeVisible();
+    await expect(page.getByRole('heading', { name: 'Personalize your SHIP' })).toBeVisible();
 
-    await devCompleteAssessment(page);
+    await completeAssessment(page);
 
     const routesAndHeadings: Array<[string, string]> = [
       ['/companies', 'Company Search'],
@@ -73,7 +73,7 @@ test.describe('Dev sign-in and assessment shortcuts', () => {
 
   test('a resolved route parameter is shown on the starter page', async ({ page }) => {
     await devSignIn(page, 'e2e.params@example.com');
-    await devCompleteAssessment(page);
+    await completeAssessment(page);
 
     await page.goto('/companies/northwind-systems/submit');
 

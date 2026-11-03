@@ -25,8 +25,8 @@ rather than hide it.
 
 | | Infrastructure | Logic / API | Starter page | Final UI | Backend |
 | --- | --- | --- | --- | --- | --- |
-| Login (`/login`) | ✅ guards (`RedirectIfAuthenticated`) | ✅ `useAuthMutations.ts` (email code, mock Google, sign-out) | ✅ | ⬜ | 🔵 no backend exists |
-| Assessment (`/assessment`) | ✅ sits inside `RequireAuth`, outside `RequireAssessment` by design | ✅ `useAssessment.ts`, `assessmentSchema.ts` | ✅ + dev-only complete-assessment shortcut | ⬜ | 🔵 |
+| Login (`/login`) | ✅ guards (`RedirectIfAuthenticated` also decides where a sign-in ends up) | ✅ `useAuthMutations.ts` (email code, mock Google, sign-out) | ⬜ replaced by the real page | ✅ `LoginPage.tsx` (email + code, eligibility declaration, `?redirectTo=`) | ✅ email sign-in is served by `backend/` (Google is mock-only) |
+| Assessment (`/assessment`) | ✅ behind `RequireAuth`, outside `RequireAssessment` by design | ✅ `useAssessment.ts`, `assessmentSchema.ts` | ⬜ replaced by the real page | ✅ `AssessmentPage.tsx`: five questions, one per screen; also the retake (pre-filled) | ✅ served by `backend/` |
 | Instruction walkthrough | — | ✅ `InstructionWalkthrough.tsx` component, fully built | ⬜ *not auto-mounted* (see note) | ⬜ | 🔵 |
 
 **Note on the walkthrough:** the component is complete and was previously auto-shown after the first
