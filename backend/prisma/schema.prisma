@@ -19,36 +19,73 @@ enum PostStatus {
   removed
 }
 
+/// One table for both company shapes the frontend uses:
+///  - the formal model (api-contract.md): name, website, industry, headquartersCity, publicData,
+///    plus per-user rows in Submission that are aggregated on every read;
+///  - the transitional demo model (/demo/*): the descriptive columns below, and a running
+///    `userReported` aggregate. Only rows with `hasDemoProfile` appear in /demo/companies.
 model Company {
   /// URL slug, e.g. "lumen-harbor-analytics".
-  id                 String   @id
-  name               String
-  website            String
-  intro              String
-  mainFocus          String[]
-  location           String
-  email              String
-  phone              String
-  address            String
-  contacts           Json
-  sources            Json
+  id               String   @id
+  name             String
+  website          String
+  /// Lower-case hostname without "www.". The duplicate key: two records with the same host are
+  /// the same employer however the name is written. Null for rows that predate it.
+  websiteHost      String?  @unique
+  industry         String   @default("Other")
+  headquartersCity String   @default("")
+  /// True for invented demo records. A real company sets it to false.
+  isDemoFixture    Boolean  @default(true)
+  /// Curated public figures per metric area (CompanyPublicData in the frontend types).
+  publicData       Json     @default("{}")
+
+  // Transitional demo model (/demo/*).
+  hasDemoProfile     Boolean  @default(false)
+  intro              String   @default("")
+  mainFocus          String[] @default([])
+  location           String   @default("")
+  email              String   @default("")
+  phone              String   @default("")
+  address            String   @default("")
+  contacts           Json     @default("[]")
+  sources            Json     @default("[]")
   /// When the information was collected (date only).
-  dataCollectedAt    DateTime @db.Date
-  verification       Json
+  dataCollectedAt    DateTime @default(now()) @db.Date
+  verification       Json     @default("{\"status\":\"unverified\",\"checkedBy\":\"ai\",\"checkedAt\":null,\"confidence\":null,\"notes\":null}")
   salary             Json?
   promotion          Json?
   womenSupport       Json?
-  benefits           String[]
+  benefits           String[] @default([])
   paidMaternityLeave Json?
-  /// Real running aggregates per area. The API withholds numbers below the privacy
+  /// Running aggregates for the demo report form. The API withholds numbers below the privacy
   /// threshold (5 contributors); they are never sent to the client and hidden there.
-  userReported       Json
+  userReported       Json     @default("{\"salary\":null,\"promotion\":null,\"diversity\":null,\"maternity\":null,\"benefits\":null}")
   createdAt          DateTime @default(now())
   updatedAt          DateTime @updatedAt
 
-  reports CompanyReport[]
+  reports     CompanyReport[]
+  submissions Submission[]
 
   @@index([name])
+}
+
+/// One user's report for one company: any subset of the five sections, each complete.
+/// The window runs from the FIRST row's createdAt and editing never moves it (spec 6.6). A newer
+/// row past the window supersedes the old one, which is kept as history and excluded from every
+/// aggregate and contributor count.
+model Submission {
+  id           String    @id @default(cuid())
+  companyId    String
+  company      Company   @relation(fields: [companyId], references: [id], onDelete: Cascade)
+  userId       String
+  user         User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  sections     Json
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @default(now())
+  supersededAt DateTime?
+
+  @@index([companyId, supersededAt])
+  @@index([userId, companyId])
 }
 
 /// One user report, kept as a log next to the running aggregates in Company.userReported.
@@ -75,30 +112,147 @@ model Author {
   location    String?
 }
 
+/// `authorRefId` is the author's anonymous handle (User.anonymousId, or an Author.refId for
+/// seeded demo posts) - never a user id. `updatedAt` is non-null once the post has been edited.
 model Post {
-  id                String     @id
+  id                String     @id @default(cuid())
   authorRefId       String
   title             String
   content           String
   tags              String[]
   relatedCompanyIds String[]
-  createdAt         DateTime
+  createdAt         DateTime   @default(now())
   updatedAt         DateTime?
   status            PostStatus @default(published)
 
   comments Comment[]
+  reads    ReadPost[]
 
   @@index([createdAt])
+  @@index([authorRefId])
 }
 
 model Comment {
-  id          String     @id
+  id          String     @id @default(cuid())
   postId      String
   post        Post       @relation(fields: [postId], references: [id], onDelete: Cascade)
   authorRefId String
   content     String
-  createdAt   DateTime
+  createdAt   DateTime   @default(now())
   status      PostStatus @default(published)
 
   @@index([postId])
+  @@index([authorRefId])
+}
+
+/// A tag created before any post uses it. Tags in use live on Post.tags.
+model Tag {
+  name      String   @id
+  createdAt DateTime @default(now())
+}
+
+/* -------------------------------------------------------------------------- */
+/* Accounts                                                                   */
+/* -------------------------------------------------------------------------- */
+
+model User {
+  id                     String    @id @default(cuid())
+  email                  String    @unique
+  /// Visible to this user only (spec 3.6). Never returned in a response about someone else.
+  displayName            String
+  /// The opaque handle other users see and use to start a conversation. Never a user id.
+  anonymousId            String    @unique
+  anonymousLabel         String
+  anonymousColor         String
+  authProvider           String    @default("email_code")
+  /// Spec 2.1: the user declared they are a woman aged 18 or over. No identity check is done.
+  eligibilityConfirmedAt DateTime?
+  hasSeenInstructions    Boolean   @default(false)
+  createdAt              DateTime  @default(now())
+
+  sessions       Session[]
+  assessment     Assessment?
+  readPosts      ReadPost[]
+  submissions    Submission[]
+  conversationsA Conversation[] @relation("ConversationA")
+  conversationsB Conversation[] @relation("ConversationB")
+  messagesSent   Message[]
+}
+
+/// A direct-message thread between exactly two accounts. The pair is stored ordered
+/// (`userAId` < `userBId`), so the unique constraint allows one thread per pair and a
+/// simultaneous "start conversation" from both sides cannot create two. Deleting either
+/// account deletes the thread for both people (spec 3.9).
+model Conversation {
+  id        String   @id @default(cuid())
+  userAId   String
+  userA     User     @relation("ConversationA", fields: [userAId], references: [id], onDelete: Cascade)
+  userBId   String
+  userB     User     @relation("ConversationB", fields: [userBId], references: [id], onDelete: Cascade)
+  createdAt DateTime @default(now())
+
+  messages Message[]
+
+  @@unique([userAId, userBId])
+  @@index([userBId])
+}
+
+model Message {
+  id              String       @id @default(cuid())
+  conversationId  String
+  conversation    Conversation @relation(fields: [conversationId], references: [id], onDelete: Cascade)
+  senderId        String
+  sender          User         @relation(fields: [senderId], references: [id], onDelete: Cascade)
+  body            String
+  createdAt       DateTime     @default(now())
+  /// Idempotency key from the client, reused on every retry. Unique per sender, so a retry
+  /// returns the stored message instead of creating a duplicate.
+  clientMessageId String?
+  /// When the recipient opened the thread. Null until then.
+  readAt          DateTime?
+
+  @@unique([senderId, clientMessageId])
+  @@index([conversationId, createdAt])
+}
+
+/// One pending sign-in code per email. Only a keyed hash of the code is stored.
+model EmailCode {
+  email       String   @id
+  codeHash    String
+  attempts    Int      @default(0)
+  requestedAt DateTime @default(now())
+  expiresAt   DateTime
+}
+
+/// A signed-in browser. Only the SHA-256 of the token is stored, so a database leak
+/// does not hand out working sessions, and deleting the row signs the user out.
+model Session {
+  id        String   @id @default(cuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  tokenHash String   @unique
+  createdAt DateTime @default(now())
+  expiresAt DateTime
+
+  @@index([userId])
+}
+
+model Assessment {
+  userId      String    @id
+  user        User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  answers     Json
+  completedAt DateTime
+  /// Set when the user retakes the assessment.
+  updatedAt   DateTime?
+}
+
+/// A post the user opened (not one they scrolled past). Read posts are left out of recommendations.
+model ReadPost {
+  userId String
+  user   User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  postId String
+  post   Post     @relation(fields: [postId], references: [id], onDelete: Cascade)
+  readAt DateTime @default(now())
+
+  @@id([userId, postId])
 }

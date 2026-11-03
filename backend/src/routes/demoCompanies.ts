@@ -52,7 +52,7 @@ function toRecord(row: Company): CompanyRecord {
 export async function demoCompanyRoutes(app: FastifyInstance) {
   app.get('/demo/companies', async (request) => {
     const { q } = searchQuery.parse(request.query)
-    const rows = await prisma.company.findMany()
+    const rows = await prisma.company.findMany({ where: { hasDemoProfile: true } })
     const companies = rows
       .map(toRecord)
       .sort((a, b) => a.name.localeCompare(b.name))
@@ -65,7 +65,7 @@ export async function demoCompanyRoutes(app: FastifyInstance) {
 
   app.get('/demo/companies/:companyId', async (request) => {
     const { companyId } = idParams.parse(request.params)
-    const row = await prisma.company.findUnique({ where: { id: companyId } })
+    const row = await prisma.company.findFirst({ where: { id: companyId, hasDemoProfile: true } })
     if (!row) throw notFound(NOT_FOUND_MESSAGE)
     return withPrivacyThreshold(toRecord(row))
   })
@@ -82,7 +82,7 @@ export async function demoCompanyRoutes(app: FastifyInstance) {
     // Lock the company row so two simultaneous reports cannot overwrite each other's average.
     const updated = await prisma.$transaction(async (tx) => {
       const locked = await tx.$queryRaw<{ id: string }[]>(
-        Prisma.sql`SELECT "id" FROM "Company" WHERE "id" = ${companyId} FOR UPDATE`,
+        Prisma.sql`SELECT "id" FROM "Company" WHERE "id" = ${companyId} AND "hasDemoProfile" = true FOR UPDATE`,
       )
       if (locked.length === 0) return null
 

@@ -1,0 +1,1003 @@
+[
+  {
+    "id": "sub_seed_1",
+    "companyId": "northwind-systems",
+    "userId": "user_seed_1",
+    "sections": {
+      "salary": {
+        "role": "Software Engineer",
+        "level": "Senior",
+        "city": "Seattle, WA",
+        "annualSalaryUsd": 172000
+      },
+      "promotion": {
+        "role": "Software Engineer",
+        "fromLevel": "Mid",
+        "toLevel": "Senior",
+        "monthsToPromotion": 22
+      },
+      "diversity": {
+        "teamSize": 12,
+        "womenOnTeam": 5,
+        "managerIsWoman": true,
+        "supportPrograms": [
+          "womens_erg",
+          "mentorship_for_women",
+          "harassment_reporting_channel",
+          "lactation_room"
+        ],
+        "trustsCompanyResponse": "yes"
+      },
+      "benefits": {
+        "benefits": [
+          "health_insurance",
+          "dental_vision",
+          "retirement_match",
+          "mental_health_support",
+          "fertility_support"
+        ]
+      },
+      "maternity": {
+        "paidWeeks": 16,
+        "payPercent": 100
+      }
+    },
+    "createdAt": "2026-06-15T10:00:00.000Z",
+    "updatedAt": "2026-06-15T10:00:00.000Z",
+    "supersededAt": null
+  },
+  {
+    "id": "sub_seed_2",
+    "companyId": "northwind-systems",
+    "userId": "user_seed_2",
+    "sections": {
+      "salary": {
+        "role": "Software Engineer",
+        "level": "Senior",
+        "city": "Seattle, WA",
+        "annualSalaryUsd": 165000
+      },
+      "promotion": {
+        "role": "Software Engineer",
+        "fromLevel": "Entry",
+        "toLevel": "Mid",
+        "monthsToPromotion": 18
+      },
+      "diversity": {
+        "teamSize": 9,
+        "womenOnTeam": 3,
+        "managerIsWoman": false,
+        "supportPrograms": [
+          "womens_erg",
+          "mentorship_for_women",
+          "harassment_reporting_channel"
+        ],
+        "trustsCompanyResponse": "not_sure"
+      },
+      "benefits": {
+        "benefits": [
+          "health_insurance",
+          "dental_vision",
+          "retirement_match",
+          "flexible_or_remote_work"
+        ]
+      },
+      "maternity": {
+        "paidWeeks": 16,
+        "payPercent": 100
+      }
+    },
+    "createdAt": "2026-06-15T11:00:00.000Z",
+    "updatedAt": "2026-06-15T11:00:00.000Z",
+    "supersededAt": null
+  },
+  {
+    "id": "sub_seed_3",
+    "companyId": "northwind-systems",
+    "userId": "user_seed_3",
+    "sections": {
+      "salary": {
+        "role": "Software Engineer",
+        "level": "Senior",
+        "city": "Austin, TX",
+        "annualSalaryUsd": 158000
+      },
+      "promotion": {
+        "role": "Product Manager",
+        "fromLevel": "Mid",
+        "toLevel": "Senior",
+        "monthsToPromotion": 26
+      },
+      "diversity": {
+        "teamSize": 15,
+        "womenOnTeam": 7,
+        "managerIsWoman": true,
+        "supportPrograms": [
+          "womens_erg",
+          "mentorship_for_women",
+          "harassment_reporting_channel",
+          "return_to_work_program"
+        ],
+        "trustsCompanyResponse": "yes"
+      },
+      "benefits": {
+        "benefits": [
+          "health_insurance",
+          "dental_vision",
+          "retirement_match",
+          "tuition_or_learning_budget"
+        ]
+      },
+      "maternity": {
+        "paidWeeks": 16,
+        "payPercent": 100
+      }
+    },
+    "createdAt": "2026-06-15T12:00:00.000Z",
+    "updatedAt": "2026-06-15T12:00:00.000Z",
+    "supersededAt": null
+  },
+  {
+    "id": "sub_seed_4",
+    "companyId": "northwind-systems",
+    "userId": "user_seed_4",
+    "sections": {
+      "salary": {
+        "role": "Software Engineer",
+        "level": "Senior",
+        "city": "Seattle, WA",
+        "annualSalaryUsd": 176000
+      },
+      "promotion": {
+        "role": "Software Engineer",
+        "fromLevel": "Senior",
+        "toLevel": "Manager",
+        "monthsToPromotion": 30
+      },
+      "diversity": {
+        "teamSize": 8,
+        "womenOnTeam": 2,
+        "managerIsWoman": false,
+        "supportPrograms": [
+          "harassment_reporting_channel",
+          "flexible_or_remote_work"
+        ],
+        "trustsCompanyResponse": "no"
+      },
+      "benefits": {
+        "benefits": [
+          "health_insurance",
+          "dental_vision",
+          "retirement_match",
+          "mental_health_support"
+        ]
+      },
+      "maternity": {
+        "paidWeeks": 16,
+        "payPercent": 100
+      }
+    },
+    "createdAt": "2026-06-15T13:00:00.000Z",
+    "updatedAt": "2026-06-15T13:00:00.000Z",
+    "supersededAt": null
+  },
+  {
+    "id": "sub_seed_5",
+    "companyId": "northwind-systems",
+    "userId": "user_seed_5",
+    "sections": {
+      "salary": {
+        "role": "Software Engineer",
+        "level": "Senior",
+        "city": "Seattle, WA",
+        "annualSalaryUsd": 169000
+      },
+      "promotion": {
+        "role": "Designer",
+        "fromLevel": "Mid",
+        "toLevel": "Senior",
+        "monthsToPromotion": 20
+      },
+      "diversity": {
+        "teamSize": 11,
+        "womenOnTeam": 6,
+        "managerIsWoman": true,
+        "supportPrograms": [
+          "womens_erg",
+          "mentorship_for_women",
+          "harassment_reporting_channel",
+          "lactation_room",
+          "flexible_or_remote_work"
+        ],
+        "trustsCompanyResponse": "yes"
+      },
+      "benefits": {
+        "benefits": [
+          "health_insurance",
+          "dental_vision",
+          "retirement_match",
+          "fertility_support",
+          "flexible_or_remote_work"
+        ]
+      },
+      "maternity": {
+        "paidWeeks": 16,
+        "payPercent": 100
+      }
+    },
+    "createdAt": "2026-06-15T14:00:00.000Z",
+    "updatedAt": "2026-06-15T14:00:00.000Z",
+    "supersededAt": null
+  },
+  {
+    "id": "sub_seed_6",
+    "companyId": "northwind-systems",
+    "userId": "user_seed_6",
+    "sections": {
+      "salary": {
+        "role": "Product Manager",
+        "level": "Manager",
+        "city": "New York, NY",
+        "annualSalaryUsd": 195000
+      },
+      "promotion": {
+        "role": "Program Manager",
+        "fromLevel": "Senior",
+        "toLevel": "Manager",
+        "monthsToPromotion": 24
+      },
+      "diversity": {
+        "teamSize": 10,
+        "womenOnTeam": 4,
+        "managerIsWoman": true,
+        "supportPrograms": [
+          "womens_erg",
+          "mentorship_for_women",
+          "harassment_reporting_channel"
+        ],
+        "trustsCompanyResponse": "yes"
+      },
+      "benefits": {
+        "benefits": [
+          "health_insurance",
+          "dental_vision",
+          "retirement_match",
+          "commuter_benefit"
+        ]
+      },
+      "maternity": {
+        "paidWeeks": 16,
+        "payPercent": 100
+      }
+    },
+    "createdAt": "2026-06-15T15:00:00.000Z",
+    "updatedAt": "2026-06-15T15:00:00.000Z",
+    "supersededAt": null
+  },
+  {
+    "id": "sub_seed_7",
+    "companyId": "northwind-systems",
+    "userId": "user_seed_7",
+    "sections": {
+      "benefits": {
+        "benefits": [
+          "health_insurance",
+          "dental_vision",
+          "retirement_match",
+          "paid_parental_leave_beyond_maternity"
+        ]
+      }
+    },
+    "createdAt": "2026-06-15T16:00:00.000Z",
+    "updatedAt": "2026-06-15T16:00:00.000Z",
+    "supersededAt": null
+  },
+  {
+    "id": "sub_seed_8",
+    "companyId": "lumen-health",
+    "userId": "user_seed_2",
+    "sections": {
+      "salary": {
+        "role": "Nurse Practitioner",
+        "level": "Senior",
+        "city": "Boston, MA",
+        "annualSalaryUsd": 146000
+      },
+      "promotion": {
+        "role": "Nurse Practitioner",
+        "fromLevel": "Mid",
+        "toLevel": "Senior",
+        "monthsToPromotion": 28
+      },
+      "diversity": {
+        "teamSize": 20,
+        "womenOnTeam": 15,
+        "managerIsWoman": true,
+        "supportPrograms": [
+          "womens_erg",
+          "mentorship_for_women",
+          "harassment_reporting_channel",
+          "lactation_room",
+          "return_to_work_program"
+        ],
+        "trustsCompanyResponse": "yes"
+      },
+      "benefits": {
+        "benefits": [
+          "health_insurance",
+          "dental_vision",
+          "retirement_match",
+          "childcare_stipend"
+        ]
+      },
+      "maternity": {
+        "paidWeeks": 20,
+        "payPercent": 100
+      }
+    },
+    "createdAt": "2026-06-15T17:00:00.000Z",
+    "updatedAt": "2026-06-15T17:00:00.000Z",
+    "supersededAt": null
+  },
+  {
+    "id": "sub_seed_9",
+    "companyId": "lumen-health",
+    "userId": "user_seed_3",
+    "sections": {
+      "salary": {
+        "role": "Nurse Practitioner",
+        "level": "Senior",
+        "city": "Boston, MA",
+        "annualSalaryUsd": 139000
+      },
+      "promotion": {
+        "role": "Nurse Practitioner",
+        "fromLevel": "Entry",
+        "toLevel": "Mid",
+        "monthsToPromotion": 16
+      },
+      "diversity": {
+        "teamSize": 18,
+        "womenOnTeam": 11,
+        "managerIsWoman": true,
+        "supportPrograms": [
+          "womens_erg",
+          "mentorship_for_women",
+          "harassment_reporting_channel",
+          "return_to_work_program"
+        ],
+        "trustsCompanyResponse": "yes"
+      },
+      "benefits": {
+        "benefits": [
+          "health_insurance",
+          "dental_vision",
+          "retirement_match",
+          "mental_health_support"
+        ]
+      },
+      "maternity": {
+        "paidWeeks": 20,
+        "payPercent": 100
+      }
+    },
+    "createdAt": "2026-06-15T18:00:00.000Z",
+    "updatedAt": "2026-06-15T18:00:00.000Z",
+    "supersededAt": null
+  },
+  {
+    "id": "sub_seed_10",
+    "companyId": "lumen-health",
+    "userId": "user_seed_8",
+    "sections": {
+      "salary": {
+        "role": "Data Scientist",
+        "level": "Mid",
+        "city": "Boston, MA",
+        "annualSalaryUsd": 128000
+      },
+      "promotion": {
+        "role": "Data Scientist",
+        "fromLevel": "Entry",
+        "toLevel": "Mid",
+        "monthsToPromotion": 19
+      },
+      "diversity": {
+        "teamSize": 7,
+        "womenOnTeam": 4,
+        "managerIsWoman": false,
+        "supportPrograms": [
+          "harassment_reporting_channel",
+          "flexible_or_remote_work"
+        ],
+        "trustsCompanyResponse": "not_sure"
+      },
+      "benefits": {
+        "benefits": [
+          "health_insurance",
+          "dental_vision",
+          "retirement_match",
+          "commuter_benefit"
+        ]
+      },
+      "maternity": {
+        "paidWeeks": 20,
+        "payPercent": 100
+      }
+    },
+    "createdAt": "2026-06-15T19:00:00.000Z",
+    "updatedAt": "2026-06-15T19:00:00.000Z",
+    "supersededAt": null
+  },
+  {
+    "id": "sub_seed_11",
+    "companyId": "lumen-health",
+    "userId": "user_seed_9",
+    "sections": {
+      "salary": {
+        "role": "Nurse Practitioner",
+        "level": "Mid",
+        "city": "Boston, MA",
+        "annualSalaryUsd": 121500
+      },
+      "promotion": {
+        "role": "Nurse Practitioner",
+        "fromLevel": "Mid",
+        "toLevel": "Senior",
+        "monthsToPromotion": 31
+      },
+      "diversity": {
+        "teamSize": 0,
+        "womenOnTeam": 0,
+        "managerIsWoman": true,
+        "supportPrograms": [
+          "womens_erg",
+          "mentorship_for_women",
+          "harassment_reporting_channel"
+        ],
+        "trustsCompanyResponse": "yes"
+      },
+      "benefits": {
+        "benefits": [
+          "health_insurance",
+          "dental_vision",
+          "retirement_match",
+          "childcare_stipend"
+        ]
+      },
+      "maternity": {
+        "paidWeeks": 20,
+        "payPercent": 100
+      }
+    },
+    "createdAt": "2026-06-15T20:00:00.000Z",
+    "updatedAt": "2026-06-15T20:00:00.000Z",
+    "supersededAt": null
+  },
+  {
+    "id": "sub_seed_12",
+    "companyId": "lumen-health",
+    "userId": "user_seed_10",
+    "sections": {
+      "salary": {
+        "role": "Program Manager",
+        "level": "Senior",
+        "city": "Boston, MA",
+        "annualSalaryUsd": 152000
+      },
+      "promotion": {
+        "role": "Program Manager",
+        "fromLevel": "Mid",
+        "toLevel": "Senior",
+        "monthsToPromotion": 23
+      },
+      "diversity": {
+        "teamSize": 14,
+        "womenOnTeam": 9,
+        "managerIsWoman": true,
+        "supportPrograms": [
+          "womens_erg",
+          "mentorship_for_women",
+          "harassment_reporting_channel",
+          "lactation_room"
+        ],
+        "trustsCompanyResponse": "yes"
+      },
+      "benefits": {
+        "benefits": [
+          "health_insurance",
+          "dental_vision",
+          "retirement_match",
+          "paid_parental_leave_beyond_maternity"
+        ]
+      },
+      "maternity": {
+        "paidWeeks": 20,
+        "payPercent": 100
+      }
+    },
+    "createdAt": "2026-06-15T21:00:00.000Z",
+    "updatedAt": "2026-06-15T21:00:00.000Z",
+    "supersededAt": null
+  },
+  {
+    "id": "sub_seed_13",
+    "companyId": "lumen-health",
+    "userId": "user_seed_11",
+    "sections": {
+      "benefits": {
+        "benefits": [
+          "health_insurance",
+          "dental_vision",
+          "retirement_match",
+          "fertility_support"
+        ]
+      }
+    },
+    "createdAt": "2026-06-15T22:00:00.000Z",
+    "updatedAt": "2026-06-15T22:00:00.000Z",
+    "supersededAt": null
+  },
+  {
+    "id": "sub_seed_14",
+    "companyId": "harborline-financial",
+    "userId": "user_seed_4",
+    "sections": {
+      "salary": {
+        "role": "Financial Analyst",
+        "level": "Senior",
+        "city": "New York, NY",
+        "annualSalaryUsd": 178000
+      },
+      "diversity": {
+        "teamSize": 16,
+        "womenOnTeam": 5,
+        "managerIsWoman": false,
+        "supportPrograms": [
+          "harassment_reporting_channel"
+        ],
+        "trustsCompanyResponse": "no"
+      },
+      "benefits": {
+        "benefits": [
+          "health_insurance",
+          "dental_vision",
+          "retirement_match",
+          "commuter_benefit"
+        ]
+      }
+    },
+    "createdAt": "2026-06-15T23:00:00.000Z",
+    "updatedAt": "2026-06-15T23:00:00.000Z",
+    "supersededAt": null
+  },
+  {
+    "id": "sub_seed_15",
+    "companyId": "harborline-financial",
+    "userId": "user_seed_5",
+    "sections": {
+      "salary": {
+        "role": "Financial Analyst",
+        "level": "Senior",
+        "city": "New York, NY",
+        "annualSalaryUsd": 186000
+      },
+      "diversity": {
+        "teamSize": 22,
+        "womenOnTeam": 7,
+        "managerIsWoman": false,
+        "supportPrograms": [
+          "harassment_reporting_channel",
+          "mentorship_for_women"
+        ],
+        "trustsCompanyResponse": "not_sure"
+      },
+      "benefits": {
+        "benefits": [
+          "health_insurance",
+          "dental_vision",
+          "retirement_match",
+          "tuition_or_learning_budget"
+        ]
+      }
+    },
+    "createdAt": "2026-06-16T00:00:00.000Z",
+    "updatedAt": "2026-06-16T00:00:00.000Z",
+    "supersededAt": null
+  },
+  {
+    "id": "sub_seed_16",
+    "companyId": "harborline-financial",
+    "userId": "user_seed_6",
+    "sections": {
+      "salary": {
+        "role": "Financial Analyst",
+        "level": "Mid",
+        "city": "New York, NY",
+        "annualSalaryUsd": 142000
+      },
+      "diversity": {
+        "teamSize": 11,
+        "womenOnTeam": 3,
+        "managerIsWoman": true,
+        "supportPrograms": [
+          "womens_erg",
+          "mentorship_for_women",
+          "harassment_reporting_channel"
+        ],
+        "trustsCompanyResponse": "yes"
+      },
+      "benefits": {
+        "benefits": [
+          "health_insurance",
+          "dental_vision",
+          "retirement_match"
+        ]
+      }
+    },
+    "createdAt": "2026-06-16T01:00:00.000Z",
+    "updatedAt": "2026-06-16T01:00:00.000Z",
+    "supersededAt": null
+  },
+  {
+    "id": "sub_seed_17",
+    "companyId": "harborline-financial",
+    "userId": "user_seed_12",
+    "sections": {
+      "salary": {
+        "role": "Consultant",
+        "level": "Senior",
+        "city": "New York, NY",
+        "annualSalaryUsd": 171000
+      },
+      "diversity": {
+        "teamSize": 9,
+        "womenOnTeam": 2,
+        "managerIsWoman": false,
+        "supportPrograms": [
+          "harassment_reporting_channel"
+        ],
+        "trustsCompanyResponse": "no"
+      },
+      "benefits": {
+        "benefits": [
+          "health_insurance",
+          "dental_vision",
+          "retirement_match",
+          "commuter_benefit"
+        ]
+      }
+    },
+    "createdAt": "2026-06-16T02:00:00.000Z",
+    "updatedAt": "2026-06-16T02:00:00.000Z",
+    "supersededAt": null
+  },
+  {
+    "id": "sub_seed_18",
+    "companyId": "harborline-financial",
+    "userId": "user_seed_13",
+    "sections": {
+      "diversity": {
+        "teamSize": 13,
+        "womenOnTeam": 6,
+        "managerIsWoman": true,
+        "supportPrograms": [
+          "womens_erg",
+          "mentorship_for_women",
+          "harassment_reporting_channel",
+          "flexible_or_remote_work"
+        ],
+        "trustsCompanyResponse": "not_sure"
+      },
+      "benefits": {
+        "benefits": [
+          "health_insurance",
+          "dental_vision",
+          "retirement_match",
+          "mental_health_support"
+        ]
+      }
+    },
+    "createdAt": "2026-06-16T03:00:00.000Z",
+    "updatedAt": "2026-06-16T03:00:00.000Z",
+    "supersededAt": null
+  },
+  {
+    "id": "sub_seed_19",
+    "companyId": "aster-robotics",
+    "userId": "user_seed_1",
+    "sections": {
+      "salary": {
+        "role": "Software Engineer",
+        "level": "Senior",
+        "city": "Austin, TX",
+        "annualSalaryUsd": 151000
+      }
+    },
+    "createdAt": "2026-06-16T04:00:00.000Z",
+    "updatedAt": "2026-06-16T04:00:00.000Z",
+    "supersededAt": null
+  },
+  {
+    "id": "sub_seed_20",
+    "companyId": "aster-robotics",
+    "userId": "user_seed_7",
+    "sections": {
+      "salary": {
+        "role": "Software Engineer",
+        "level": "Senior",
+        "city": "Austin, TX",
+        "annualSalaryUsd": 147500
+      }
+    },
+    "createdAt": "2026-06-16T05:00:00.000Z",
+    "updatedAt": "2026-06-16T05:00:00.000Z",
+    "supersededAt": null
+  },
+  {
+    "id": "sub_seed_21",
+    "companyId": "aster-robotics",
+    "userId": "user_seed_8",
+    "sections": {
+      "salary": {
+        "role": "Software Engineer",
+        "level": "Senior",
+        "city": "Austin, TX",
+        "annualSalaryUsd": 156000
+      }
+    },
+    "createdAt": "2026-06-16T06:00:00.000Z",
+    "updatedAt": "2026-06-16T06:00:00.000Z",
+    "supersededAt": null
+  },
+  {
+    "id": "sub_seed_22",
+    "companyId": "aster-robotics",
+    "userId": "user_seed_9",
+    "sections": {
+      "salary": {
+        "role": "Software Engineer",
+        "level": "Senior",
+        "city": "Austin, TX",
+        "annualSalaryUsd": 143000
+      }
+    },
+    "createdAt": "2026-06-16T07:00:00.000Z",
+    "updatedAt": "2026-06-16T07:00:00.000Z",
+    "supersededAt": null
+  },
+  {
+    "id": "sub_seed_23",
+    "companyId": "aster-robotics",
+    "userId": "user_seed_10",
+    "sections": {
+      "salary": {
+        "role": "Software Engineer",
+        "level": "Senior",
+        "city": "Austin, TX",
+        "annualSalaryUsd": 149500
+      }
+    },
+    "createdAt": "2026-06-16T08:00:00.000Z",
+    "updatedAt": "2026-06-16T08:00:00.000Z",
+    "supersededAt": null
+  },
+  {
+    "id": "sub_seed_24",
+    "companyId": "aster-robotics",
+    "userId": "user_seed_14",
+    "sections": {
+      "salary": {
+        "role": "Designer",
+        "level": "Mid",
+        "city": "Austin, TX",
+        "annualSalaryUsd": 118000
+      }
+    },
+    "createdAt": "2026-06-16T09:00:00.000Z",
+    "updatedAt": "2026-06-16T09:00:00.000Z",
+    "supersededAt": null
+  },
+  {
+    "id": "sub_seed_25",
+    "companyId": "vireo-consulting",
+    "userId": "user_seed_3",
+    "sections": {
+      "salary": {
+        "role": "Consultant",
+        "level": "Senior",
+        "city": "Chicago, IL",
+        "annualSalaryUsd": 161000
+      },
+      "benefits": {
+        "benefits": [
+          "health_insurance",
+          "dental_vision",
+          "retirement_match",
+          "flexible_or_remote_work"
+        ]
+      }
+    },
+    "createdAt": "2026-06-16T10:00:00.000Z",
+    "updatedAt": "2026-06-16T10:00:00.000Z",
+    "supersededAt": null
+  },
+  {
+    "id": "sub_seed_26",
+    "companyId": "vireo-consulting",
+    "userId": "user_seed_11",
+    "sections": {
+      "salary": {
+        "role": "Consultant",
+        "level": "Mid",
+        "city": "Chicago, IL",
+        "annualSalaryUsd": 132000
+      },
+      "benefits": {
+        "benefits": [
+          "health_insurance",
+          "dental_vision",
+          "retirement_match",
+          "mental_health_support"
+        ]
+      }
+    },
+    "createdAt": "2026-06-16T11:00:00.000Z",
+    "updatedAt": "2026-06-16T11:00:00.000Z",
+    "supersededAt": null
+  },
+  {
+    "id": "sub_seed_27",
+    "companyId": "vireo-consulting",
+    "userId": "user_seed_12",
+    "sections": {
+      "benefits": {
+        "benefits": [
+          "health_insurance",
+          "dental_vision",
+          "retirement_match"
+        ]
+      }
+    },
+    "createdAt": "2026-06-16T12:00:00.000Z",
+    "updatedAt": "2026-06-16T12:00:00.000Z",
+    "supersededAt": null
+  },
+  {
+    "id": "sub_seed_28",
+    "companyId": "vireo-consulting",
+    "userId": "user_seed_13",
+    "sections": {
+      "benefits": {
+        "benefits": [
+          "health_insurance",
+          "dental_vision",
+          "retirement_match",
+          "tuition_or_learning_budget"
+        ]
+      }
+    },
+    "createdAt": "2026-06-16T13:00:00.000Z",
+    "updatedAt": "2026-06-16T13:00:00.000Z",
+    "supersededAt": null
+  },
+  {
+    "id": "sub_seed_29",
+    "companyId": "vireo-consulting",
+    "userId": "user_seed_14",
+    "sections": {
+      "benefits": {
+        "benefits": [
+          "health_insurance",
+          "dental_vision",
+          "retirement_match",
+          "flexible_or_remote_work"
+        ]
+      }
+    },
+    "createdAt": "2026-06-16T14:00:00.000Z",
+    "updatedAt": "2026-06-16T14:00:00.000Z",
+    "supersededAt": null
+  },
+  {
+    "id": "sub_seed_30",
+    "companyId": "cobalt-grid",
+    "userId": "user_seed_1",
+    "sections": {
+      "diversity": {
+        "teamSize": 25,
+        "womenOnTeam": 5,
+        "managerIsWoman": false,
+        "supportPrograms": [
+          "harassment_reporting_channel"
+        ],
+        "trustsCompanyResponse": "not_sure"
+      }
+    },
+    "createdAt": "2026-06-16T15:00:00.000Z",
+    "updatedAt": "2026-06-16T15:00:00.000Z",
+    "supersededAt": null
+  },
+  {
+    "id": "sub_seed_31",
+    "companyId": "cobalt-grid",
+    "userId": "user_seed_4",
+    "sections": {
+      "diversity": {
+        "teamSize": 18,
+        "womenOnTeam": 4,
+        "managerIsWoman": false,
+        "supportPrograms": [
+          "harassment_reporting_channel",
+          "flexible_or_remote_work"
+        ],
+        "trustsCompanyResponse": "no"
+      }
+    },
+    "createdAt": "2026-06-16T16:00:00.000Z",
+    "updatedAt": "2026-06-16T16:00:00.000Z",
+    "supersededAt": null
+  },
+  {
+    "id": "sub_seed_32",
+    "companyId": "cobalt-grid",
+    "userId": "user_seed_8",
+    "sections": {
+      "diversity": {
+        "teamSize": 30,
+        "womenOnTeam": 9,
+        "managerIsWoman": true,
+        "supportPrograms": [
+          "womens_erg",
+          "mentorship_for_women",
+          "harassment_reporting_channel"
+        ],
+        "trustsCompanyResponse": "yes"
+      }
+    },
+    "createdAt": "2026-06-16T17:00:00.000Z",
+    "updatedAt": "2026-06-16T17:00:00.000Z",
+    "supersededAt": null
+  },
+  {
+    "id": "sub_seed_33",
+    "companyId": "cobalt-grid",
+    "userId": "user_seed_10",
+    "sections": {
+      "diversity": {
+        "teamSize": 12,
+        "womenOnTeam": 2,
+        "managerIsWoman": false,
+        "supportPrograms": [
+          "harassment_reporting_channel"
+        ],
+        "trustsCompanyResponse": "not_sure"
+      }
+    },
+    "createdAt": "2026-06-16T18:00:00.000Z",
+    "updatedAt": "2026-06-16T18:00:00.000Z",
+    "supersededAt": null
+  },
+  {
+    "id": "sub_seed_34",
+    "companyId": "cobalt-grid",
+    "userId": "user_seed_14",
+    "sections": {
+      "diversity": {
+        "teamSize": 16,
+        "womenOnTeam": 6,
+        "managerIsWoman": true,
+        "supportPrograms": [
+          "womens_erg",
+          "mentorship_for_women",
+          "harassment_reporting_channel",
+          "lactation_room"
+        ],
+        "trustsCompanyResponse": "yes"
+      }
+    },
+    "createdAt": "2026-06-16T19:00:00.000Z",
+    "updatedAt": "2026-06-16T19:00:00.000Z",
+    "supersededAt": null
+  }
+]

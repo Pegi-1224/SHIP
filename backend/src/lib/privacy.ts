@@ -1,7 +1,6 @@
 import type { CompanyRecord, CompanyUserReported } from '../types/demo.js'
 
-/** An area's numbers stay hidden until this many distinct reports exist (spec 3.5, AC-6). */
-export const MIN_ELIGIBLE_CONTRIBUTORS = 5
+import { MIN_ELIGIBLE_CONTRIBUTORS } from './constants.js'
 
 /**
  * Keep the count but replace every other value with `null`. The real aggregates stay in

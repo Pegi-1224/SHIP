@@ -1,0 +1,72 @@
+[
+  {
+    "id": "user_seed_1",
+    "displayName": "Rowan",
+    "createdAt": "2026-05-01T09:00:00.000Z"
+  },
+  {
+    "id": "user_seed_2",
+    "displayName": "Mira",
+    "createdAt": "2026-05-02T09:00:00.000Z"
+  },
+  {
+    "id": "user_seed_3",
+    "displayName": "Imani",
+    "createdAt": "2026-05-03T09:00:00.000Z"
+  },
+  {
+    "id": "user_seed_4",
+    "displayName": "Noor",
+    "createdAt": "2026-05-04T09:00:00.000Z"
+  },
+  {
+    "id": "user_seed_5",
+    "displayName": "Sloane",
+    "createdAt": "2026-05-05T09:00:00.000Z"
+  },
+  {
+    "id": "user_seed_6",
+    "displayName": "Priya",
+    "createdAt": "2026-05-06T09:00:00.000Z"
+  },
+  {
+    "id": "user_seed_7",
+    "displayName": "Camille",
+    "createdAt": "2026-05-07T09:00:00.000Z"
+  },
+  {
+    "id": "user_seed_8",
+    "displayName": "Dahlia",
+    "createdAt": "2026-05-08T09:00:00.000Z"
+  },
+  {
+    "id": "user_seed_9",
+    "displayName": "Esme",
+    "createdAt": "2026-05-09T09:00:00.000Z"
+  },
+  {
+    "id": "user_seed_10",
+    "displayName": "Frida",
+    "createdAt": "2026-05-10T09:00:00.000Z"
+  },
+  {
+    "id": "user_seed_11",
+    "displayName": "Greer",
+    "createdAt": "2026-05-11T09:00:00.000Z"
+  },
+  {
+    "id": "user_seed_12",
+    "displayName": "Hana",
+    "createdAt": "2026-05-12T09:00:00.000Z"
+  },
+  {
+    "id": "user_seed_13",
+    "displayName": "Iris",
+    "createdAt": "2026-05-13T09:00:00.000Z"
+  },
+  {
+    "id": "user_seed_14",
+    "displayName": "June",
+    "createdAt": "2026-05-14T09:00:00.000Z"
+  }
+]
