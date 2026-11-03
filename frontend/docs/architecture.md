@@ -95,7 +95,7 @@ than in `app/router/`, so shared components can link somewhere without importing
 
 | State | Lives in | Why |
 | --- | --- | --- |
-| Server data (companies, posts, messages, session) | **TanStack Query** | It is a cache of someone else's data, with loading, error, staleness and invalidation. Copying it into component state would mean reimplementing all of that. |
+| Server data (companies, posts, session) | **TanStack Query** | It is a cache of someone else's data, with loading, error, staleness and invalidation. Copying it into component state would mean reimplementing all of that. |
 | Search query, active tag, compared company ids, submission area | **The URL** | Shareable, bookmarkable, and the Back button works. |
 | Form values | **react-hook-form** | Keeps re-renders local to the field and survives a failed submit, which is what preserves the user's input. |
 | Dialog open/closed, current wizard step, composer draft | **Component `useState`** | Nothing outside the component needs it. |

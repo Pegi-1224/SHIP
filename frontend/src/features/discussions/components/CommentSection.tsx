@@ -16,7 +16,6 @@ import {
 } from '@/shared/ui';
 import { getErrorMessage } from '@/shared/api';
 import { formatCount, formatRelativeTime } from '@/shared/utils/format';
-import { useStartConversationFlow } from '@/features/messages';
 import { useComments, useCreateComment, useDeleteComment } from '../hooks/useDiscussions';
 import { commentSchema, type CommentFormValues } from '../schemas/postSchema';
 import styles from './CommentSection.module.css';
@@ -35,7 +34,6 @@ export function CommentSection({ postId }: CommentSectionProps) {
   const comments = useComments(postId);
   const createComment = useCreateComment(postId);
   const deleteComment = useDeleteComment(postId);
-  const { startWith, isPending: isStartingConversation } = useStartConversationFlow();
 
   const [pendingDelete, setPendingDelete] = useState<Comment | null>(null);
 
@@ -118,16 +116,7 @@ export function CommentSection({ postId }: CommentSectionProps) {
           {comments.data.items.map((comment) => (
             <Paper key={comment.id} withBorder p="md" component="article">
               <Group align="flex-start" wrap="nowrap" gap="sm">
-                <AnonymousAvatar
-                  identity={comment.author}
-                  size={32}
-                  onStartConversation={
-                    comment.isOwn || isStartingConversation
-                      ? undefined
-                      : () => startWith(comment.author.id)
-                  }
-                  disabledReason={comment.isOwn ? 'This is your own comment' : undefined}
-                />
+                <AnonymousAvatar identity={comment.author} size={32} />
                 <div className={styles.body}>
                   <Group justify="space-between" wrap="nowrap" gap="sm">
                     <Text size="xs" c="dimmed">

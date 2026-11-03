@@ -12,9 +12,9 @@ const CONFIRM_WORD = 'DELETE';
  * Account deletion (spec 3.9, AC-9).
  *
  * The frontend sends one request. Removing the user's posts, every comment on
- * those posts, their own comments elsewhere, their company submissions and both
- * copies of every direct message - and recomputing the affected company
- * aggregates afterwards - all happen on the server in a single operation.
+ * those posts, their own comments elsewhere and their company submissions - and
+ * recomputing the affected company aggregates afterwards - all happen on the
+ * server in a single operation.
  *
  * The client could not do it correctly even if it tried: it cannot see other
  * people's comments on its posts, and a partial failure would leave orphaned
@@ -37,8 +37,7 @@ export function DeleteAccountSection() {
         <List size="sm" spacing={2}>
           <List.Item>your posts, and every comment other people left on them;</List.Item>
           <List.Item>your comments on other people&apos;s posts;</List.Item>
-          <List.Item>the company data you submitted, which changes those averages;</List.Item>
-          <List.Item>your direct messages, for both you and the other person.</List.Item>
+          <List.Item>the company data you submitted, which changes those averages.</List.Item>
         </List>
         <Text size="sm" fw={600}>
           This cannot be undone.

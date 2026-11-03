@@ -29,14 +29,14 @@ describe('StarterPage', () => {
   it('shows resolved route values, prints "none" for null, and omits undefined ones', () => {
     renderWithProviders(
       <StarterPage
-        title="Conversation"
+        title="Company"
         description="…"
         sourceFile="x.tsx"
-        routeValues={{ conversationId: 'conv_42', tag: null, missing: undefined }}
+        routeValues={{ companyId: 'company_42', tag: null, missing: undefined }}
       />,
     );
 
-    expect(screen.getByText('conv_42')).toBeInTheDocument();
+    expect(screen.getByText('company_42')).toBeInTheDocument();
     expect(screen.getByText('tag')).toBeInTheDocument();
     expect(screen.getByText('none')).toBeInTheDocument();
     expect(screen.queryByText('missing')).not.toBeInTheDocument();

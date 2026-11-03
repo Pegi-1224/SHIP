@@ -174,7 +174,6 @@ src/
     home/                  recommendation hooks (preserved, unused by the page)
     companies/             search/profile/submission/comparison logic (preserved, unused by pages)
     discussions/           feed/post/comment logic (preserved, unused by pages)
-    messages/              conversation logic (preserved, unused by pages)
     profile/               account/activity logic (preserved, unused by the page)
   shared/
     api/                 HTTP client, error type, query keys, auth integration point - unchanged
@@ -212,8 +211,6 @@ public surface).
 | `/discussions/new` | `src/features/discussions/pages/NewPostPage.tsx` |
 | `/discussions/:postId` | `src/features/discussions/pages/PostDetailPage.tsx` |
 | `/discussions/:postId/edit` | `src/features/discussions/pages/EditPostPage.tsx` |
-| `/messages` | `src/features/messages/pages/ConversationListPage.tsx` |
-| `/messages/:conversationId` | `src/features/messages/pages/ConversationPage.tsx` |
 | `*` (not found) | `src/app/router/NotFoundPage.tsx` |
 
 Every one of these files is small: a `StarterPage` with a title, a one-sentence description, a
@@ -245,7 +242,6 @@ Nothing described in the original architecture was deleted. Per feature:
 | home | `src/features/home/api/homeApi.ts` | `src/features/home/hooks/useHome.ts` | `src/mocks/handlers/home.ts` |
 | companies | `src/features/companies/api/companiesApi.ts` | `src/features/companies/hooks/useCompanies.ts` | `src/mocks/handlers/companies.ts` |
 | discussions | `src/features/discussions/api/discussionsApi.ts` | `src/features/discussions/hooks/useDiscussions.ts` | `src/mocks/handlers/discussions.ts` |
-| messages | `src/features/messages/api/messagesApi.ts` | `src/features/messages/hooks/useMessages.ts` | `src/mocks/handlers/messages.ts` |
 | profile | `src/features/profile/api/profileApi.ts` | `src/features/profile/hooks/useProfile.ts` | `src/mocks/handlers/profile.ts` |
 
 Domain logic independent of any UI is also untouched and still fully tested:
@@ -379,8 +375,6 @@ Every route in the app already exists as a starter page, so most work is "replac
 | `/discussions/new` | New Post | Signed in + assessment finished |
 | `/discussions/:postId` | Post Detail | Signed in + assessment finished |
 | `/discussions/:postId/edit` | Edit Post | Signed in + assessment finished |
-| `/messages` | Messages | Signed in + assessment finished |
-| `/messages/:conversationId` | Conversation | Signed in + assessment finished |
 | `*` | Not Found | Everyone |
 
 Guards are unchanged from before this refactor — see `src/app/router/AppRoutes.tsx` and

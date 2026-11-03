@@ -58,7 +58,6 @@ test.describe('Dev sign-in and assessment shortcuts', () => {
       ['/discussions/new', 'New Post'],
       ['/discussions/post_0001', 'How did you negotiate your first offer?'],
       ['/discussions/post_seed_1/edit', 'Edit Post'],
-      ['/messages', 'Messages'],
       ['/profile', 'Profile'],
     ];
 

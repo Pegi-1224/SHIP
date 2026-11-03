@@ -17,7 +17,6 @@ import {
   NewPostPage,
   PostDetailPage,
 } from '@/features/discussions';
-import { ConversationListPage, ConversationPage } from '@/features/messages';
 import { ProfilePage } from '@/features/profile';
 import { RedirectIfAuthenticated, RequireAuth } from './guards';
 import { NotFoundPage } from './NotFoundPage';
@@ -97,9 +96,6 @@ export function AppRoutes() {
         <Route path={routePatterns.discussionNew} element={<NewPostPage />} />
         <Route path={routePatterns.discussionDetail} element={<PostDetailPage />} />
         <Route path={routePatterns.discussionEdit} element={<EditPostPage />} />
-
-        <Route path={routePatterns.messages} element={<ConversationListPage />} />
-        <Route path={routePatterns.conversation} element={<ConversationPage />} />
 
         <Route path={routePatterns.notFound} element={<NotFoundPage />} />
       </Route>

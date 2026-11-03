@@ -10,7 +10,7 @@ import { AppRoutes } from './router/AppRoutes';
  *
  * Note: the finished-design instruction walkthrough
  * (`src/features/onboarding/components/InstructionWalkthrough.tsx`) is no
- * longer auto-mounted here. It is a polished, six-step tour built for the
+ * longer auto-mounted here. It is a polished, five-step tour built for the
  * finished page designs, which are being redone as starter pages - mounting
  * it automatically would pop a fully designed modal on top of placeholder
  * screens. The component itself is preserved and still exported from

@@ -27,6 +27,36 @@ a finished design — each one shows a `StarterPage` placeholder instead (see
 
 ---
 
+## 2026-11-03 — Direct messages removed
+
+Direct messages are no longer part of the product, so the whole feature was deleted:
+
+- **Deleted:** `src/features/messages/` (the two placeholder pages, the API functions and hooks,
+  `useStartConversationFlow`), `src/mocks/handlers/messages.ts`, `src/shared/types/message.ts`.
+- **Routes and navigation:** `/messages` and `/messages/:conversationId` (routes, path builders),
+  the "Messages" entry in the header's Profile menu, the Messages links on Home's dev index and on
+  the Profile starter page, the `messages` query keys.
+- **Avatars are no longer clickable.** `AnonymousAvatar` lost `onStartConversation` and
+  `disabledReason`, `PostCard` lost `onStartConversation` and `messagingDisabledReason`, and
+  `CommentSection` no longer starts a conversation. The avatar is now a plain, non-interactive icon.
+- **Mock backend:** conversations and messages left the mock database (`DB_VERSION` bumped to 2 so a
+  stale saved copy is discarded) and the account-deletion cascade; the simulated replies and the
+  `!fail` QA affordance (DQ-13, DQ-14) went with the handler.
+- **Instruction walkthrough:** the "Messages" step was removed, so the tour is five steps.
+- **Account deletion** copy no longer lists "your direct messages".
+- **Docs:** README, `api-contract.md` (the Messages section and open question 8),
+  `backend-integration.md` (§3.5, §5, the migration table, the checklist), `feature-checklist.md`
+  (§5), `component-reference.md` and `decisions-and-questions.md`. Earlier entries below are left as
+  they were: they describe what was true at the time.
+
+The backend removed its `/messages/*` endpoints and tables separately (branch `backend`).
+
+**Verified:** lint, typecheck and 158 unit tests pass (4 fewer: the two message routes were in the
+signed-out and signed-in route lists). The Playwright suite was edited (the `/messages` entry) but
+not run.
+
+---
+
 ## 2026-11-03 — Assessment page built
 
 **What:** `/assessment` is now the real five-question form (spec 3.3), one question per screen with

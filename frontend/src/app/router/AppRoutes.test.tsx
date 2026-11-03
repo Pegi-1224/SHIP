@@ -6,7 +6,7 @@
  * "temporary, documented state" note in `AppRoutes.tsx` and
  * `docs/decisions-and-questions.md` DQ-19), and - because MSW is configured
  * to throw on an unhandled request (`src/test/setup.ts`) - a placeholder page
- * that accidentally fetched company data, discussion content or messages
+ * that accidentally fetched company data or discussion content
  * would fail these tests immediately. That is the "no unwanted API calls"
  * check for this refactor.
  *
@@ -39,8 +39,6 @@ const ALL_ROUTES: Array<[string, string]> = [
   ['/discussions/new', 'New Post'],
   ['/discussions/post_0001', 'How did you negotiate your first offer?'],
   ['/discussions/post_seed_1/edit', 'Edit Post'],
-  ['/messages', 'Messages'],
-  ['/messages/conv_1', 'Conversation'],
 ];
 
 // /assessment is a real page behind RequireAuth, so a signed-out visitor is sent to log in.

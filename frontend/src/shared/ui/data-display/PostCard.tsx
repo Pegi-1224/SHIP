@@ -10,14 +10,6 @@ import styles from './PostCard.module.css';
 
 export interface PostCardProps {
   post: Post;
-  /**
-   * Starts a direct message with the author (spec 3.4). Omit it for signed-out
-   * visitors, who cannot send messages, so the avatar stays non-interactive
-   * rather than becoming a button that does nothing.
-   */
-  onStartConversation?: ((post: Post) => void) | undefined;
-  /** Why messaging is unavailable, shown as the avatar's tooltip. */
-  messagingDisabledReason?: string;
   /** Signed-out previews link to sign-in instead of the post. */
   linkTo?: string;
 }
@@ -29,22 +21,11 @@ export interface PostCardProps {
  * The body is rendered as plain text. There is no markdown or HTML pipeline, so
  * user content cannot inject markup.
  */
-export function PostCard({
-  post,
-  onStartConversation,
-  messagingDisabledReason,
-  linkTo,
-}: PostCardProps) {
+export function PostCard({ post, linkTo }: PostCardProps) {
   return (
     <Paper component="article" withBorder p="md" className={styles.card}>
       <Group align="flex-start" wrap="nowrap" gap="md">
-        <AnonymousAvatar
-          identity={post.author}
-          onStartConversation={
-            onStartConversation ? () => onStartConversation(post) : undefined
-          }
-          disabledReason={onStartConversation ? undefined : messagingDisabledReason}
-        />
+        <AnonymousAvatar identity={post.author} />
 
         <Stack gap="xs" className={styles.body}>
           <div>

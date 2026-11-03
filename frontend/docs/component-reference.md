@@ -45,7 +45,7 @@ Directory: `app/layouts/`
 - Left: SHIP logo → Home.
 - Middle: a search bar that depends on the page — company search on Home and `/companies`,
   discussion search on `/discussions/*`, nothing elsewhere. Only shown when signed in.
-- Right: **Home · Discussions · Profile ▾** (menu: My profile, Messages, Sign out). Signed-out
+- Right: **Home · Discussions · Profile ▾** (menu: My profile, Sign out). Signed-out
   visitors see **Sign up** instead of Profile.
 
 **How to call:** Already rendered by `AppLayout`; you never place it yourself.
@@ -100,7 +100,7 @@ Enter submits. Fires `onSearch` on submit, not on every keystroke.
   onSearch={(q) => navigate(paths.companiesSearch(q))}
 />
 ```
-**Recommended use:** Header (already used), Company search page, Discussions page, Messages list.
+**Recommended use:** Header (already used), Company search page, Discussions page.
 
 #### `TagSelector`
 **Function:** Pick existing tags or type new ones, with suggestions and a maximum count.
@@ -133,7 +133,7 @@ Enter submits. Fires `onSearch` on submit, not on every keystroke.
 ```tsx
 <SubmitButton isPending={createPost.isPending} pendingLabel="Publishing…">Publish</SubmitButton>
 ```
-**Recommended use:** Every form — sign in, assessment, new post, comment, company submission, send message.
+**Recommended use:** Every form — sign in, assessment, new post, comment, company submission.
 
 #### `ConfirmDialog`
 **Function:** An "Are you sure?" pop-up. `tone="danger"` makes the confirm button red.
@@ -206,22 +206,15 @@ that aren't tied to a form.
 **Recommended use:** Company search results, Home recommendations, Compare page.
 
 #### `PostCard`
-**Function:** A post preview: title, excerpt, tags, anonymous author, optional "Message" button.
+**Function:** A post preview: title, excerpt, tags and anonymous author.
 
 | Prop | Type | Notes |
 | --- | --- | --- |
 | `post` | `Post` | **Required** |
 | `linkTo` | `string` | Where clicking goes, e.g. `paths.discussionDetail(post.id)` |
-| `onStartConversation` | `(post: Post) => void` | Shows a "Message author" button |
-| `messagingDisabledReason` | `string` | Explains why messaging is unavailable |
 
 ```tsx
-const { startWith } = useStartConversationFlow();
-<PostCard
-  post={post}
-  linkTo={paths.discussionDetail(post.id)}
-  onStartConversation={(p) => startWith(p.author.id)}
-/>
+<PostCard post={post} linkTo={paths.discussionDetail(post.id)} />
 ```
 **Recommended use:** Discussions feed, Home ("recent posts"), Profile ("my posts").
 
@@ -286,16 +279,14 @@ source name, contributor count and last submission date. The two must always loo
 **Recommended use:** Post cards, post detail, tag filters on Discussions.
 
 #### `AnonymousAvatar`
-**Function:** A coloured anonymous icon + name (e.g. "Anonymous Finch"). Optionally starts a private chat.
+**Function:** A coloured anonymous icon for an author (e.g. "Anonymous Finch"). Not clickable.
 
 | Prop | Type | Notes |
 | --- | --- | --- |
 | `identity` | `AnonymousIdentity` | **Required** |
 | `size` | `number` | |
-| `onStartConversation` | `() => void` | Makes it clickable to message the person |
-| `disabledReason` | `string` | Why messaging is off (e.g. it's you) |
 
-**Recommended use:** Post authors, comments, conversation list, chat header.
+**Recommended use:** Post authors and comments.
 
 ### 2.4 Page states — `shared/ui/states/`
 
@@ -487,15 +478,6 @@ call the mock backend today and will call the real backend later without any cha
 | --- | --- | --- | --- |
 | `useRecommendations` | data | Recommended companies and posts | `useRecommendations()` |
 | `useClearReadHistory` | action | Reset reading history | `.mutate()` |
-
-### Messages — `features/messages/hooks/`
-| Hook | Type | Function | Call |
-| --- | --- | --- | --- |
-| `useConversations` | data | The user's conversations | `useConversations()` |
-| `useConversation` | data | One conversation's messages | `useConversation(conversationId)` |
-| `useSendMessage` | action | Send a message | `useSendMessage(conversationId).mutate({ body, clientMessageId })` |
-| `useStartConversation` | action | Open or create a conversation | `.mutate({ anonymousId })` |
-| `useStartConversationFlow` ⭐ | helper | Open/create a conversation **and go to it**, with error toast | `const { startWith, isPending } = useStartConversationFlow(); startWith(author.id)` |
 
 ### Profile — `features/profile/hooks/useProfile.ts`
 | Hook | Type | Function | Call |

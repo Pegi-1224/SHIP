@@ -46,7 +46,6 @@ export function ProfilePage() {
           { to: paths.assessment(), label: 'Retake assessment' },
           { to: paths.companies(), label: 'Companies' },
           { to: paths.discussions(), label: 'Discussions' },
-          { to: paths.messages(), label: 'Messages' },
         ]}
       />
     </StarterPage>

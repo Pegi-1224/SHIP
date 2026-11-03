@@ -242,19 +242,6 @@ function DevIndex() {
         ]}
       />
 
-      <div>
-        <RelatedLinks
-          heading="Messages (guarded + assessment)"
-          links={[{ to: paths.messages(), label: 'Conversation list' }]}
-        />
-        <Text size="xs" c="dimmed" mt={4}>
-          There is no seeded conversation id: conversations are created at runtime when someone
-          messages a post's author. Open the conversation list to see the empty state, or see{' '}
-          <code>src/features/messages/hooks/useStartConversationFlow.ts</code> for how one gets
-          created.
-        </Text>
-      </div>
-
       <RelatedLinks heading="Account" links={[{ to: paths.profile(), label: 'Profile' }]} />
     </Stack>
   );

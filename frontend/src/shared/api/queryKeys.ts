@@ -50,11 +50,6 @@ export const queryKeys = {
     recommendations: ['home', 'recommendations'] as const,
     publicPreview: ['home', 'public-preview'] as const,
   },
-  messages: {
-    all: ['messages'] as const,
-    conversations: ['messages', 'conversations'] as const,
-    conversation: (conversationId: string) => ['messages', 'conversation', conversationId] as const,
-  },
   profile: {
     all: ['profile'] as const,
     activity: ['profile', 'activity'] as const,

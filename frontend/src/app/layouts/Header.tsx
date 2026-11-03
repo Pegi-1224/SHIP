@@ -1,7 +1,7 @@
 import { NavLink, useLocation, useNavigate, useSearchParams } from 'react-router-dom';
 import { Avatar, Button, Menu } from '@mantine/core';
 import { useDebouncedCallback } from '@mantine/hooks';
-import { LogOut, MessageCircle, User } from 'lucide-react';
+import { LogOut, User } from 'lucide-react';
 import { paths, routePatterns } from '@/shared/config/paths';
 import { SearchInput } from '@/shared/ui';
 import { useAuth } from '@/app/providers/useAuth';
@@ -96,8 +96,7 @@ export function Header() {
     if (search) navigate(search.toPath(query), { replace: true });
   }, LIVE_SEARCH_DELAY_MS);
 
-  const isProfileArea =
-    pathname.startsWith(routePatterns.profile) || pathname.startsWith(routePatterns.messages);
+  const isProfileArea = pathname.startsWith(routePatterns.profile);
 
   return (
     <header className={styles.header}>
@@ -150,12 +149,6 @@ export function Header() {
                   onClick={() => navigate(paths.profile())}
                 >
                   My profile
-                </Menu.Item>
-                <Menu.Item
-                  leftSection={<MessageCircle size={14} />}
-                  onClick={() => navigate(paths.messages())}
-                >
-                  Messages
                 </Menu.Item>
                 <Menu.Divider />
                 <Menu.Item

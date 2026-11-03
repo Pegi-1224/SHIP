@@ -3,7 +3,6 @@ import { Button, Group, Modal, Progress, Stack, Text, Title } from '@mantine/cor
 import {
   Building2,
   Home,
-  MessageCircle,
   MessagesSquare,
   Scale,
   User,
@@ -39,11 +38,6 @@ const STEPS: Step[] = [
     icon: Scale,
     title: 'Compare',
     body: 'Put two companies side by side. We only compare figures that measure the same thing, and we say so when we cannot.',
-  },
-  {
-    icon: MessageCircle,
-    title: 'Messages',
-    body: 'Tap the avatar on any post to message the author. Both of you stay anonymous - no names, no email addresses.',
   },
   {
     icon: User,

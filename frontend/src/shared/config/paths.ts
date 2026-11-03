@@ -24,8 +24,6 @@ export const routePatterns = {
   discussionNew: '/discussions/new',
   discussionDetail: '/discussions/:postId',
   discussionEdit: '/discussions/:postId/edit',
-  messages: '/messages',
-  conversation: '/messages/:conversationId',
   profile: '/profile',
   notFound: '*',
 } as const;
@@ -80,9 +78,6 @@ export const paths = {
   discussionNew: () => '/discussions/new',
   discussionDetail: (postId: string) => `/discussions/${postId}`,
   discussionEdit: (postId: string) => `/discussions/${postId}/edit`,
-
-  messages: () => '/messages',
-  conversation: (conversationId: string) => `/messages/${conversationId}`,
 
   profile: () => '/profile',
 } as const;

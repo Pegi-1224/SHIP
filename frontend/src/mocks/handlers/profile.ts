@@ -4,7 +4,7 @@
  * `DELETE /me` performs the whole cascade on the server, in one operation:
  * the user's posts, every comment on those posts (including other people's),
  * their own comments elsewhere, their company submissions, both sides of every
- * conversation they took part in, their assessment, their read history and
+ * their assessment, their read history and
  * their sessions. Removing the submissions is what makes the affected company
  * aggregates recompute, since aggregation reads live rows.
  *
@@ -123,19 +123,6 @@ export const profileHandlers = [
     // Company submissions. Dropping these is what recomputes the aggregates,
     // which can push a metric back below the privacy threshold (spec 6.6, T2).
     data.submissions = data.submissions.filter((submission) => submission.userId !== userId);
-
-    // Conversations, deleted for both participants.
-    const ownConversationIds = new Set(
-      data.conversations
-        .filter((conversation) => conversation.participantIds.includes(userId))
-        .map((conversation) => conversation.id),
-    );
-    data.conversations = data.conversations.filter(
-      (conversation) => !ownConversationIds.has(conversation.id),
-    );
-    data.messages = data.messages.filter(
-      (message) => !ownConversationIds.has(message.conversationId),
-    );
 
     // Assessment, read history, sessions and the account itself.
     data.assessments = data.assessments.filter((item) => item.userId !== userId);

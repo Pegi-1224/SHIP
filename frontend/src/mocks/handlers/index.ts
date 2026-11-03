@@ -12,7 +12,6 @@ import { companyHandlers } from './companies';
 import { demoSearchHandlers } from './demoSearch';
 import { discussionHandlers } from './discussions';
 import { homeHandlers } from './home';
-import { messageHandlers } from './messages';
 import { profileHandlers } from './profile';
 
 export const handlers = [
@@ -22,6 +21,5 @@ export const handlers = [
   ...demoSearchHandlers,
   ...discussionHandlers,
   ...homeHandlers,
-  ...messageHandlers,
   ...profileHandlers,
 ];
