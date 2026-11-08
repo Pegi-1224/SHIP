@@ -1,6 +1,27 @@
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import { keepPreviousData, useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { queryKeys } from '@/shared/api';
-import { clearReadHistory, fetchRecommendations } from '../api/homeApi';
+import {
+  clearReadHistory,
+  fetchForYou,
+  fetchRecommendations,
+  fetchTrendingTags,
+} from '../api/homeApi';
+
+/** One page of the Home feed; keeps the current posts on screen while Refresh loads the next. */
+export function useForYouFeed(offset: number) {
+  return useQuery({
+    queryKey: queryKeys.demoSearch.forYou(offset),
+    queryFn: ({ signal }) => fetchForYou(offset, signal),
+    placeholderData: keepPreviousData,
+  });
+}
+
+export function useTrendingTags() {
+  return useQuery({
+    queryKey: queryKeys.demoSearch.trendingTags,
+    queryFn: ({ signal }) => fetchTrendingTags(signal),
+  });
+}
 
 export function useRecommendations(enabled = true) {
   return useQuery({

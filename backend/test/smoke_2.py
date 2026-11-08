@@ -9,6 +9,13 @@ import urllib.error
 import urllib.request
 from datetime import datetime, timedelta, timezone
 
+# How many companies the seed loads; the demo data grows as companies are added on the site.
+SEED_DATA = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "src", "db", "seed-data")
+with open(os.path.join(SEED_DATA, "companies.json"), encoding="utf-8") as f:
+    DEMO_COMPANIES = len(json.load(f))
+with open(os.path.join(SEED_DATA, "formal-companies.json"), encoding="utf-8") as f:
+    FORMAL_COMPANIES = len(json.load(f))
+
 BASE = os.environ.get("API_BASE", "http://localhost:3000/api")
 results = []
 
@@ -54,7 +61,7 @@ s, r = call("GET", "/companies")
 check("companies without token -> 401", s == 401, (s, r))
 s, r = call("GET", "/companies?pageSize=100", token=ua)
 names = [c["name"] for c in r["items"]]
-check("list: 18 companies (10 demo + 8 formal), sorted by name, contract shape", s == 200 and r["total"] == 18 and names == sorted(names, key=str.lower) and set(r["items"][0]) == {"id", "name", "website", "industry", "headquartersCity", "isDemoFixture"}, (s, r["total"], names[:3]))
+check(f"list: {DEMO_COMPANIES + FORMAL_COMPANIES} companies ({DEMO_COMPANIES} demo + {FORMAL_COMPANIES} formal), sorted by name, contract shape", s == 200 and r["total"] == DEMO_COMPANIES + FORMAL_COMPANIES and names == sorted(names, key=str.lower) and set(r["items"][0]) == {"id", "name", "website", "industry", "headquartersCity", "isDemoFixture"}, (s, r["total"], names[:3]))
 s, r = call("GET", "/companies?q=northwind", token=ua)
 check("search 'northwind' finds Northwind Systems", s == 200 and [c["id"] for c in r["items"]] == ["northwind-systems"], (s, r))
 s, r = call("GET", "/companies?q=Tech&pageSize=100", token=ua)
@@ -199,7 +206,7 @@ check("...and exactly one active row in the database", sql(f"SELECT count(*) FRO
 
 # demo isolation
 s, r = call("GET", "/demo/companies")
-check("/demo/companies still only the 10 demo records", s == 200 and r["total"] == 10, (s, r["total"]))
+check(f"/demo/companies still only the {DEMO_COMPANIES} demo records", s == 200 and r["total"] == DEMO_COMPANIES, (s, r["total"]))
 s, r = call("GET", "/demo/companies/northwind-systems")
 check("/demo/companies/:id 404s for non-demo companies", s == 404, (s, r))
 

@@ -1,0 +1,273 @@
+/*
+ * "Start a discussion" page. Measurements follow the UI design's 1440px frame:
+ * a 730.8px column at x = 352.8 (centred), the heading at y = 111.6, the white
+ * editor card from y = 216 (662.4px tall when nothing is flagged), then Cancel
+ * and Post on the right 21.6px below it.
+ */
+
+.page {
+  width: 100%;
+  max-width: 730.8px;
+  margin: 0 auto;
+  /* The layout pads 24px; the design's heading sits ~47px below the 64.8px bar. */
+  padding-top: 22.8px;
+}
+
+.title {
+  margin: 0;
+  color: var(--ship-color-text);
+  font-family: var(--ship-font-display);
+  font-size: 40.68px;
+  font-weight: 700;
+  line-height: 1.4;
+}
+
+.subtitle {
+  margin: 0;
+  color: var(--ship-color-text-muted);
+  font-size: 16.2px;
+  font-weight: 400;
+  line-height: 1.4;
+}
+
+.card {
+  display: flex;
+  flex-direction: column;
+  margin-top: 23.6px;
+  padding: 28.8px 28.8px 36px;
+  border-radius: 18px;
+  background-color: var(--ship-color-surface);
+  box-shadow: var(--ship-shadow-panel);
+}
+
+/* --- Fields --------------------------------------------------------------- */
+
+.label {
+  display: block;
+  margin: 0;
+  padding: 0;
+  color: var(--ship-color-text);
+  font-size: 13.68px;
+  font-weight: 700;
+  line-height: 1.4;
+}
+
+/* Gap from one field's box to the next label (title box ends 108, "Your post" at 129.6). */
+.field + .field {
+  margin-top: 21.6px;
+}
+
+/* The tag picker sits a little further down (post box ends 370.8, tags label at 399.6). */
+.field.spaced {
+  margin-top: 28.8px;
+}
+
+.input,
+.textarea {
+  display: block;
+  width: 100%;
+  margin-top: 9.6px;
+  padding: 14.4px;
+  border: 1.8px solid var(--ship-primary-200);
+  border-radius: 10.8px;
+  background-color: var(--ship-color-surface);
+  color: var(--ship-color-text);
+  font: inherit;
+  font-size: 14.4px;
+  font-weight: 400;
+  line-height: 1.4;
+  outline: none;
+  transition: border-color 120ms ease;
+}
+
+.input {
+  height: 50.4px;
+}
+
+.textarea {
+  min-height: 212.4px;
+  font-size: 14.76px;
+  resize: vertical;
+}
+
+.input::placeholder,
+.textarea::placeholder {
+  color: var(--ship-color-text-muted);
+  opacity: 1;
+}
+
+.input:focus,
+.textarea:focus {
+  border-color: var(--ship-primary-600);
+}
+
+/* A field with a banned word or another problem (UI design: #E43732). */
+.invalid.invalid {
+  border-color: var(--ship-color-banned);
+}
+
+.error {
+  margin: 14.4px 0 0;
+  color: var(--ship-color-banned);
+  font-size: 12.24px;
+  font-weight: 400;
+  line-height: 1.4;
+}
+
+/* --- Tags ----------------------------------------------------------------- */
+
+.fieldset {
+  min-width: 0;
+  margin-inline: 0;
+  padding: 0;
+  border: 0;
+}
+
+.tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10.8px;
+  margin-top: 9.6px;
+}
+
+.tag {
+  height: 28.8px;
+  padding: 0 14.4px;
+  border: 1.8px solid var(--ship-primary-200);
+  border-radius: 18px;
+  background-color: var(--ship-color-surface);
+  color: var(--ship-color-text);
+  font: inherit;
+  font-size: 11.16px;
+  font-weight: 700;
+  line-height: 1.4;
+  cursor: pointer;
+  transition:
+    background-color 120ms ease,
+    border-color 120ms ease;
+}
+
+.tag:hover {
+  border-color: var(--ship-primary-300);
+}
+
+.tag[aria-pressed='true'] {
+  border-color: var(--ship-primary-600);
+  background-color: var(--ship-primary-600);
+  color: #ffffff;
+}
+
+/* "Create a new tag" sits 64.8px under the chips (428.4 + 28.8 -> 522). */
+.field.newTag {
+  margin-top: 36px;
+}
+
+.newTagRow {
+  display: flex;
+  gap: 14.4px;
+  margin-top: 9.6px;
+}
+
+.newTagRow .input {
+  flex: 0 1 424.8px;
+  min-width: 0;
+  margin-top: 0;
+}
+
+/* --- Buttons -------------------------------------------------------------- */
+
+.button {
+  display: inline-flex;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+  height: 50.4px;
+  padding: 10px 24px;
+  border: 1.8px solid var(--ship-primary-200);
+  border-radius: 10.8px;
+  background-color: var(--ship-color-surface);
+  color: var(--ship-primary-600);
+  font: inherit;
+  font-weight: 700;
+  line-height: 1;
+  cursor: pointer;
+  transition:
+    background-color 120ms ease,
+    border-color 120ms ease,
+    transform 120ms ease;
+}
+
+.button:hover:not(:disabled) {
+  border-color: var(--ship-primary-300);
+  background-color: var(--ship-primary-50);
+}
+
+.button:active:not(:disabled) {
+  transform: translateY(1px);
+}
+
+.button:disabled {
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+.addButton {
+  width: 79.2px;
+  font-size: 14.4px;
+}
+
+.actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 14.4px;
+  margin-top: 21.6px;
+}
+
+.actions .button {
+  min-width: 82.8px;
+  font-size: 16.2px;
+}
+
+.cancel {
+  min-width: 104.4px;
+}
+
+.primary.primary {
+  border-color: var(--ship-primary-600);
+  background-color: var(--ship-primary-600);
+  color: #ffffff;
+}
+
+.primary.primary:hover:not(:disabled) {
+  border-color: var(--ship-primary-700);
+  background-color: var(--ship-primary-700);
+}
+
+.notice {
+  margin: 21.6px 0 0;
+  padding: 14.4px;
+  border-radius: 10.8px;
+  background-color: var(--ship-color-danger-bg);
+  color: var(--ship-color-danger);
+  font-size: 13.68px;
+  line-height: 1.4;
+}
+
+.notice a {
+  color: inherit;
+  font-weight: 700;
+}
+
+@media (max-width: 640px) {
+  .title {
+    font-size: 32px;
+  }
+
+  .card {
+    padding: 20px 16px 24px;
+  }
+
+  .newTagRow .input {
+    flex: 1 1 auto;
+  }
+}

@@ -12,18 +12,19 @@ export const CAREER_STAGES = [
 export type CareerStage = (typeof CAREER_STAGES)[number];
 
 export const CAREER_STAGE_LABELS: Record<CareerStage, string> = {
-  student_or_internship: 'Student / looking for an internship',
-  looking_for_full_time: 'Looking for a full-time role',
+  student_or_internship: 'Student / looking for internship',
+  looking_for_full_time: 'Looking for full-time',
   employed_looking_to_switch: 'Employed and looking to switch',
   employed_and_staying: 'Employed and staying',
 };
 
-/** Assessment question 2 offers a narrower industry list than company records. */
+/** Assessment question 2: every industry a company record can have. */
 export const ASSESSMENT_INDUSTRIES = [
   'Tech',
   'Finance',
   'Consulting',
   'Healthcare',
+  'Entertainment',
   'Other',
 ] as const satisfies readonly Industry[];
 
@@ -41,7 +42,7 @@ export type PriorityId = (typeof PRIORITIES)[number];
 
 export const PRIORITY_LABELS: Record<PriorityId, string> = {
   pay_equity: 'Pay equity',
-  promotion_and_leadership: 'Promotion and leadership',
+  promotion_and_leadership: 'Promotion & leadership',
   supportive_manager: 'Supportive manager',
   parental_leave: 'Maternity / parental leave',
   benefits: 'Benefits',
@@ -57,17 +58,20 @@ export const ASSESSMENT_TOPIC_TAGS = [
   'career goals',
   'negotiation',
   'harassment support',
+  'benefits',
+  'work-life balance',
 ] as const satisfies readonly TagName[];
+export type AssessmentTopic = (typeof ASSESSMENT_TOPIC_TAGS)[number];
 
 export interface AssessmentAnswers {
   /** Q1 - single choice, required. */
   stage: CareerStage;
-  /** Q2 - multiple choice, required, at least one. */
+  /** Q2 - multiple choice, required, at least one. Picks the Home company suggestion. */
   industries: Industry[];
   /** Q3 - at most 3, required, at least one. Feeds home recommendations. */
   priorities: PriorityId[];
-  /** Q4 - multiple choice, required, at least one. Feeds home recommendations. */
-  topics: TagName[];
+  /** Q4 - 1 to 3 of `ASSESSMENT_TOPIC_TAGS`, required. Shown as "Your topics" on Home. */
+  topics: AssessmentTopic[];
   /** Q5 - optional. Company ids the user follows. */
   followedCompanyIds: string[];
 }

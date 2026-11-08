@@ -23,16 +23,23 @@ export function CompanyDetails({ company }: { company: CompanyRecord }) {
       </h2>
       <div className={styles.detailsGrid}>
         <Block title="Contact">
-          <p className={styles.detailsText}>
-            {company.address}
-            <br />
-            <a href={`mailto:${company.email}`}>{company.email}</a>
-            <br />
-            {company.phone}
-          </p>
+          {company.address || company.email || company.phone ? (
+            <p className={styles.detailsText}>
+              {company.address}
+              <br />
+              {company.email ? <a href={`mailto:${company.email}`}>{company.email}</a> : null}
+              <br />
+              {company.phone}
+            </p>
+          ) : (
+            <p className={styles.detailsText}>Not published yet.</p>
+          )}
         </Block>
 
         <Block title="Contact list">
+          {company.contacts.length === 0 ? (
+            <p className={styles.detailsText}>Not published yet.</p>
+          ) : null}
           <ul className={styles.detailsList}>
             {company.contacts.map((contact) => (
               <li key={contact.email}>
@@ -44,6 +51,9 @@ export function CompanyDetails({ company }: { company: CompanyRecord }) {
         </Block>
 
         <Block title="Sources">
+          {company.sources.length === 0 ? (
+            <p className={styles.detailsText}>None yet. Added by a SHIP member.</p>
+          ) : null}
           <ul className={styles.detailsList}>
             {company.sources.map((source) => (
               <li key={source.url}>

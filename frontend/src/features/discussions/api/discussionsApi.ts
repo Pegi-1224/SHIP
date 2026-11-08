@@ -12,6 +12,7 @@ import type {
   UpdatePostInput,
 } from '@/shared/types/discussion';
 import type { CommentPreview, PostPreview, SearchHit } from '@/shared/types/demoSearch';
+import type { DemoPostInput } from '@/shared/utils/demoPosts';
 
 export function fetchPosts(params: PostListParams, signal?: AbortSignal): Promise<Paginated<Post>> {
   return api.get<Paginated<Post>>('/discussions/posts', {
@@ -108,6 +109,22 @@ export function fetchDemoComments(
   signal?: AbortSignal,
 ): Promise<{ items: CommentPreview[]; total: number }> {
   return api.get(`/demo/posts/${encodeURIComponent(postId)}/comments`, { auth: false, signal });
+}
+
+export interface DemoPostResult {
+  post: PostPreview;
+  /** False when no dev server could write posts.json; the post lasts until reload. */
+  savedToFile: boolean;
+}
+
+/** Publishes a post as the signed-in user, under their anonymous handle. */
+export function createDemoPost(input: DemoPostInput): Promise<DemoPostResult> {
+  return api.post('/demo/posts', input);
+}
+
+/** Edits one of the signed-in user's own posts. */
+export function updateDemoPost(postId: string, input: DemoPostInput): Promise<DemoPostResult> {
+  return api.put(`/demo/posts/${encodeURIComponent(postId)}`, input);
 }
 
 /** Adds a comment as the signed-in user. */

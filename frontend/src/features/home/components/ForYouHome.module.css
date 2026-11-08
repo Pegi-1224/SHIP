@@ -1,0 +1,344 @@
+/*
+ * Signed-in Home. Measurements follow the UI design's 1440px frame: the feed
+ * column from x = 158.4 to 950.4 ("FOR YOU" at y = 93.6, the greeting at
+ * 118.8, Refresh 122.4 x 43.2 on its right), then a 298.8px column at
+ * x = 979.2 with the company box (y = 97.2), "Your topics" (540) and the
+ * trending tags (774).
+ */
+
+.layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 298.8px;
+  gap: 28.8px;
+  align-items: start;
+  /* The layout pads 24px; "FOR YOU" sits 28.8px below the 64.8px bar. */
+  margin-top: 4.8px;
+}
+
+/* --- Feed column ---------------------------------------------------------- */
+
+.eyebrow {
+  margin: 0;
+  color: var(--ship-color-text-muted);
+  font-size: 11.52px;
+  font-weight: 700;
+  line-height: 1.4;
+  letter-spacing: 0;
+}
+
+.greetingRow {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--ship-space-4);
+  margin-top: 9.2px;
+}
+
+.greeting {
+  margin: 0;
+  min-width: 0;
+  color: var(--ship-color-text);
+  font-family: var(--ship-font-display);
+  font-size: 37.8px;
+  font-weight: 700;
+  line-height: 1.4;
+  overflow-wrap: anywhere;
+}
+
+.refresh {
+  display: inline-flex;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  width: 122.4px;
+  height: 43.2px;
+  padding: 10px;
+  border: 1.8px solid var(--ship-primary-200);
+  border-radius: 10.8px;
+  background-color: var(--ship-color-surface);
+  color: var(--ship-primary-600);
+  font: inherit;
+  font-size: 14.4px;
+  font-weight: 700;
+  line-height: 1;
+  cursor: pointer;
+  transition:
+    background-color 120ms ease,
+    border-color 120ms ease,
+    transform 120ms ease;
+}
+
+.refresh:hover:not(:disabled) {
+  border-color: var(--ship-primary-300);
+  background-color: var(--ship-primary-50);
+}
+
+.refresh:active:not(:disabled) {
+  transform: translateY(1px);
+}
+
+.refresh:disabled {
+  cursor: progress;
+  opacity: 0.7;
+}
+
+.feed {
+  display: flex;
+  flex-direction: column;
+  gap: 14.4px;
+  margin-top: 21.6px;
+}
+
+.notice {
+  margin: 0;
+  padding: var(--ship-space-6);
+  border-radius: 18px;
+  background-color: var(--ship-color-surface);
+  color: var(--ship-color-text-muted);
+  text-align: center;
+}
+
+/* --- Right column --------------------------------------------------------- */
+
+.aside {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  margin-top: 3.6px;
+}
+
+/* "Look up a company" */
+.spotlight {
+  display: flex;
+  flex-direction: column;
+  min-height: 424.8px;
+  padding: 25.2px;
+  border-radius: 18px;
+  background: var(--ship-gradient-banner);
+  color: #ffffff;
+}
+
+.spotlightTitle {
+  margin: 0;
+  font-size: 18.72px;
+  font-weight: 800;
+  line-height: 1.4;
+}
+
+.spotlightHint {
+  margin: 6px 0 0;
+  color: rgb(255 255 255 / 80%);
+  font-size: 12.24px;
+  line-height: 1.4;
+}
+
+.spotlightCard {
+  min-height: 216px;
+  margin-top: auto;
+  padding: 16.2px 18px;
+  border-radius: 10.8px;
+  background-color: var(--ship-color-surface);
+  color: var(--ship-color-text);
+}
+
+.companyName {
+  margin: 0;
+  font-size: 15.84px;
+  font-weight: 800;
+  line-height: 1.4;
+}
+
+.companyMeta {
+  margin: 2px 0 0;
+  color: var(--ship-color-text-muted);
+  font-size: 11.52px;
+  line-height: 1.4;
+}
+
+.facts {
+  display: flex;
+  flex-direction: column;
+  gap: 7.2px;
+  margin: 12.6px 0 0;
+}
+
+.fact {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  font-size: 12.24px;
+  line-height: 1.4;
+}
+
+.fact dt {
+  color: var(--ship-color-text-muted);
+}
+
+.fact dd {
+  margin: 0;
+  overflow: hidden;
+  font-weight: 700;
+  text-align: right;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.muted {
+  margin: 0;
+  color: var(--ship-color-text-muted);
+  font-size: 12.24px;
+}
+
+.spotlightButton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 43.2px;
+  margin-top: 18px;
+  padding: 10px;
+  border-radius: 10.8px;
+  background-color: var(--ship-accent-blue);
+  color: #ffffff;
+  font-size: 14.4px;
+  font-weight: 700;
+  line-height: 1;
+  text-decoration: none;
+  transition:
+    background-color 120ms ease,
+    transform 120ms ease;
+}
+
+.spotlightButton:hover {
+  background-color: var(--ship-accent-blue-hover);
+}
+
+.spotlightButton:active {
+  background-color: var(--ship-accent-blue-pressed);
+  transform: translateY(1px);
+}
+
+/* "Your topics" and "Trending" */
+.panel {
+  padding: 21.6px 25.2px;
+  border-radius: 18px;
+  background-color: var(--ship-color-surface);
+  box-shadow: var(--ship-shadow-panel);
+}
+
+.panelTitle {
+  margin: 0;
+  color: var(--ship-color-text);
+  font-size: 17.64px;
+  font-weight: 800;
+  line-height: 1.4;
+}
+
+.topics {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 7.2px;
+  margin: 11px 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.topic {
+  display: inline-flex;
+  align-items: center;
+  height: 28.8px;
+  padding: 0 14.4px;
+  border-radius: 18px;
+  background-color: var(--ship-tag-bg);
+  color: var(--ship-tag-fg);
+  font-size: 11.16px;
+  font-weight: 700;
+  line-height: 1.4;
+  text-decoration: none;
+}
+
+.topic:hover {
+  background-color: var(--ship-primary-200);
+}
+
+.panelNote {
+  margin: 21.6px 0 0;
+  color: var(--ship-color-text-muted);
+  font-size: 11.16px;
+  line-height: 1.4;
+}
+
+.panelLink {
+  display: inline-block;
+  margin-top: 12.8px;
+  color: var(--ship-primary-600);
+  font-size: 12.24px;
+  font-weight: 700;
+  line-height: 1.4;
+  text-decoration: none;
+}
+
+.panelLink:hover {
+  text-decoration: underline;
+}
+
+.trending {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin: 10.8px 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.trendingRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  margin: 0 -8px;
+  padding: 5px 8px;
+  border-radius: 8px;
+  color: var(--ship-color-text);
+  font-size: 11.88px;
+  font-weight: 600;
+  line-height: 1.4;
+  text-decoration: none;
+}
+
+.trendingRow:hover {
+  background-color: var(--ship-primary-50);
+}
+
+.trendingCount {
+  color: var(--ship-color-text-muted);
+  font-weight: 400;
+}
+
+@media (max-width: 1024px) {
+  .layout {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .aside {
+    margin-top: 0;
+  }
+
+  .spotlight {
+    min-height: 0;
+  }
+
+  .spotlightCard {
+    margin-top: 18px;
+  }
+}
+
+@media (max-width: 480px) {
+  .greetingRow {
+    flex-direction: column;
+  }
+
+  .greeting {
+    font-size: 30px;
+  }
+}

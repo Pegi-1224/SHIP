@@ -1,0 +1,26 @@
+/* The age declaration on the sign-in card (UI design, Nov 2026). */
+
+.input {
+  width: 25.2px;
+  height: 25.2px;
+  border: 1.8px solid #e4dbfa;
+  border-radius: 7.2px;
+  cursor: pointer;
+}
+
+.input:checked {
+  border-color: #5b2acf;
+  background-color: #5b2acf;
+}
+
+.icon {
+  width: 14px;
+}
+
+.label {
+  padding-left: 14.4px;
+  color: #746d88;
+  font-size: 16.2px;
+  line-height: 1.4;
+  cursor: pointer;
+}

@@ -23,7 +23,8 @@ describe('PostDetailPage', () => {
       }),
     ).toBeInTheDocument();
     const post = screen.getByRole('article', { name: 'How did you negotiate your first offer?' });
-    expect(within(post).getByText('Alice_122')).toBeInTheDocument();
+    // Every author is shown as Anonymous; only their industry and city are public.
+    expect(within(post).getByText('Anonymous')).toBeInTheDocument();
     expect(within(post).getByText('Tech · Seattle')).toBeInTheDocument();
     expect(within(post).getByRole('link', { name: '#pay gap' })).toBeInTheDocument();
   });

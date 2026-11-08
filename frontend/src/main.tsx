@@ -22,13 +22,14 @@ async function startMockServiceWorker(): Promise<void> {
 
   // Dynamic import keeps the mock backend and its fixtures out of a build made
   // with VITE_ENABLE_MOCKS=false.
-  const { worker } = await import('@/mocks/browser');
+  const { worker, keepMockingActive } = await import('@/mocks/browser');
 
   await worker.start({
     // Vite's own asset requests must pass through untouched.
     onUnhandledFrame: 'bypass',
     serviceWorker: { url: `${import.meta.env.BASE_URL}mockServiceWorker.js` },
   });
+  keepMockingActive();
 
   console.info(
     '[SHIP] Mock API is running. Every company, post and message is fictional demo data. Set VITE_ENABLE_MOCKS=false to talk to a real backend.',

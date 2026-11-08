@@ -1,0 +1,64 @@
+/**
+ * Banned-word check for user text: post titles, post bodies and tags.
+ *
+ * PLACEHOLDER LIST. There is no real moderation dataset yet; these entries
+ * exist so the "word isn't allowed" flow can be tried in the demo (type
+ * "idiot" or "spamword" into a title, for example). The real list is owned by
+ * the backend and must not be shipped to the client - see
+ * docs/decisions-and-questions.md (DQ-07). Replace `BANNED_WORDS` when the
+ * dataset exists.
+ *
+ * Matching is by whole word (or whole phrase), ignoring case and punctuation,
+ * so "skill" does not trip on "kill" and "#Idiot!" still matches "idiot".
+ *
+ * This runs in the composer, the mock API and the Vite dev-server plugin, so
+ * it stays pure with no imports. It is a convenience, not a security control:
+ * the backend must run the authoritative check.
+ */
+
+export const BANNED_WORDS: readonly string[] = [
+  // Insults
+  'idiot',
+  'stupid',
+  'moron',
+  'dumb',
+  'loser',
+  'shut up',
+  // Harassment
+  'kill yourself',
+  'kys',
+  'go die',
+  // Spam
+  'spamword',
+  'buy followers',
+  'click here',
+  // Test entries
+  'slur',
+  'bannedexample',
+];
+
+/** Lower-case, every run of non-letters/digits becomes one space, padded at both ends. */
+function toWordString(text: string): string {
+  return ` ${text
+    .toLowerCase()
+    .replace(/[^\p{L}\p{N}]+/gu, ' ')
+    .trim()} `;
+}
+
+const BANNED_PATTERNS = BANNED_WORDS.map(toWordString);
+
+/** The first banned word or phrase in `text`, or `null` when it is clean. */
+export function findBannedWord(text: string): string | null {
+  const haystack = toWordString(text);
+  const index = BANNED_PATTERNS.findIndex((pattern) => haystack.includes(pattern));
+  return index === -1 ? null : (BANNED_WORDS[index] as string);
+}
+
+export function containsBannedWord(text: string): boolean {
+  return findBannedWord(text) !== null;
+}
+
+/** The message shown under a field that contains a banned word (UI design). */
+export function bannedWordMessage(field: 'title' | 'post' | 'tag'): string {
+  return `This ${field} contains a word that isn’t allowed. Please change it.`;
+}

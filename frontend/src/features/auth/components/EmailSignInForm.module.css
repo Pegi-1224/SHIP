@@ -1,0 +1,36 @@
+/* The email step, styled to the sign-in card (UI design, Nov 2026). */
+
+.label {
+  margin-bottom: 6px;
+  color: #1c1538;
+  font-size: 15.84px;
+  font-weight: 700;
+  line-height: 1.4;
+}
+
+.input {
+  height: 57.6px;
+  border: 1.8px solid #e4dbfa;
+  border-radius: 10.8px;
+  background-color: #ffffff;
+  color: #1c1538;
+  font-size: 16px;
+}
+
+.input:focus {
+  border-color: #5b2acf;
+}
+
+.submit {
+  height: 64.8px;
+  border-radius: 10.8px;
+  background-color: #5b2acf;
+  color: #ffffff;
+  font-size: 18.36px;
+  font-weight: 700;
+  line-height: 1;
+}
+
+.submit:hover:not(:disabled, [data-disabled]) {
+  background-color: #4b20b3;
+}

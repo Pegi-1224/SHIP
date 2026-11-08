@@ -42,7 +42,7 @@ describe('validateTag', () => {
 
     expect(result).toMatchObject({ valid: false });
     if (!result.valid) {
-      expect(result.message).toMatch(/do not allow/);
+      expect(result.message).toMatch(/isn’t allowed/);
     }
   });
 });

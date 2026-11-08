@@ -1,6 +1,7 @@
 import { useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import { Badge, Group } from '@mantine/core';
+import { paths } from '@/shared/config/paths';
 import { QueryStateView } from '@/shared/ui';
 import { formatHostname } from '@/shared/utils/format';
 import { useDemoCompany } from '../hooks/useCompanies';
@@ -25,7 +26,8 @@ import type { DemoReportArea } from '@/shared/utils/demoReports';
  * Data: `GET /demo/companies/:companyId`, served from
  * `src/mocks/data/companies.json` (see docs/demo-search.md).
  *
- * Layout: overview, then the five metric boxes (salary, promotion &
+ * Layout: overview, then the legend and the Compare button (which opens
+ * `/compare` with this company on the left), then the five metric boxes (salary, promotion &
  * leadership, women support & diversity; paid maternity leave and welfare
  * benefits below them), then contact details and sources. Each box's
  * "Be the first" / "Add yours" button opens the report form, and accepted
@@ -52,10 +54,15 @@ export function CompanyProfilePage() {
               </Group>
               <span className={styles.overviewMeta}>
                 {data.location} ·{' '}
-                <a href={data.website} target="_blank" rel="noreferrer">
-                  {formatHostname(data.website)}
-                </a>{' '}
-                · Data collected {formatDay(data.dataCollectedAt)}
+                {data.website ? (
+                  <>
+                    <a href={data.website} target="_blank" rel="noreferrer">
+                      {formatHostname(data.website)}
+                    </a>{' '}
+                    ·{' '}
+                  </>
+                ) : null}
+                Data collected {formatDay(data.dataCollectedAt)}
               </span>
               <Group gap={6} wrap="wrap">
                 {data.mainFocus.map((focus) => (
@@ -64,8 +71,27 @@ export function CompanyProfilePage() {
                   </Badge>
                 ))}
               </Group>
-              <p className={styles.intro}>{data.intro}</p>
+              {data.intro ? <p className={styles.intro}>{data.intro}</p> : null}
             </header>
+
+            <div className={styles.toolbar}>
+              <ul className={styles.legend} aria-label="Colour key">
+                <li className={styles.legendItem}>
+                  <span className={`${styles.legendDot} ${styles.dotPublic}`} aria-hidden="true" />
+                  Public data
+                </li>
+                <li className={styles.legendItem}>
+                  <span
+                    className={`${styles.legendDot} ${styles.legendDotUser}`}
+                    aria-hidden="true"
+                  />
+                  User reported
+                </li>
+              </ul>
+              <Link to={paths.compareCompanies(data.id)} className={styles.compareLink}>
+                Compare
+              </Link>
+            </div>
 
             <div className={styles.grid}>
               <SalaryBox company={data} onReport={setReportArea} />

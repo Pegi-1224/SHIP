@@ -1,7 +1,8 @@
-import { NavLink, useLocation, useNavigate, useSearchParams } from 'react-router-dom';
+import type { ReactNode } from 'react';
+import { matchPath, NavLink, useLocation, useNavigate, useSearchParams } from 'react-router-dom';
 import { Avatar, Button, Menu } from '@mantine/core';
 import { useDebouncedCallback } from '@mantine/hooks';
-import { LogOut, MessageCircle, User } from 'lucide-react';
+import { Building2, Hash, LogOut, User } from 'lucide-react';
 import { paths, routePatterns } from '@/shared/config/paths';
 import { SearchInput } from '@/shared/ui';
 import { useAuth } from '@/app/providers/useAuth';
@@ -23,6 +24,8 @@ interface HeaderSearchConfig {
   key: string;
   label: string;
   placeholder: string;
+  /** Shown in front of the text: a building for companies, `#` for discussions. */
+  icon: ReactNode;
   /** Where a search goes. */
   toPath: (query: string) => string;
   /**
@@ -36,26 +39,30 @@ const COMPANY_SEARCH = {
   key: 'company-q',
   label: 'Search companies',
   placeholder: 'Search companies',
-} as const;
+  icon: <Building2 size={16} aria-hidden="true" />,
+};
 
 const DISCUSSION_SEARCH = {
   key: 'discussion-q',
   label: 'Search discussions',
   placeholder: 'Search discussions',
-} as const;
+  icon: <Hash size={16} aria-hidden="true" />,
+};
 
 /**
  * Which search bar the header shows on the current page: company search on
- * Home (live results on the page itself) and the company results page,
- * discussion search on Discussions, none elsewhere.
+ * Home (live results on the page itself) and Profile (results open on Home),
+ * discussion search on Discussions and posts, none on the new/edit post pages
+ * or elsewhere.
  */
 function useHeaderSearch(): HeaderSearchConfig | null {
   const { pathname, search } = useLocation();
   if (pathname === routePatterns.home) {
     return { ...COMPANY_SEARCH, toPath: paths.homeSearch, live: true };
   }
-  if (pathname === routePatterns.companies) {
-    return { ...COMPANY_SEARCH, toPath: paths.companiesSearch, live: false };
+  if (pathname === routePatterns.profile) {
+    // Searching from Profile shows the results on Home.
+    return { ...COMPANY_SEARCH, toPath: paths.homeSearch, live: false };
   }
   if (pathname === routePatterns.discussions) {
     // Keep the sidebar's `?tag=` while typing, so search works inside a tag.
@@ -67,6 +74,13 @@ function useHeaderSearch(): HeaderSearchConfig | null {
       return queryString ? `${paths.discussions()}?${queryString}` : paths.discussions();
     };
     return { ...DISCUSSION_SEARCH, toPath, live: true };
+  }
+  // Writing or editing a post: no search bar, so nothing pulls the writer away.
+  if (
+    matchPath(routePatterns.discussionNew, pathname) ||
+    matchPath(routePatterns.discussionEdit, pathname)
+  ) {
+    return null;
   }
   if (pathname.startsWith(routePatterns.discussions)) {
     return { ...DISCUSSION_SEARCH, toPath: paths.discussionsSearch, live: false };
@@ -96,8 +110,7 @@ export function Header() {
     if (search) navigate(search.toPath(query), { replace: true });
   }, LIVE_SEARCH_DELAY_MS);
 
-  const isProfileArea =
-    pathname.startsWith(routePatterns.profile) || pathname.startsWith(routePatterns.messages);
+  const isProfileArea = pathname.startsWith(routePatterns.profile);
 
   return (
     <header className={styles.header}>
@@ -113,6 +126,7 @@ export function Header() {
               defaultValue={search.live ? (searchParams.get('q') ?? '') : ''}
               classNames={{ input: styles.searchInput, section: styles.searchSection }}
               leftSectionWidth={46.8}
+              icon={search.icon}
               onChange={search.live ? goLive : undefined}
               onSearch={(query) => navigate(search.toPath(query), { replace: search.live })}
             />
@@ -150,12 +164,6 @@ export function Header() {
                   onClick={() => navigate(paths.profile())}
                 >
                   My profile
-                </Menu.Item>
-                <Menu.Item
-                  leftSection={<MessageCircle size={14} />}
-                  onClick={() => navigate(paths.messages())}
-                >
-                  Messages
                 </Menu.Item>
                 <Menu.Divider />
                 <Menu.Item

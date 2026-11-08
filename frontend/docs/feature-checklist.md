@@ -25,12 +25,12 @@ rather than hide it.
 
 | | Infrastructure | Logic / API | Starter page | Final UI | Backend |
 | --- | --- | --- | --- | --- | --- |
-| Login (`/login`) | ✅ guards (`RedirectIfAuthenticated`) | ✅ `useAuthMutations.ts` (email code, mock Google, sign-out) | ✅ | ⬜ | 🔵 no backend exists |
-| Assessment (`/assessment`) | ✅ sits inside `RequireAuth`, outside `RequireAssessment` by design | ✅ `useAssessment.ts`, `assessmentSchema.ts` | ✅ + dev-only complete-assessment shortcut | ⬜ | 🔵 |
+| Login (`/login`) | ✅ guards (`RedirectIfAuthenticated` also decides where a sign-in ends up) | ✅ `useAuthMutations.ts` (email code, mock Google, sign-out) | ⬜ replaced by the real page | ✅ `LoginPage.tsx` (email + code, eligibility declaration, `?redirectTo=`) | ✅ email sign-in is served by `backend/` (Google is mock-only) |
+| Assessment (`/assessment`) | ✅ behind `RequireAuth`, outside `RequireAssessment` by design | ✅ `useAssessment.ts`, `assessmentSchema.ts` | ⬜ replaced by the real page | ✅ `AssessmentPage.tsx`: five questions, one per screen; also the retake (pre-filled) | ✅ served by `backend/` |
 | Instruction walkthrough | — | ✅ `InstructionWalkthrough.tsx` component, fully built | ⬜ *not auto-mounted* (see note) | ⬜ | 🔵 |
 
 **Note on the walkthrough:** the component is complete and was previously auto-shown after the first
-assessment. It is **not** rendered anywhere right now — mounting a fully designed six-step tour on
+assessment. It is **not** rendered anywhere right now — mounting a fully designed five-step tour on
 top of placeholder pages would be inconsistent. See `src/app/App.tsx` doc comment. Re-mount it once
 the pages it tours have real designs.
 
@@ -60,12 +60,10 @@ right. The bottom mobile navigation was removed because SHIP is web-only for now
 
 | | Infrastructure | Logic / API | Starter page | Final UI | Backend |
 | --- | --- | --- | --- | --- | --- |
-| Search (`/companies`) | ✅ | ✅ `useCompanySearch` | ✅ | ⬜ | 🔵 |
 | Company profile (`/companies/:companyId`) | ✅ | ✅ `useCompanyProfile`, `CompanyMetrics.tsx` components | ✅ (shows resolved `companyId`) | ⬜ | 🔵 |
 | Public/User-reported separation | — | ✅ `CompanyUserReportedData` types, `MetricBranches.tsx` | — *(no page renders it yet)* | ⬜ | 🔵 |
 | Privacy threshold (5 contributors) | — | ✅ `mocks/aggregations.ts`, 10 tests | — | ⬜ | 🔵 **must be ported to a real backend — see `docs/backend-integration.md`** |
 | Add company (`/companies/new`) | ✅ | ✅ `useCreateCompany`, `useSimilarCompanies` | ✅ | ⬜ | 🔵 |
-| Submission form (`/companies/:companyId/submit`) | ✅ | ✅ `submissionSchema.ts` (10 tests), `useSubmitCompanyData` | ✅ (shows resolved `companyId`) | ⬜ | 🔵 |
 | 90-day submission window | — | ✅ `mocks/handlers/companies.ts`, AC-7 | — | ⬜ | 🔵 |
 | Comparison (`/compare`) | ✅ | ✅ `comparison.ts` (23 tests) — complete, pure, unaffected by this refactor | ✅ (shows resolved `a`/`b`) | ⬜ | 🔵 |
 
@@ -87,16 +85,10 @@ refactor — only the pages that rendered it were simplified.
 
 ---
 
-## 5. Direct messages (spec 3.7, 6.7)
+## 5. Direct messages (spec 3.7, 6.7) — removed
 
-| | Infrastructure | Logic / API | Starter page | Final UI | Backend |
-| --- | --- | --- | --- | --- | --- |
-| Conversation list (`/messages`) | ✅ | ✅ `useConversations` | ✅ | ⬜ | 🔵 |
-| Conversation (`/messages/:conversationId`) | ✅ | ✅ `useConversation` (polling), `useSendMessage` (idempotent) | ✅ (shows resolved `conversationId`) | ⬜ | 🔵 |
-| Starting a conversation from a post | — | ✅ `useStartConversationFlow.ts` | — *(no page calls it yet)* | ⬜ | 🔵 |
-
-No conversation id is pre-seeded in the mock fixtures (conversations are created at runtime). The
-Home dev index says this explicitly rather than linking to an id that would 404.
+Direct messages are no longer part of the product (2026-11-03). The feature, its routes, header
+entry, mock handlers and types were deleted; there is nothing to track here.
 
 ---
 

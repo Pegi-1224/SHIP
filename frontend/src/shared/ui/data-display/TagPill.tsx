@@ -15,7 +15,13 @@ export interface TagPillProps {
 }
 
 /** A single `#tag` chip. */
-export function TagPill({ tag, asLink = false, onRemove, active = false, size = 'sm' }: TagPillProps) {
+export function TagPill({
+  tag,
+  asLink = false,
+  onRemove,
+  active = false,
+  size = 'sm',
+}: TagPillProps) {
   const label = formatTag(tag);
 
   if (onRemove) {

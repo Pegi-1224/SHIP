@@ -1,4 +1,4 @@
-import { type FormEvent, useState } from 'react';
+import { type FormEvent, type ReactNode, useState } from 'react';
 import { ActionIcon, CloseButton, TextInput } from '@mantine/core';
 import { Search } from 'lucide-react';
 
@@ -21,6 +21,8 @@ export interface SearchInputProps {
   classNames?: { wrapper?: string; input?: string; section?: string };
   /** Width of the area holding the search icon; the text starts after it. */
   leftSectionWidth?: number;
+  /** Icon in front of the text, saying what is searched. Defaults to a magnifier. */
+  icon?: ReactNode;
 }
 
 /**
@@ -42,6 +44,7 @@ export function SearchInput({
   name = 'q',
   classNames,
   leftSectionWidth,
+  icon = <Search size={16} aria-hidden="true" />,
 }: SearchInputProps) {
   const [value, setValue] = useState(defaultValue);
   const [syncedDefault, setSyncedDefault] = useState(defaultValue);
@@ -78,7 +81,7 @@ export function SearchInput({
         autoComplete="off"
         classNames={classNames}
         leftSectionWidth={leftSectionWidth}
-        leftSection={<Search size={16} aria-hidden="true" />}
+        leftSection={icon}
         rightSection={
           value ? (
             <CloseButton

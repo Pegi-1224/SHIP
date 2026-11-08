@@ -14,21 +14,34 @@
 export const routePatterns = {
   home: '/',
   login: '/login',
+  welcome: '/welcome',
   assessment: '/assessment',
-  companies: '/companies',
   companyNew: '/companies/new',
   companyDetail: '/companies/:companyId',
-  companySubmit: '/companies/:companyId/submit',
   compare: '/compare',
   discussions: '/discussions',
   discussionNew: '/discussions/new',
   discussionDetail: '/discussions/:postId',
   discussionEdit: '/discussions/:postId/edit',
-  messages: '/messages',
-  conversation: '/messages/:conversationId',
   profile: '/profile',
   notFound: '*',
 } as const;
+
+/**
+ * Where to send a user after sign-in, from a `?redirectTo=` query string, or `null` when there is
+ * nothing safe to use.
+ *
+ * The value comes from the URL, so anyone can put anything in it. Only a path on this site is
+ * accepted: a leading `//` or `/\` would be read as another host (an open redirect), and
+ * `/login` itself would loop.
+ */
+export function readRedirectTarget(search: string): string | null {
+  const target = new URLSearchParams(search).get('redirectTo');
+  if (!target || target.length > 500) return null;
+  if (!target.startsWith('/') || target.startsWith('//') || target.includes('\\')) return null;
+  if (target === routePatterns.login || target.startsWith(`${routePatterns.login}?`)) return null;
+  return target;
+}
 
 export const paths = {
   home: () => '/',
@@ -36,22 +49,16 @@ export const paths = {
   homeSearch: (query: string) => (query ? `/?q=${encodeURIComponent(query)}` : '/'),
   login: () => '/login',
   /** `?redirectTo=` sends the user back where they were after signing in. */
-  loginWithRedirect: (redirectTo: string) =>
-    `/login?redirectTo=${encodeURIComponent(redirectTo)}`,
+  loginWithRedirect: (redirectTo: string) => `/login?redirectTo=${encodeURIComponent(redirectTo)}`,
+  /** The three-step feature tour a new account sees before the assessment. */
+  welcome: () => '/welcome',
   assessment: () => '/assessment',
 
-  companies: () => '/companies',
-  companiesSearch: (query: string) =>
-    query ? `/companies?q=${encodeURIComponent(query)}` : '/companies',
   companyNew: () => '/companies/new',
   /** `name` pre-fills the add-company form from a failed search (spec 6.5). */
   companyNewWithName: (name: string) =>
     name ? `/companies/new?name=${encodeURIComponent(name)}` : '/companies/new',
   companyDetail: (companyId: string) => `/companies/${companyId}`,
-  companySubmit: (companyId: string) => `/companies/${companyId}/submit`,
-  /** `area` opens the form scrolled to one section, from a "Share your data" button. */
-  companySubmitArea: (companyId: string, area: string) =>
-    `/companies/${companyId}/submit?area=${encodeURIComponent(area)}`,
 
   compare: () => '/compare',
   compareCompanies: (companyIdA: string, companyIdB?: string) =>
@@ -64,9 +71,6 @@ export const paths = {
   discussionNew: () => '/discussions/new',
   discussionDetail: (postId: string) => `/discussions/${postId}`,
   discussionEdit: (postId: string) => `/discussions/${postId}/edit`,
-
-  messages: () => '/messages',
-  conversation: (conversationId: string) => `/messages/${conversationId}`,
 
   profile: () => '/profile',
 } as const;

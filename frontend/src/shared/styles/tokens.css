@@ -53,6 +53,8 @@
   --ship-color-warning-bg: #fdf3e2;
   --ship-color-danger: #b3261e;
   --ship-color-danger-bg: #fdeceb;
+  /* Field border and message when text contains a banned word (UI design). */
+  --ship-color-banned: #e43732;
   --ship-color-info: #1c5f8f;
   --ship-color-info-bg: #e8f2f9;
 
@@ -104,6 +106,11 @@
 
   /* Home welcome banner (UI design). */
   --ship-gradient-banner: linear-gradient(90deg, #603383 0%, #402093 50%, #6752e8 100%);
+  /* Sign-in and assessment background. The glows come first so they paint over the base. */
+  --ship-gradient-auth:
+    radial-gradient(60% 70% at 100% 10%, rgba(97, 149, 251, 0.6) 0%, rgba(97, 149, 251, 0) 100%),
+    radial-gradient(80% 80% at 0% 100%, rgba(170, 98, 207, 0.8) 0%, rgba(170, 98, 207, 0) 100%),
+    linear-gradient(180deg, #24104f 0%, #321271 35%, #5b2acf 100%);
 
   /* --- Typography --------------------------------------------------------- */
   --ship-font-body:

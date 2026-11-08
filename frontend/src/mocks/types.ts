@@ -63,25 +63,6 @@ export interface MockComment {
   editedAt: IsoDateString | null;
 }
 
-export interface MockConversation {
-  id: string;
-  /** Exactly two user ids. */
-  participantIds: [string, string];
-  createdAt: IsoDateString;
-}
-
-export interface MockMessage {
-  id: string;
-  conversationId: string;
-  senderId: string;
-  body: string;
-  createdAt: IsoDateString;
-  /** Idempotency key supplied by the sender; makes retries safe. */
-  clientMessageId: string | null;
-  /** Recipients who have opened the conversation since this arrived. */
-  readBy: string[];
-}
-
 export interface MockEmailCode {
   email: string;
   code: string;
@@ -103,8 +84,6 @@ export interface MockDatabase {
   submissions: MockSubmission[];
   posts: MockPost[];
   comments: MockComment[];
-  conversations: MockConversation[];
-  messages: MockMessage[];
   /** userId -> post ids the user has opened. Drives "unseen" recommendations. */
   readPosts: Record<string, string[]>;
   /** Tags created by users that have no post yet. */

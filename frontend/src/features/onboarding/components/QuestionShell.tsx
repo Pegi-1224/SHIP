@@ -1,5 +1,4 @@
 import type { ReactNode } from 'react';
-import { Paper, Progress, Stack, Text, Title } from '@mantine/core';
 import styles from './QuestionShell.module.css';
 
 export interface QuestionShellProps {
@@ -16,7 +15,7 @@ export interface QuestionShellProps {
 /**
  * One assessment question per screen, with its progress indicator (spec 3.3).
  *
- * The progress bar is paired with a text equivalent ("Question 2 of 5") so the
+ * The progress bar is paired with a text equivalent ("Question 2 of 5", "40%") so the
  * position is not conveyed by a visual bar alone.
  */
 export function QuestionShell({
@@ -29,47 +28,46 @@ export function QuestionShell({
   children,
   footer,
 }: QuestionShellProps) {
-  const percent = ((stepIndex + 1) / totalSteps) * 100;
+  const percent = Math.round(((stepIndex + 1) / totalSteps) * 100);
 
   return (
-    <Stack gap="md" className={styles.shell}>
-      <div>
-        <Text size="sm" c="dimmed" mb={6}>
+    <div className={styles.shell}>
+      <div className={styles.progressRow}>
+        <p className={styles.progressText}>
           Question {stepIndex + 1} of {totalSteps}
           {optional ? ' · optional' : ''}
-        </Text>
-        <Progress
-          value={percent}
-          size="sm"
-          color="ship"
-          aria-label={`Progress: question ${stepIndex + 1} of ${totalSteps}`}
-        />
+        </p>
+        <p className={styles.progressText} aria-hidden="true">
+          {percent}%
+        </p>
+      </div>
+      <div
+        className={styles.track}
+        role="progressbar"
+        aria-valuemin={0}
+        aria-valuemax={100}
+        aria-valuenow={percent}
+        aria-label={`Progress: question ${stepIndex + 1} of ${totalSteps}`}
+      >
+        <div className={styles.fill} style={{ width: `${percent}%` }} />
       </div>
 
-      <Paper withBorder p="lg">
-        <Stack gap="md">
-          <div>
-            <Title order={2} size="var(--ship-text-xl)">
-              {question}
-            </Title>
-            {hint ? (
-              <Text size="sm" c="dimmed" mt={4}>
-                {hint}
-              </Text>
-            ) : null}
-          </div>
+      <div className={styles.card}>
+        <div>
+          <h2 className={styles.question}>{question}</h2>
+          {hint ? <p className={styles.hint}>{hint}</p> : null}
+        </div>
 
-          {children}
+        {children}
 
-          {error ? (
-            <Text size="sm" c="var(--ship-color-danger)" role="alert">
-              {error}
-            </Text>
-          ) : null}
-        </Stack>
-      </Paper>
+        {error ? (
+          <p className={styles.error} role="alert">
+            {error}
+          </p>
+        ) : null}
 
-      {footer}
-    </Stack>
+        <div className={styles.footer}>{footer}</div>
+      </div>
+    </div>
   );
 }

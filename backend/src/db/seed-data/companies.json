@@ -4,6 +4,7 @@
     "name": "Lumen Harbor Analytics",
     "website": "https://lumen-harbor.example",
     "intro": "A data analytics consultancy that builds forecasting dashboards for mid-sized retailers and logistics firms.",
+    "industry": "Tech",
     "mainFocus": [
       "Data analytics",
       "Supply-chain forecasting",
@@ -126,6 +127,7 @@
     "name": "Brightfern Health",
     "website": "https://brightfern-health.example",
     "intro": "A digital-health startup offering virtual prenatal and postpartum care through employer health plans.",
+    "industry": "Healthcare",
     "mainFocus": [
       "Digital health",
       "Women's health",
@@ -242,6 +244,7 @@
     "name": "Quillstone Legal Tech",
     "website": "https://quillstone.example",
     "intro": "Builds contract-review software for in-house legal teams.",
+    "industry": "Tech",
     "mainFocus": [
       "Legal tech",
       "SaaS",
@@ -333,6 +336,7 @@
     "name": "Marigold Mobility",
     "website": "https://marigold-mobility.example",
     "intro": "Designs electric cargo bikes and fleet software for last-mile delivery.",
+    "industry": "Other",
     "mainFocus": [
       "Electric vehicles",
       "Hardware",
@@ -408,6 +412,7 @@
     "name": "Orchid Ridge Bank",
     "website": "https://orchid-ridge-bank.example",
     "intro": "A regional community bank focused on small-business lending and personal banking.",
+    "industry": "Finance",
     "mainFocus": [
       "Banking",
       "Small-business lending",
@@ -525,6 +530,7 @@
     "name": "Pinecrest Learning",
     "website": "https://pinecrest-learning.example",
     "intro": "An online learning platform for adult career changers, focusing on UX design and data skills.",
+    "industry": "Other",
     "mainFocus": [
       "Education",
       "EdTech",
@@ -614,6 +620,7 @@
     "name": "Saltmarsh Foods Co.",
     "website": "https://saltmarsh-foods.example",
     "intro": "A packaged-food maker producing plant-based snacks sold in grocery chains across the Northeast.",
+    "industry": "Other",
     "mainFocus": [
       "Food and beverage",
       "Manufacturing",
@@ -703,6 +710,7 @@
     "name": "Kestrel Cloudworks",
     "website": "https://kestrel-cloudworks.example",
     "intro": "Provides managed cloud hosting and security monitoring for healthcare and fintech clients.",
+    "industry": "Tech",
     "mainFocus": [
       "Cloud infrastructure",
       "Cybersecurity",
@@ -811,6 +819,7 @@
     "name": "Juniper Atlas Energy",
     "website": "https://juniper-atlas.example",
     "intro": "A community solar developer that plans, finances and runs rooftop and small-farm solar projects across the Mountain West.",
+    "industry": "Finance",
     "mainFocus": [
       "Renewable energy",
       "Community solar",
@@ -896,6 +905,7 @@
     "name": "Wrenfield Studios",
     "website": "https://wrenfield.example",
     "intro": "An independent game and interactive-media studio making narrative mobile games and museum installations.",
+    "industry": "Entertainment",
     "mainFocus": [
       "Game development",
       "Interactive media",
@@ -977,5 +987,81 @@
         ]
       }
     }
+  },
+  {
+    "id": "test",
+    "name": "Test",
+    "website": "https://example.text.com",
+    "intro": "",
+    "industry": "Tech",
+    "mainFocus": [],
+    "location": "District of Columbia (DC)",
+    "email": "",
+    "phone": "",
+    "address": "",
+    "contacts": [],
+    "sources": [],
+    "dataCollectedAt": "2026-10-31",
+    "verification": {
+      "status": "unverified",
+      "checkedBy": "ai",
+      "checkedAt": null,
+      "confidence": null,
+      "notes": "Added by a SHIP member. Not checked yet."
+    },
+    "salary": null,
+    "promotion": null,
+    "womenSupport": null,
+    "benefits": [],
+    "paidMaternityLeave": null,
+    "userReported": {
+      "salary": {
+        "submissions": 2,
+        "averageAnnualUsd": 60000
+      },
+      "promotion": null,
+      "diversity": {
+        "submissions": 1,
+        "womanManagerPct": 0,
+        "womanInCSuitePct": null,
+        "womenOnTeamPct": 40,
+        "feelIncludedPct": null,
+        "fieldCounts": {
+          "womanManagerPct": 1,
+          "womanInCSuitePct": 0,
+          "womenOnTeamPct": 1,
+          "feelIncludedPct": 0
+        }
+      },
+      "maternity": null,
+      "benefits": null
+    },
+    "submissions": [
+      {
+        "id": "sub_mvw4baa4",
+        "authorRefId": "anon_12117g1",
+        "submittedAt": "2026-10-31T08:07:05.164Z",
+        "answers": {
+          "salary": {
+            "role": "Data Analyst",
+            "level": "Entry",
+            "state": "Arkansas (AR)",
+            "annualSalaryUsd": 50000
+          },
+          "womenSupport": {
+            "teamSize": 5,
+            "womenOnTeam": 2,
+            "hasWomanManager": false,
+            "issuesHandledSeriously": "not_sure",
+            "support": [
+              "Return-to-work support after leave"
+            ]
+          },
+          "promotion": null,
+          "benefits": null,
+          "maternity": null
+        }
+      }
+    ]
   }
 ]

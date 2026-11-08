@@ -1,0 +1,213 @@
+/*
+ * Feature tour (UI design, Nov 2026): the sign-in page's brand gradient, with a 1152px white box
+ * on it. The illustration sits in the lilac panel on the left, the words on the right. Below
+ * 960px the two stack, words first.
+ */
+
+.page {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  padding: 72px 48px;
+  background: var(--ship-gradient-auth);
+}
+
+.box {
+  display: grid;
+  grid-template-columns: minmax(0, 604.8px) minmax(0, 1fr);
+  width: 100%;
+  max-width: 1152px;
+  /* 435.6px in the design; the step 2 text needs more, and the box keeps one height for all three. */
+  min-height: 508px;
+  margin: 0 auto;
+  border-radius: 21.6px;
+  background-color: #ffffff;
+  box-shadow: 0 36px 72px 0 #16062d40;
+  color: #1c1538;
+}
+
+/* ---- Illustration ---- */
+
+.demo {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 0;
+  padding: 57.8px 44px 14.6px;
+  border-radius: 21.6px;
+  background-color: #f5f0fd;
+}
+
+.demoContent {
+  display: flex;
+  flex: 1;
+  align-items: flex-start;
+  justify-content: center;
+  width: 100%;
+}
+
+.note {
+  margin-top: 24px;
+  color: #746d88;
+  font-size: 13.68px;
+  line-height: 1.4;
+  text-align: center;
+}
+
+/* ---- Words ---- */
+
+.copy {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  padding: 54px 46.8px 54px 50.4px;
+}
+
+.badge {
+  margin: 0;
+  padding: 8.64px 14.4px;
+  border-radius: 21.6px;
+  background-color: #fff0c1;
+  color: #906818;
+  font-size: 12.96px;
+  font-weight: 700;
+  line-height: 1.4;
+}
+
+.title {
+  margin: 18px 0 0;
+  font-family: var(--ship-font-display);
+  font-size: 39.6px;
+  font-weight: 700;
+  line-height: 1.4;
+}
+
+.title:focus {
+  outline: none;
+}
+
+.description {
+  max-width: 446.4px;
+  margin: 9.8px 0 0;
+  color: #746d88;
+  font-size: 17.28px;
+  line-height: 1.6;
+}
+
+.dots {
+  display: flex;
+  gap: 12px;
+  margin: auto 0 0;
+  padding: 28px 0 0;
+  list-style: none;
+}
+
+.dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 6px;
+  background-color: #d9cdf4;
+}
+
+.dotActive {
+  background-color: #5b2acf;
+}
+
+.actions {
+  display: flex;
+  gap: 17.6px;
+  width: 100%;
+  margin-top: 21.6px;
+}
+
+.back,
+.next {
+  height: 54px;
+  border-radius: 10.8px;
+  font: inherit;
+  font-weight: 700;
+  line-height: 1;
+  cursor: pointer;
+  transition:
+    background-color 120ms ease,
+    opacity 120ms ease;
+}
+
+.back {
+  flex: none;
+  width: 75.6px;
+  border: 1.8px solid #e4dbfa;
+  background-color: #ffffff;
+  color: #5b2acf;
+  font-size: 21.6px;
+}
+
+.back:hover:not(:disabled) {
+  background-color: #f5f0fd;
+}
+
+.back:disabled {
+  cursor: default;
+  opacity: 0.45;
+}
+
+.next {
+  flex: 1;
+  max-width: 356.4px;
+  border: 0;
+  background-color: #5b2acf;
+  color: #ffffff;
+  font-size: 16.2px;
+}
+
+.next:hover {
+  background-color: #4a1fb3;
+}
+
+.back:focus-visible,
+.next:focus-visible {
+  outline: 2px solid #5b2acf;
+  outline-offset: 3px;
+}
+
+@media (max-width: 960px) {
+  .page {
+    padding: 40px 24px;
+  }
+
+  .box {
+    grid-template-columns: minmax(0, 1fr);
+    min-height: 0;
+  }
+
+  .copy {
+    order: -1;
+    padding: 32px 28px;
+  }
+
+  .demo {
+    padding: 32px 20px 16px;
+  }
+
+  .next {
+    max-width: none;
+  }
+}
+
+@media (max-width: 480px) {
+  .page {
+    padding: 24px 16px;
+  }
+
+  .copy {
+    padding: 28px 20px;
+  }
+
+  .demo {
+    padding-inline: 12px;
+  }
+
+  .title {
+    font-size: 30px;
+  }
+}

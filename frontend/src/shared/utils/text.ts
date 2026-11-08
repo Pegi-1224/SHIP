@@ -37,6 +37,42 @@ export function normalizeCompanyName(name: string): string {
     .trim();
 }
 
+/**
+ * Name autocomplete for "Add this company": the companies whose name best
+ * matches what has been typed so far, best first.
+ *
+ * 1. the name starts with it ("a" -> Amazon, Apple),
+ * 2. a later word starts with it ("ridge" -> Orchid Ridge Bank),
+ * 3. the name contains it (2+ characters),
+ * 4. most of the same words (3+ characters, "orchid bank" -> Orchid Ridge Bank).
+ *
+ * Ties are A to Z. Unlike the main company search, location and focus never count.
+ */
+export function suggestCompanyNames<T extends { name: string }>(
+  query: string,
+  companies: readonly T[],
+  limit: number,
+): T[] {
+  const typed = normalizeCompanyName(query);
+  if (!typed) return [];
+
+  function tier(name: string): number | null {
+    const normalized = normalizeCompanyName(name);
+    if (normalized.startsWith(typed)) return 0;
+    if (normalized.split(' ').some((word) => word.startsWith(typed))) return 1;
+    if (typed.length >= 2 && normalized.includes(typed)) return 2;
+    if (typed.length >= 3 && nameSimilarity(typed, normalized) >= 0.5) return 3;
+    return null;
+  }
+
+  return companies
+    .map((company) => ({ company, tier: tier(company.name) }))
+    .filter((hit): hit is { company: T; tier: number } => hit.tier !== null)
+    .sort((a, b) => a.tier - b.tier || a.company.name.localeCompare(b.company.name))
+    .slice(0, limit)
+    .map((hit) => hit.company);
+}
+
 /** Join items into `a, b and c`. */
 export function joinWithAnd(items: readonly string[]): string {
   if (items.length === 0) return '';

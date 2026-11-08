@@ -1,0 +1,302 @@
+/*
+ * Comparison page (UI design, Nov 2026): back link, the compare bar, the purple summary, then the
+ * company page's metric boxes with the two companies side by side. 1339px wide in the design.
+ */
+
+.page {
+  max-width: 1339px;
+}
+
+.back {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  color: #5b2acf;
+  font-size: 12.96px;
+  font-weight: 700;
+  line-height: 1.4;
+  text-decoration: none;
+}
+
+.back:hover {
+  text-decoration: underline;
+}
+
+.back:focus-visible {
+  outline: 2px solid #5b2acf;
+  outline-offset: 3px;
+}
+
+/* ---- Compare bar ---- */
+
+.bar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 14.4px;
+  min-height: 108px;
+  margin-top: 43px;
+  padding: 18px 21.6px;
+  border-radius: 18px;
+  background-color: #ffffff;
+  box-shadow: 0 10.8px 28.8px 0 #24104f08;
+}
+
+.picker {
+  flex: 0 1 442.8px;
+  min-width: 220px;
+}
+
+.pickerInput {
+  height: 46.8px;
+  border: 1.8px solid var(--picker-border);
+  border-radius: 10.8px;
+  color: #1c1538;
+  font-size: 13.32px;
+}
+
+.pickerInput:focus {
+  border-color: var(--picker-border);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--picker-border) 25%, transparent);
+}
+
+.pickerSection {
+  width: 36px;
+}
+
+.pickerDot {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+}
+
+.vs {
+  display: grid;
+  flex: none;
+  place-items: center;
+  width: 39.6px;
+  height: 39.6px;
+  border-radius: 21.6px;
+  background-color: #24104f;
+  color: #ffffff;
+  font-size: 12.6px;
+  font-weight: 700;
+  line-height: 1.4;
+}
+
+.compareButton {
+  flex: none;
+  width: 108px;
+  height: 46.8px;
+  border: 0;
+  border-radius: 10.8px;
+  background-color: #5b2acf;
+  color: #ffffff;
+  font: inherit;
+  font-size: 14.4px;
+  font-weight: 700;
+  line-height: 1;
+  cursor: pointer;
+  transition: background-color 120ms ease;
+}
+
+.compareButton:hover:not(:disabled) {
+  background-color: #4a1fb3;
+}
+
+.compareButton:disabled {
+  cursor: default;
+  opacity: 0.5;
+}
+
+.compareButton:focus-visible {
+  outline: 2px solid #5b2acf;
+  outline-offset: 3px;
+}
+
+.prompt {
+  margin: 28px 0 0;
+  color: #746d88;
+  font-size: 15px;
+}
+
+/* ---- Summary ---- */
+
+.summary {
+  margin-top: 28px;
+  padding: 28.8px 36px 36px;
+  border-radius: 21.6px;
+  background: linear-gradient(90deg, #603383 0%, #402093 50%, #6752e8 100%);
+  color: #ffffff;
+}
+
+.summaryLabel {
+  margin: 0;
+  color: #e9dff9;
+  font-size: 12.6px;
+  font-weight: 700;
+  line-height: 1.4;
+  text-transform: uppercase;
+}
+
+.summaryText {
+  max-width: 1044px;
+  margin: 18px 0 0;
+  font-size: 16.92px;
+  line-height: 1.4;
+}
+
+.leads {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10.8px;
+  margin: 25.2px 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.lead {
+  display: inline-flex;
+  align-items: center;
+  min-height: 28.8px;
+  padding: 4px 14.4px;
+  border-radius: 14.4px;
+  background-color: #ffffff26;
+  font-size: 12.6px;
+  font-weight: 700;
+  line-height: 1.4;
+  text-align: center;
+}
+
+/* ---- Metric boxes ---- */
+
+.grid {
+  margin-top: 28px;
+}
+
+.box {
+  box-shadow: 0 10.8px 28.8px 0 #24104f08;
+}
+
+/* No user reports to make room for, so the boxes only need their content's height. */
+.grid .box {
+  min-height: 0;
+}
+
+.boxHeader {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.publicTag {
+  flex: none;
+  color: #746d88;
+  font-size: 11.16px;
+  font-weight: 700;
+  line-height: 1.4;
+  text-transform: uppercase;
+}
+
+.columns {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  column-gap: 16px;
+}
+
+.columnName {
+  overflow: hidden;
+  color: #746d88;
+  font-size: 12.6px;
+  font-weight: 700;
+  line-height: 1.4;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.rows {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(56px, 112px) 44px;
+  align-items: center;
+  column-gap: 16px;
+}
+
+.rowName {
+  overflow: hidden;
+  font-size: 14.04px;
+  font-weight: 600;
+  line-height: 1.4;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.subheading {
+  margin: 22px 0 12px;
+  color: #746d88;
+  font-size: 12.6px;
+  font-weight: 700;
+  line-height: 1.4;
+  text-transform: uppercase;
+}
+
+.sources {
+  margin: auto 0 0;
+  padding: 14.4px 0 0;
+  color: #746d88;
+  font-size: 11.88px;
+  line-height: 1.4;
+  list-style: none;
+}
+
+.sources a {
+  color: inherit;
+}
+
+.weeks {
+  display: flex;
+  flex-direction: column;
+}
+
+.pay {
+  color: #746d88;
+  font-size: 12.6px;
+  line-height: 1.4;
+}
+
+.benefits + .benefits {
+  margin-top: 6px;
+}
+
+.pillB {
+  color: #1c1538;
+  background-color: #e3eeff;
+}
+
+@media (max-width: 720px) {
+  .bar {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .picker {
+    flex: none;
+  }
+
+  .vs {
+    align-self: center;
+  }
+
+  .compareButton {
+    width: 100%;
+  }
+
+  .summary {
+    padding: 24px 20px;
+  }
+}

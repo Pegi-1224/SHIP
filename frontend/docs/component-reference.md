@@ -22,7 +22,7 @@ All paths are relative to `frontend/src/`. `@/` is an alias for `src/`.
 
 | What | From where | Import |
 | --- | --- | --- |
-| Shared UI components | anywhere | `import { CompanyCard, SearchInput } from '@/shared/ui';` |
+| Shared UI components | anywhere | `import { PostCard, SearchInput } from '@/shared/ui';` |
 | Mantine basics (Button, TextInput, Modal, Tabs, Stack…) | anywhere | `import { Button, Stack } from '@mantine/core';` |
 | Icons | anywhere | `import { Search, User } from 'lucide-react';` |
 | A feature's hook/component, **inside the same feature** | e.g. a page in `features/companies/pages/` | `import { useCompanySearch } from '../hooks/useCompanies';` |
@@ -43,9 +43,9 @@ Directory: `app/layouts/`
 
 **Function:** The top navigation bar on every page.
 - Left: SHIP logo → Home.
-- Middle: a search bar that depends on the page — company search on Home and `/companies`,
+- Middle: a search bar that depends on the page — company search on Home,
   discussion search on `/discussions/*`, nothing elsewhere. Only shown when signed in.
-- Right: **Home · Discussions · Profile ▾** (menu: My profile, Messages, Sign out). Signed-out
+- Right: **Home · Discussions · Profile ▾** (menu: My profile, Sign out). Signed-out
   visitors see **Sign up** instead of Profile.
 
 **How to call:** Already rendered by `AppLayout`; you never place it yourself.
@@ -100,7 +100,7 @@ Enter submits. Fires `onSearch` on submit, not on every keystroke.
   onSearch={(q) => navigate(paths.companiesSearch(q))}
 />
 ```
-**Recommended use:** Header (already used), Company search page, Discussions page, Messages list.
+**Recommended use:** Header (already used), Company search page, Discussions page.
 
 #### `TagSelector`
 **Function:** Pick existing tags or type new ones, with suggestions and a maximum count.
@@ -133,7 +133,7 @@ Enter submits. Fires `onSearch` on submit, not on every keystroke.
 ```tsx
 <SubmitButton isPending={createPost.isPending} pendingLabel="Publishing…">Publish</SubmitButton>
 ```
-**Recommended use:** Every form — sign in, assessment, new post, comment, company submission, send message.
+**Recommended use:** Every form — sign in, assessment, new post, comment, company submission.
 
 #### `ConfirmDialog`
 **Function:** An "Are you sure?" pop-up. `tone="danger"` makes the confirm button red.
@@ -191,37 +191,16 @@ that aren't tied to a form.
 
 ### 2.3 Cards and data display — `shared/ui/data-display/`
 
-#### `CompanyCard`
-**Function:** A card showing a company's name, industry and city; links to the company profile.
-
-| Prop | Type | Notes |
-| --- | --- | --- |
-| `company` | `Company` | **Required** |
-| `action` | `{ label: string; onClick: () => void }` | Optional button, e.g. "Compare" |
-| `interactive` | `boolean` | Default `true` (clickable) |
-
-```tsx
-<CompanyCard company={c} action={{ label: 'Compare', onClick: () => navigate(paths.compareCompanies(c.id)) }} />
-```
-**Recommended use:** Company search results, Home recommendations, Compare page.
-
 #### `PostCard`
-**Function:** A post preview: title, excerpt, tags, anonymous author, optional "Message" button.
+**Function:** A post preview: title, excerpt, tags and anonymous author.
 
 | Prop | Type | Notes |
 | --- | --- | --- |
 | `post` | `Post` | **Required** |
 | `linkTo` | `string` | Where clicking goes, e.g. `paths.discussionDetail(post.id)` |
-| `onStartConversation` | `(post: Post) => void` | Shows a "Message author" button |
-| `messagingDisabledReason` | `string` | Explains why messaging is unavailable |
 
 ```tsx
-const { startWith } = useStartConversationFlow();
-<PostCard
-  post={post}
-  linkTo={paths.discussionDetail(post.id)}
-  onStartConversation={(p) => startWith(p.author.id)}
-/>
+<PostCard post={post} linkTo={paths.discussionDetail(post.id)} />
 ```
 **Recommended use:** Discussions feed, Home ("recent posts"), Profile ("my posts").
 
@@ -251,7 +230,7 @@ metric sections in §3 already use it.)
 
 ```tsx
 <DataPoint label="Median salary" value="$85,000" caption="12 contributors" size="lg" />
-<MissingDataNotice area="Diversity" onShareData={() => navigate(paths.companySubmitArea(id, 'diversity'))} />
+<MissingDataNotice area="Diversity" onShareData={() => openShareData('diversity')} />
 <ThresholdNotice contributors={2} onShareData={...} />
 ```
 **Recommended use:** Inside `MetricCard`s on the company profile and Compare page.
@@ -286,16 +265,14 @@ source name, contributor count and last submission date. The two must always loo
 **Recommended use:** Post cards, post detail, tag filters on Discussions.
 
 #### `AnonymousAvatar`
-**Function:** A coloured anonymous icon + name (e.g. "Anonymous Finch"). Optionally starts a private chat.
+**Function:** A coloured anonymous icon for an author (e.g. "Anonymous Finch"). Not clickable.
 
 | Prop | Type | Notes |
 | --- | --- | --- |
 | `identity` | `AnonymousIdentity` | **Required** |
 | `size` | `number` | |
-| `onStartConversation` | `() => void` | Makes it clickable to message the person |
-| `disabledReason` | `string` | Why messaging is off (e.g. it's you) |
 
-**Recommended use:** Post authors, comments, conversation list, chat header.
+**Recommended use:** Post authors and comments.
 
 ### 2.4 Page states — `shared/ui/states/`
 
@@ -340,7 +317,7 @@ automatically, so every page handles all states the same way.
   isEmpty={(data) => data.items.length === 0}
   emptyProps={{ title: 'No companies found' }}
 >
-  {(data) => data.items.map((c) => <CompanyCard key={c.id} company={c} />)}
+  {(data) => data.items.map((p) => <PostCard key={p.id} post={p} />)}
 </QueryStateView>
 ```
 **Recommended use:** Every page or section that loads data.
@@ -403,7 +380,7 @@ const profile = useCompanyProfile(companyId);
   {(p) => (
     <>
       <PageHeader title={p.company.name} />
-      <SalaryMetric profile={p} onShareData={(area) => navigate(paths.companySubmitArea(p.company.id, area))} />
+      <SalaryMetric profile={p} onShareData={(area) => openShareData(area)} />
       <BenefitsMetric profile={p} />
     </>
   )}
@@ -462,8 +439,6 @@ call the mock backend today and will call the real backend later without any cha
 | `useComparison` | data | Compare two companies | `useComparison(idA, idB)` |
 | `useSimilarCompanies` | data | "Did you mean…?" while typing a new name | `useSimilarCompanies(name)` |
 | `useCreateCompany` | action | Add a new company | `.mutate(input)` |
-| `useSubmissionEligibility` | data | Can this user submit data for this company now? (90-day rule) | `useSubmissionEligibility(companyId)` |
-| `useSubmitCompanyData` | action | Submit workplace data | `useSubmitCompanyData(companyId).mutate({ sections, submissionId })` |
 | `useMySubmissions` | data | The user's own submissions | `useMySubmissions()` |
 
 ### Discussions — `features/discussions/hooks/useDiscussions.ts`
@@ -488,15 +463,6 @@ call the mock backend today and will call the real backend later without any cha
 | `useRecommendations` | data | Recommended companies and posts | `useRecommendations()` |
 | `useClearReadHistory` | action | Reset reading history | `.mutate()` |
 
-### Messages — `features/messages/hooks/`
-| Hook | Type | Function | Call |
-| --- | --- | --- | --- |
-| `useConversations` | data | The user's conversations | `useConversations()` |
-| `useConversation` | data | One conversation's messages | `useConversation(conversationId)` |
-| `useSendMessage` | action | Send a message | `useSendMessage(conversationId).mutate({ body, clientMessageId })` |
-| `useStartConversation` | action | Open or create a conversation | `.mutate({ anonymousId })` |
-| `useStartConversationFlow` ⭐ | helper | Open/create a conversation **and go to it**, with error toast | `const { startWith, isPending } = useStartConversationFlow(); startWith(author.id)` |
-
 ### Profile — `features/profile/hooks/useProfile.ts`
 | Hook | Type | Function | Call |
 | --- | --- | --- | --- |
@@ -520,7 +486,7 @@ call the mock backend today and will call the real backend later without any cha
 | Design tokens | `shared/styles/tokens.css` | Colours, spacing, fonts, radius as CSS variables | `color: var(--ship-primary-600); padding: var(--ship-space-4);` |
 | Mantine theme | `app/providers/theme.ts` | Same palette for Mantine components (keep in sync with tokens) | `<Button color="ship">` (default) |
 | Types | `shared/types/` | Data shapes: `Company`, `Post`, `Message`, `SessionUser`… | `import type { Company } from '@/shared/types';` |
-| Form schemas | `features/*/schemas/` | Validation rules (required, max length) | `postSchema`, `submissionSchema`, `assessmentSchema` |
+| Form schemas | `features/*/schemas/` | Validation rules (required, max length) | `postSchema`, `assessmentSchema` |
 | Formatting | `shared/utils/format.ts` | Dates, numbers, money | |
 | Statistics | `shared/utils/statistics.ts` | Medians etc. for metrics | |
 | Text / tags | `shared/utils/text.ts`, `shared/utils/tags.ts` | Text and tag clean-up | |
@@ -537,42 +503,8 @@ Every page follows the same three steps:
 2. **`QueryStateView`** — handle loading / error / empty.
 3. **Components** — display it (`PageHeader`, cards, metric sections, forms).
 
-Example — `features/companies/pages/CompanySearchPage.tsx`:
-
-```tsx
-import { useNavigate, useSearchParams } from 'react-router-dom';
-import { Stack } from '@mantine/core';
-import { paths } from '@/shared/config/paths';
-import { CompanyCard, PageHeader, QueryStateView } from '@/shared/ui';
-import { useCompanySearch } from '../hooks/useCompanies';
-
-export function CompanySearchPage() {
-  const navigate = useNavigate();
-  const [searchParams] = useSearchParams();
-  const q = searchParams.get('q') ?? '';
-  const search = useCompanySearch({ q });
-
-  return (
-    <>
-      <PageHeader title={q ? `Results for "${q}"` : 'Companies'} />
-      <QueryStateView
-        query={search}
-        isEmpty={(data) => data.items.length === 0}
-        emptyProps={{
-          title: 'No companies found',
-          action: { label: 'Add a company', onClick: () => navigate(paths.companyNewWithName(q)) },
-        }}
-      >
-        {(data) => (
-          <Stack>
-            {data.items.map((c) => <CompanyCard key={c.id} company={c} />)}
-          </Stack>
-        )}
-      </QueryStateView>
-    </>
-  );
-}
-```
+Example — `features/companies/pages/CompanyProfilePage.tsx` follows this pattern: `useDemoCompany`
+for the data, a loading / not-found / error branch, then the profile components.
 
 **Adding something new**
 

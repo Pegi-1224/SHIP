@@ -144,9 +144,18 @@ describe('compareSalary', () => {
           summary: {
             medianAnnualUsd: 160_000,
             compensationDefinition: 'base',
-            composition: { roles: ['Software Engineer'], levels: ['Senior'], cities: ['Seattle, WA'] },
+            composition: {
+              roles: ['Software Engineer'],
+              levels: ['Senior'],
+              cities: ['Seattle, WA'],
+            },
             comparableCohorts: [
-              { role: 'Software Engineer', level: 'Senior', contributors: 5, medianAnnualUsd: 169_000 },
+              {
+                role: 'Software Engineer',
+                level: 'Senior',
+                contributors: 5,
+                medianAnnualUsd: 169_000,
+              },
             ],
           },
         },
@@ -162,9 +171,18 @@ describe('compareSalary', () => {
           summary: {
             medianAnnualUsd: 140_000,
             compensationDefinition: 'base',
-            composition: { roles: ['Software Engineer'], levels: ['Senior'], cities: ['Austin, TX'] },
+            composition: {
+              roles: ['Software Engineer'],
+              levels: ['Senior'],
+              cities: ['Austin, TX'],
+            },
             comparableCohorts: [
-              { role: 'Software Engineer', level: 'Senior', contributors: 5, medianAnnualUsd: 149_500 },
+              {
+                role: 'Software Engineer',
+                level: 'Senior',
+                contributors: 5,
+                medianAnnualUsd: 149_500,
+              },
             ],
           },
         },
@@ -192,7 +210,12 @@ describe('compareSalary', () => {
             compensationDefinition: 'base',
             composition: { roles: ['Software Engineer'], levels: ['Senior'], cities: [] },
             comparableCohorts: [
-              { role: 'Software Engineer', level: 'Senior', contributors: 5, medianAnnualUsd: 169_000 },
+              {
+                role: 'Software Engineer',
+                level: 'Senior',
+                contributors: 5,
+                medianAnnualUsd: 169_000,
+              },
             ],
           },
         },
@@ -300,7 +323,9 @@ describe('compareBenefits', () => {
   const benefitsData = (benefits: BenefitId[]) => ({ benefits, source: source() });
 
   it('describes what each side lists without ranking them', () => {
-    const a = profile('Alpha', { benefits: benefitsData(['health_insurance', 'fertility_support']) });
+    const a = profile('Alpha', {
+      benefits: benefitsData(['health_insurance', 'fertility_support']),
+    });
     const b = profile('Beta', { benefits: benefitsData(['health_insurance', 'dental_vision']) });
 
     const result = compareBenefits(a, b);

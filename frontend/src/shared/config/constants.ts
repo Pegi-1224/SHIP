@@ -14,14 +14,14 @@ export const MIN_ELIGIBLE_CONTRIBUTORS = 5;
 /** Unauthenticated visitors see at most this many posts per tag (spec 2.2, AC-3). */
 export const PUBLIC_PREVIEW_POSTS_PER_TAG = 10;
 
-/** One company-data submission per account per company per rolling window (spec 6.5). */
-export const SUBMISSION_WINDOW_DAYS = 90;
-
 /** A post needs at least this many tags (spec 3.4, 6.4). */
 export const MIN_TAGS_PER_POST = 1;
 
 /** Assessment question 3 allows at most this many answers (spec 3.3). */
 export const MAX_PRIORITY_ANSWERS = 3;
+
+/** Assessment question 4 allows at most this many topics (spec 3.3). */
+export const MAX_TOPIC_ANSWERS = 3;
 
 /** Page size used by every paginated list endpoint. */
 export const DEFAULT_PAGE_SIZE = 20;

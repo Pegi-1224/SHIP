@@ -542,9 +542,7 @@ export function buildComparison(a: CompanyProfile, b: CompanyProfile): Compariso
       );
     }
     if (leadsB.length > 0) {
-      sentences.push(
-        `${b.company.name} leads in ${leadsB.length}: ${names(leadsB)}.`,
-      );
+      sentences.push(`${b.company.name} leads in ${leadsB.length}: ${names(leadsB)}.`);
     }
   }
 

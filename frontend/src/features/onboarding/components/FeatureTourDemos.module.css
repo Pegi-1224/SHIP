@@ -1,0 +1,249 @@
+/* The feature tour's illustrations (UI design, Nov 2026): white cards on the lilac panel. */
+
+.card {
+  width: 100%;
+  max-width: 515px;
+  padding: 21.6px;
+  border-radius: 21.6px;
+  background-color: #ffffff;
+  box-shadow: 0 10px 28px 0 #24104f08;
+  color: #1c1538;
+}
+
+.card :where(p, dl, dd, ul) {
+  margin: 0;
+}
+
+.track {
+  position: relative;
+  display: block;
+  height: 14.4px;
+  overflow: hidden;
+  border-radius: 10.8px;
+  background-color: #efe9fc;
+}
+
+.fill {
+  display: block;
+  height: 100%;
+  border-radius: inherit;
+  background-color: #5b2acf;
+}
+
+/* ---- Feature 1: one company ---- */
+
+.company {
+  display: flex;
+  align-items: center;
+  gap: 14.4px;
+}
+
+.logo {
+  display: grid;
+  flex: none;
+  place-items: center;
+  width: 46.8px;
+  height: 46.8px;
+  border-radius: 14.4px;
+  background-color: #28104f;
+  color: #ffffff;
+  font-size: 21.6px;
+  font-weight: 700;
+  line-height: 1.4;
+}
+
+.companyName {
+  font-size: 16.2px;
+  font-weight: 800;
+  line-height: 1.4;
+}
+
+.companyMeta {
+  color: #746d88;
+  font-size: 11.88px;
+  line-height: 1.4;
+}
+
+.figures {
+  display: grid;
+  gap: 14.4px;
+  margin-top: 30px;
+}
+
+.figure {
+  display: grid;
+  grid-template-columns: 110px minmax(0, 1fr);
+  column-gap: 8px;
+  align-items: center;
+}
+
+.figureLabel {
+  color: #746d88;
+  font-size: 13.32px;
+  font-weight: 700;
+  line-height: 1.4;
+  text-transform: uppercase;
+}
+
+.figureValue {
+  min-width: 0;
+}
+
+.benefits {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 7.2px;
+  padding: 0;
+  list-style: none;
+}
+
+.benefit {
+  display: grid;
+  flex: 0 1 147px;
+  place-items: center;
+  min-height: 40px;
+  padding: 4px 7px;
+  border-radius: 14.4px;
+  background-color: #efe9fc;
+  color: #5b2acf;
+  font-size: 12.6px;
+  font-weight: 700;
+  line-height: 1.4;
+  text-align: center;
+}
+
+/* ---- Feature 2: two companies compared ---- */
+
+.stack {
+  display: grid;
+  gap: 18px;
+  width: 100%;
+  max-width: 515px;
+}
+
+.compareCard {
+  border-radius: 18px;
+  box-shadow: 0 10.8px 28.8px 0 #24104f08;
+}
+
+.compareHeader {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.compareTitle {
+  font-size: 19.44px;
+  font-weight: 800;
+  line-height: 1.4;
+}
+
+.source {
+  color: #746d88;
+  font-size: 11.16px;
+  font-weight: 700;
+  line-height: 1.4;
+  text-transform: uppercase;
+}
+
+.compareRows {
+  display: grid;
+  gap: 14.4px;
+  margin-top: 18px;
+}
+
+.compareRow {
+  display: grid;
+  grid-template-columns: 120px minmax(0, 1fr) 64px;
+  gap: 21.6px;
+  align-items: center;
+}
+
+.compareName {
+  font-size: 14.04px;
+  font-weight: 600;
+  line-height: 1.4;
+}
+
+.compareBar .track {
+  height: 12.6px;
+  border-radius: 7.2px;
+  background-color: #efeafa;
+}
+
+.compareValue {
+  font-size: 14.4px;
+  font-weight: 800;
+  line-height: 1.4;
+}
+
+/* ---- Feature 3: a discussion post ---- */
+
+.post {
+  border-radius: 18px;
+  box-shadow: 0 10.8px 28.8px 0 #24104f08;
+}
+
+.postMeta {
+  display: flex;
+  align-items: center;
+  gap: 7.2px;
+}
+
+.byline {
+  color: #746d88;
+  font-size: 12.96px;
+  line-height: 1.4;
+}
+
+.postTitle {
+  margin-top: 14.4px;
+  font-size: 18px;
+  font-weight: 800;
+  line-height: 1.4;
+}
+
+.postBody {
+  margin-top: 3.4px;
+  color: #746d88;
+  font-size: 14px;
+  line-height: 18px;
+}
+
+.postFooter {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  margin-top: 23px;
+}
+
+.tag {
+  display: inline-flex;
+  align-items: center;
+  height: 28.8px;
+  padding: 0 14.4px;
+  border-radius: 14.4px;
+  background-color: var(--ship-tag-bg);
+  color: var(--ship-tag-fg);
+  font-size: 12.6px;
+  font-weight: 700;
+  line-height: 1.4;
+}
+
+.comments {
+  color: #746d88;
+  font-size: 11.88px;
+  line-height: 1.4;
+}
+
+@media (max-width: 520px) {
+  .figure {
+    grid-template-columns: 90px minmax(0, 1fr);
+  }
+
+  .compareRow {
+    grid-template-columns: 82px minmax(0, 1fr) 48px;
+    gap: 12px;
+  }
+}

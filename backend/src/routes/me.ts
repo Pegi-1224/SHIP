@@ -8,16 +8,29 @@ import { parseOrThrow } from '../lib/errors.js'
 import { pageWindow, paginationQuerySchema, toPage } from '../lib/pagination.js'
 import { toComments, toPosts, withCommentCount } from '../lib/postView.js'
 
+/** Company reports written under this handle: "Add this company" answers and "Share your data". */
+const reportsBy = (handle: string) => ({ data: { path: ['authorRefId'], equals: handle } })
+
 export async function meRoutes(app: FastifyInstance) {
+  /**
+   * Counts for Profile. `submissionCount` is the number of different companies the user shared
+   * data about, through any route: a formal submission (current ones only - a superseded one is
+   * history), "Add this company", or "Share your data" on a company page.
+   */
   app.get('/me/activity', { preHandler: requireAuth }, async (request) => {
-    const handle = currentUser(request).anonymousId
-    const [postCount, commentCount, submissionCount] = await Promise.all([
+    const user = currentUser(request)
+    const handle = user.anonymousId
+    const [postCount, commentCount, submissions, reports] = await Promise.all([
       prisma.post.count({ where: { authorRefId: handle, status: 'published' } }),
       prisma.comment.count({ where: { authorRefId: handle, status: 'published' } }),
-      // Current contributions only: a superseded submission is history, not a contribution.
-      prisma.submission.count({ where: { userId: currentUser(request).id, supersededAt: null } }),
+      prisma.submission.findMany({
+        where: { userId: user.id, supersededAt: null },
+        select: { companyId: true },
+      }),
+      prisma.companyReport.findMany({ where: reportsBy(handle), select: { companyId: true } }),
     ])
-    return { postCount, commentCount, submissionCount }
+    const companies = new Set([...submissions, ...reports].map((row) => row.companyId))
+    return { postCount, commentCount, submissionCount: companies.size }
   })
 
   app.get('/me/posts', { preHandler: requireAuth }, async (request) => {
@@ -42,11 +55,16 @@ export async function meRoutes(app: FastifyInstance) {
    * partial failure would orphan data.
    *
    * What goes: the user's posts and EVERY comment on them (other people's too, by cascade); their
-   * own comments elsewhere; their company submissions, including superseded history; their
+   * own comments elsewhere; their company submissions, including superseded history; the company
+   * reports written under their handle (the stored rows - see the note on `userReported` below); their
    * assessment, read history and all sessions; the pending sign-in code; and the account itself.
    * Aggregates are computed from live rows on every read, so removing the submissions recomputes
    * them at once - which can push a metric back below the five-contributor threshold, and it stops
    * being published immediately (spec 6.6, T2).
+   *
+   * Not yet true of the demo companies: their `userReported` averages are updated as each report
+   * arrives and are not rebuilt here, so a deleted user's reports stay in those averages until a
+   * recompute-from-reports step exists.
    *
    * Deletion is immediate and keeps no tombstone: the contract lists a grace period and abuse
    * tombstones as open questions.
@@ -56,6 +74,7 @@ export async function meRoutes(app: FastifyInstance) {
     await prisma.$transaction(async (tx) => {
       await tx.post.deleteMany({ where: { authorRefId: user.anonymousId } })
       await tx.comment.deleteMany({ where: { authorRefId: user.anonymousId } })
+      await tx.companyReport.deleteMany({ where: reportsBy(user.anonymousId) })
       await tx.emailCode.deleteMany({ where: { email: user.email } })
       // Cascades to Session, Assessment, ReadPost and Submission.
       await tx.user.delete({ where: { id: user.id } })

@@ -24,7 +24,6 @@ export const queryKeys = {
     detail: (companyId: string) => ['companies', 'detail', companyId] as const,
     comparison: (companyIdA: string, companyIdB: string) =>
       ['companies', 'comparison', companyIdA, companyIdB] as const,
-    mySubmission: (companyId: string) => ['companies', 'my-submission', companyId] as const,
     nameSuggestions: (name: string) => ['companies', 'name-suggestions', name] as const,
     mySubmissionHistory: ['companies', 'my-submission-history'] as const,
   },
@@ -38,22 +37,20 @@ export const queryKeys = {
   demoSearch: {
     all: ['demo-search'] as const,
     companies: (q: string) => ['demo-search', 'companies', q] as const,
+    companyNames: (q: string) => ['demo-search', 'company-names', q] as const,
     company: (companyId: string) => ['demo-search', 'company', companyId] as const,
     postsByTag: (tag: string, limit: number) =>
       ['demo-search', 'posts', 'tag', tag, limit] as const,
     feed: (q: string, tag: string) => ['demo-search', 'posts', 'feed', q, tag] as const,
     post: (postId: string) => ['demo-search', 'post', postId] as const,
     comments: (postId: string) => ['demo-search', 'post', postId, 'comments'] as const,
+    forYou: (offset: number) => ['demo-search', 'for-you', offset] as const,
+    trendingTags: ['demo-search', 'trending-tags'] as const,
   },
   home: {
     all: ['home'] as const,
     recommendations: ['home', 'recommendations'] as const,
     publicPreview: ['home', 'public-preview'] as const,
-  },
-  messages: {
-    all: ['messages'] as const,
-    conversations: ['messages', 'conversations'] as const,
-    conversation: (conversationId: string) => ['messages', 'conversation', conversationId] as const,
   },
   profile: {
     all: ['profile'] as const,

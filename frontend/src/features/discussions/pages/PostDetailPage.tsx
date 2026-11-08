@@ -1,4 +1,5 @@
 import { Link, useParams } from 'react-router-dom';
+import { useAuth } from '@/app/providers/useAuth';
 import { paths } from '@/shared/config/paths';
 import type { PostPreview } from '@/shared/types/demoSearch';
 import { BackLink, QueryStateView, UserAvatar } from '@/shared/ui';
@@ -37,8 +38,11 @@ export function PostDetailPage() {
 }
 
 function PostArticle({ post }: { post: PostPreview }) {
+  const { user } = useAuth();
   const { author } = post;
   const details = [author.industry, author.location].filter(Boolean).join(' · ');
+  // Posts carry the author's anonymous handle, so that is how ownership is known.
+  const isOwn = user?.anonymousIdentity.id === post.authorRefId;
 
   return (
     <article className={styles.post} aria-labelledby="post-title">
@@ -53,6 +57,11 @@ function PostArticle({ post }: { post: PostPreview }) {
           <p className={styles.authorName}>{author.displayName}</p>
           {details ? <p className={styles.authorDetails}>{details}</p> : null}
         </div>
+        {isOwn ? (
+          <Link to={paths.discussionEdit(post.id)} className={styles.editLink}>
+            Edit
+          </Link>
+        ) : null}
       </header>
 
       <h1 id="post-title" className={styles.title}>

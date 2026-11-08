@@ -1,37 +1,27 @@
 /**
  * Mock company endpoints.
  *
- * Two behaviours here are the reason this must be a server, not client logic:
- *
- *   1. The privacy threshold. `aggregateUserReported` drops every aggregate
- *      below five eligible contributors *before* it is serialised, so the
- *      numbers never reach the browser (spec 3.5, 6.2, AC-6).
- *   2. The 90-day submission window. The client cannot be trusted to enforce
- *      it, so the rule lives here and the UI reflects what the server says
- *      (spec 6.5, 6.6, AC-7).
+ * Why this must be a server, not client logic: the privacy threshold.
+ * `aggregateUserReported` drops every aggregate below five eligible contributors
+ * *before* it is serialised, so the numbers never reach the browser (spec 3.5, 6.2, AC-6).
  */
 import { http, HttpResponse } from 'msw';
 import type {
   Company,
   CompanyProfile,
-  CompanySubmission,
   CreateCompanyInput,
   MetricAreaId,
   SimilarCompanySuggestion,
-  SubmissionEligibility,
   SubmissionHistoryEntry,
   SubmissionSections,
 } from '@/shared/types/company';
-import { INDUSTRIES, SENIORITY_LEVELS, seniorityRank } from '@/shared/types/common';
-import { BENEFIT_OPTIONS, SUPPORT_PROGRAMS } from '@/shared/types/company';
-import { SUBMISSION_WINDOW_DAYS } from '@/shared/config/constants';
+import { INDUSTRIES } from '@/shared/types/common';
 import { containsBannedWord } from '@/shared/utils/tags';
 import { nameSimilarity, normalizeCompanyName } from '@/shared/utils/text';
 import type { FieldErrors } from '@/shared/api';
 import { aggregateUserReported } from '../aggregations';
-import { db, nextId, nowIso, persist } from '../db';
+import { db, nextId, persist } from '../db';
 import {
-  conflict,
   currentUser,
   notFound,
   paginate,
@@ -42,8 +32,6 @@ import {
   url,
   validationError,
 } from '../helpers';
-
-const WINDOW_MS = SUBMISSION_WINDOW_DAYS * 24 * 60 * 60 * 1000;
 
 function buildProfile(company: Company): CompanyProfile {
   return {
@@ -61,132 +49,6 @@ function buildProfile(company: Company): CompanyProfile {
 
 function findCompany(companyId: string): Company | undefined {
   return db().companies.find((company) => company.id === companyId);
-}
-
-/** The user's current submission for a company, if any. */
-function activeSubmissionFor(userId: string, companyId: string) {
-  return db().submissions.find(
-    (submission) =>
-      submission.userId === userId &&
-      submission.companyId === companyId &&
-      submission.supersededAt === null,
-  );
-}
-
-function toApiSubmission(submission: {
-  id: string;
-  companyId: string;
-  sections: SubmissionSections;
-  createdAt: string;
-  updatedAt: string;
-}): CompanySubmission {
-  return {
-    id: submission.id,
-    companyId: submission.companyId,
-    sections: submission.sections,
-    createdAt: submission.createdAt,
-    updatedAt: submission.updatedAt,
-  };
-}
-
-/* -------------------------------------------------------------------------- */
-/* Validation                                                                 */
-/* -------------------------------------------------------------------------- */
-
-const isPositiveInt = (value: unknown): value is number =>
-  typeof value === 'number' && Number.isInteger(value) && value > 0;
-
-const isNonNegativeInt = (value: unknown): value is number =>
-  typeof value === 'number' && Number.isInteger(value) && value >= 0;
-
-/**
- * A submission may contain any subset of the five sections, but a section that
- * is present must be complete (spec 6.4). Partial sections are rejected rather
- * than silently stored half-filled.
- */
-function validateSections(sections: SubmissionSections): FieldErrors | null {
-  const errors: FieldErrors = {};
-
-  if (Object.keys(sections).length === 0) {
-    return { form: ['Fill in at least one section before submitting.'] };
-  }
-
-  const { salary, promotion, diversity, benefits, maternity } = sections;
-
-  if (salary) {
-    if (!salary.role?.trim()) errors['salary.role'] = ['Choose a role.'];
-    if (!SENIORITY_LEVELS.includes(salary.level)) errors['salary.level'] = ['Choose a level.'];
-    if (!salary.city?.trim()) errors['salary.city'] = ['Choose a city.'];
-    if (typeof salary.annualSalaryUsd !== 'number' || salary.annualSalaryUsd <= 0) {
-      errors['salary.annualSalaryUsd'] = ['Please enter a number greater than 0.'];
-    }
-  }
-
-  if (promotion) {
-    if (!promotion.role?.trim()) errors['promotion.role'] = ['Choose a role.'];
-    if (!SENIORITY_LEVELS.includes(promotion.fromLevel)) {
-      errors['promotion.fromLevel'] = ['Choose a level.'];
-    }
-    if (!SENIORITY_LEVELS.includes(promotion.toLevel)) {
-      errors['promotion.toLevel'] = ['Choose a level.'];
-    }
-    if (
-      SENIORITY_LEVELS.includes(promotion.fromLevel) &&
-      SENIORITY_LEVELS.includes(promotion.toLevel) &&
-      seniorityRank(promotion.toLevel) <= seniorityRank(promotion.fromLevel)
-    ) {
-      errors['promotion.toLevel'] = ['The level after promotion must be higher than before.'];
-    }
-    if (!isPositiveInt(promotion.monthsToPromotion)) {
-      errors['promotion.monthsToPromotion'] = ['Please enter a whole number of months.'];
-    }
-  }
-
-  if (diversity) {
-    if (!isPositiveInt(diversity.teamSize)) {
-      errors['diversity.teamSize'] = ['Please enter a whole number greater than 0.'];
-    }
-    if (!isNonNegativeInt(diversity.womenOnTeam)) {
-      errors['diversity.womenOnTeam'] = ['Please enter a whole number.'];
-    } else if (isPositiveInt(diversity.teamSize) && diversity.womenOnTeam > diversity.teamSize) {
-      errors['diversity.womenOnTeam'] = ['This cannot be more than the team size.'];
-    }
-    if (typeof diversity.managerIsWoman !== 'boolean') {
-      errors['diversity.managerIsWoman'] = ['Choose Yes or No.'];
-    }
-    if (
-      !Array.isArray(diversity.supportPrograms) ||
-      diversity.supportPrograms.some((item) => !SUPPORT_PROGRAMS.includes(item))
-    ) {
-      errors['diversity.supportPrograms'] = ['Choose from the listed options.'];
-    }
-    if (!['yes', 'no', 'not_sure'].includes(diversity.trustsCompanyResponse)) {
-      errors['diversity.trustsCompanyResponse'] = ['Choose one option.'];
-    }
-  }
-
-  if (benefits) {
-    if (!Array.isArray(benefits.benefits) || benefits.benefits.length === 0) {
-      errors['benefits.benefits'] = ['Choose at least one benefit.'];
-    } else if (benefits.benefits.some((item) => !BENEFIT_OPTIONS.includes(item))) {
-      errors['benefits.benefits'] = ['Choose from the listed options.'];
-    }
-  }
-
-  if (maternity) {
-    if (!isNonNegativeInt(maternity.paidWeeks)) {
-      errors['maternity.paidWeeks'] = ['Please enter a whole number of weeks.'];
-    }
-    if (
-      typeof maternity.payPercent !== 'number' ||
-      maternity.payPercent < 0 ||
-      maternity.payPercent > 100
-    ) {
-      errors['maternity.payPercent'] = ['Please enter a number between 0 and 100.'];
-    }
-  }
-
-  return Object.keys(errors).length > 0 ? errors : null;
 }
 
 function areasOf(sections: SubmissionSections): MetricAreaId[] {
@@ -332,104 +194,6 @@ export const companyHandlers = [
     if (!company) return notFound('We do not have this company yet.');
 
     return HttpResponse.json(buildProfile(company));
-  }),
-
-  /** Whether the user may create a new submission, or must edit the existing one. */
-  http.get(url('/companies/:companyId/my-submission'), async ({ request, params }) => {
-    await simulateLatency(140);
-    const user = currentUser(request);
-    if (!user) return unauthorized();
-
-    const companyId = String(params['companyId']);
-    if (!findCompany(companyId)) return notFound();
-
-    const existing = activeSubmissionFor(user.id, companyId);
-    if (!existing) {
-      return HttpResponse.json({
-        canCreateNew: true,
-        existingSubmission: null,
-        nextSubmissionAllowedAt: null,
-      } satisfies SubmissionEligibility);
-    }
-
-    // The window runs from the FIRST submission. Editing never restarts it.
-    const windowEnds = new Date(existing.createdAt).getTime() + WINDOW_MS;
-    const canCreateNew = Date.now() >= windowEnds;
-
-    return HttpResponse.json({
-      canCreateNew,
-      existingSubmission: toApiSubmission(existing),
-      nextSubmissionAllowedAt: canCreateNew ? null : new Date(windowEnds).toISOString(),
-    } satisfies SubmissionEligibility);
-  }),
-
-  /** Create a submission (spec 6.5, AC-7). */
-  http.post(url('/companies/:companyId/submissions'), async ({ request, params }) => {
-    await simulateLatency();
-    const user = currentUser(request);
-    if (!user) return unauthorized();
-
-    const companyId = String(params['companyId']);
-    if (!findCompany(companyId)) return notFound();
-
-    const sections = (await request.json()) as SubmissionSections;
-    const errors = validateSections(sections);
-    if (errors) return validationError('Please fix the highlighted fields.', errors);
-
-    const existing = activeSubmissionFor(user.id, companyId);
-    if (existing) {
-      const windowEnds = new Date(existing.createdAt).getTime() + WINDOW_MS;
-      if (Date.now() < windowEnds) {
-        return conflict(
-          'You already shared data for this company in the last 90 days. You can edit that submission instead.',
-        );
-      }
-      // Past the window: the new submission replaces the old one in the
-      // aggregates, and the old one is kept as history (spec 6.6).
-      existing.supersededAt = nowIso();
-    }
-
-    const now = nowIso();
-    const submission = {
-      id: nextId('sub'),
-      companyId,
-      userId: user.id,
-      sections,
-      createdAt: now,
-      updatedAt: now,
-      supersededAt: null,
-    };
-
-    db().submissions.push(submission);
-    persist();
-
-    return HttpResponse.json(toApiSubmission(submission), { status: 201 });
-  }),
-
-  /** Edit an existing submission. Does not restart the 90-day window. */
-  http.put(url('/companies/:companyId/submissions/:submissionId'), async ({ request, params }) => {
-    await simulateLatency();
-    const user = currentUser(request);
-    if (!user) return unauthorized();
-
-    const submissionId = String(params['submissionId']);
-    const submission = db().submissions.find((item) => item.id === submissionId);
-    if (!submission) return notFound('That submission no longer exists.');
-
-    // Ownership is checked on the server. A client-side check is not security.
-    if (submission.userId !== user.id) {
-      return notFound('That submission no longer exists.');
-    }
-
-    const sections = (await request.json()) as SubmissionSections;
-    const errors = validateSections(sections);
-    if (errors) return validationError('Please fix the highlighted fields.', errors);
-
-    submission.sections = sections;
-    submission.updatedAt = nowIso();
-    persist();
-
-    return HttpResponse.json(toApiSubmission(submission));
   }),
 
   /** The signed-in user's contribution history, shown on Profile. */

@@ -7,7 +7,7 @@
  * reports into `src/mocks/data/companies.json`. So it stays pure and uses
  * relative, type-only imports - the plugin loads it outside the app's aliases.
  */
-import type { CompanyUserReported, ReportedBenefit } from '../types/demoSearch.ts';
+import type { CompanyUserReported, DiversityField, ReportedBenefit } from '../types/demoSearch.ts';
 
 export type DemoReportArea = 'salary' | 'promotion' | 'diversity' | 'maternity' | 'benefits';
 
@@ -214,34 +214,59 @@ export function applyReport(current: CompanyUserReported, report: DemoReport): C
     case 'diversity': {
       const area = current.diversity;
       const n = area?.submissions ?? 0;
+      // "Add a company" answers skip some of these, so each figure may have its own count.
+      const count = (field: DiversityField) => area?.fieldCounts?.[field] ?? n;
       return {
         ...current,
         diversity: {
           submissions: n + 1,
           womanManagerPct: addToAverage(
             area?.womanManagerPct ?? null,
-            n,
+            count('womanManagerPct'),
             yes(report.hasWomanManager),
           ),
           womanInCSuitePct: addToAverage(
             area?.womanInCSuitePct ?? null,
-            n,
+            count('womanInCSuitePct'),
             yes(report.womanInCSuite),
           ),
-          womenOnTeamPct: addToAverage(area?.womenOnTeamPct ?? null, n, report.womenOnTeamPct),
-          feelIncludedPct: addToAverage(area?.feelIncludedPct ?? null, n, yes(report.feelIncluded)),
+          womenOnTeamPct: addToAverage(
+            area?.womenOnTeamPct ?? null,
+            count('womenOnTeamPct'),
+            report.womenOnTeamPct,
+          ),
+          feelIncludedPct: addToAverage(
+            area?.feelIncludedPct ?? null,
+            count('feelIncludedPct'),
+            yes(report.feelIncluded),
+          ),
+          ...(area?.fieldCounts
+            ? {
+                fieldCounts: {
+                  womanManagerPct: count('womanManagerPct') + 1,
+                  womanInCSuitePct: count('womanInCSuitePct') + 1,
+                  womenOnTeamPct: count('womenOnTeamPct') + 1,
+                  feelIncludedPct: count('feelIncludedPct') + 1,
+                },
+              }
+            : {}),
         },
       };
     }
     case 'maternity': {
       const area = current.maternity;
       const n = area?.submissions ?? 0;
+      const weeksCount = area?.fieldCounts?.avgPaidWeeks ?? n;
+      const payCount = area?.fieldCounts?.avgPayPercent ?? n;
       return {
         ...current,
         maternity: {
           submissions: n + 1,
-          avgPaidWeeks: addToAverage(area?.avgPaidWeeks ?? null, n, report.paidWeeks),
-          avgPayPercent: addToAverage(area?.avgPayPercent ?? null, n, report.payPercent),
+          avgPaidWeeks: addToAverage(area?.avgPaidWeeks ?? null, weeksCount, report.paidWeeks),
+          avgPayPercent: addToAverage(area?.avgPayPercent ?? null, payCount, report.payPercent),
+          ...(area?.fieldCounts
+            ? { fieldCounts: { avgPaidWeeks: weeksCount + 1, avgPayPercent: payCount + 1 } }
+            : {}),
         },
       };
     }

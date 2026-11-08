@@ -7,7 +7,7 @@
  */
 import { http, HttpResponse } from 'msw';
 import type { AssessmentAnswers, AssessmentRecord } from '@/shared/types/assessment';
-import { MAX_PRIORITY_ANSWERS } from '@/shared/config/constants';
+import { MAX_PRIORITY_ANSWERS, MAX_TOPIC_ANSWERS } from '@/shared/config/constants';
 import { db, nowIso, persist } from '../db';
 import { currentUser, simulateLatency, unauthorized, url, validationError } from '../helpers';
 
@@ -19,6 +19,9 @@ function validate(answers: Partial<AssessmentAnswers>): string | null {
     return `Choose at most ${MAX_PRIORITY_ANSWERS} priorities.`;
   }
   if (!answers.topics?.length) return 'Choose at least one topic.';
+  if (answers.topics.length > MAX_TOPIC_ANSWERS) {
+    return `Choose at most ${MAX_TOPIC_ANSWERS} topics.`;
+  }
   return null;
 }
 

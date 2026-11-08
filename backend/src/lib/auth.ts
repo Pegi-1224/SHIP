@@ -72,6 +72,11 @@ async function findUser(request: FastifyRequest): Promise<AuthedUser | null> {
   return session.user
 }
 
+/** The signed-in user, or `null`, for public endpoints that act on a session when there is one. */
+export function optionalUser(request: FastifyRequest): Promise<AuthedUser | null> {
+  return findUser(request)
+}
+
 /** `preHandler` for endpoints that need a signed-in user. Answers 401 otherwise. */
 export async function requireAuth(request: FastifyRequest, _reply: FastifyReply): Promise<void> {
   const user = await findUser(request)

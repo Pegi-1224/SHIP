@@ -1,24 +1,39 @@
+import { useNavigate } from 'react-router-dom';
 import { paths } from '@/shared/config/paths';
-import { RelatedLinks, StarterPage } from '@/shared/ui';
+import { notifySuccess } from '@/shared/ui';
+import { PostComposer } from '../components/PostComposer';
+import { useCreateDemoPost } from '../hooks/useDiscussions';
 
 /**
- * Write a new post (`/discussions/new`).
+ * Write a new post (`/discussions/new`), reached from "+ New post" on the feed.
  *
- * Reusable, already-wired building blocks for the real design:
- *   - `src/features/discussions/components/PostForm.tsx` - the composer
- *     shared by "new" and "edit", already wired to tag search/creation
- *   - `src/features/discussions/schemas/postSchema.ts` - title/body/tags
- *     validation
- *   - `src/features/discussions/hooks/useDiscussions.ts` - `useCreatePost`
+ * Posts go to `POST /demo/posts`, which adds them to the demo data and, under
+ * `npm run dev`, to `src/mocks/data/posts.json`. Then it opens the new post.
  */
 export function NewPostPage() {
+  const navigate = useNavigate();
+  const createPost = useCreateDemoPost();
+
   return (
-    <StarterPage
-      title="New Post"
-      description="This page will provide a form for creating a new discussion post."
-      sourceFile="src/features/discussions/pages/NewPostPage.tsx"
-    >
-      <RelatedLinks links={[{ to: paths.discussions(), label: 'Discussion feed' }]} />
-    </StarterPage>
+    <PostComposer
+      heading="Start a discussion"
+      submitLabel="Post"
+      isPending={createPost.isPending}
+      error={createPost.error}
+      onCancel={() => navigate(paths.discussions())}
+      onSubmit={(input) =>
+        createPost.mutate(input, {
+          onSuccess: ({ post, savedToFile }) => {
+            notifySuccess(
+              savedToFile
+                ? 'Your post was saved to the demo data.'
+                : 'Your post was added for this session.',
+              'Post published',
+            );
+            navigate(paths.discussionDetail(post.id));
+          },
+        })
+      }
+    />
   );
 }

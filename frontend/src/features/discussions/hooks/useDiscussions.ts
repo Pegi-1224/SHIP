@@ -12,8 +12,11 @@ import type {
   PostListParams,
   UpdatePostInput,
 } from '@/shared/types/discussion';
+import type { DemoPostInput } from '@/shared/utils/demoPosts';
 import {
   createComment,
+  createDemoPost,
+  updateDemoPost,
   createPost,
   createTag,
   deleteComment,
@@ -73,6 +76,23 @@ export function useCreateDemoComment(postId: string) {
   const queryClient = useQueryClient();
   return useMutation({
     mutationFn: (content: string) => createDemoComment(postId, content),
+    onSuccess: () => queryClient.invalidateQueries({ queryKey: queryKeys.demoSearch.all }),
+  });
+}
+
+/** A new post changes the feed, the Home columns and every tag list. */
+export function useCreateDemoPost() {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: (input: DemoPostInput) => createDemoPost(input),
+    onSuccess: () => queryClient.invalidateQueries({ queryKey: queryKeys.demoSearch.all }),
+  });
+}
+
+export function useUpdateDemoPost(postId: string) {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: (input: DemoPostInput) => updateDemoPost(postId, input),
     onSuccess: () => queryClient.invalidateQueries({ queryKey: queryKeys.demoSearch.all }),
   });
 }

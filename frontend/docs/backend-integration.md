@@ -85,7 +85,6 @@ that change frontend code rather than just data:
 | --- | --- |
 | Cookie vs bearer token | `authSession.ts`, `client.ts`, CSRF header |
 | Cursor vs offset pagination | List hooks; `Paginated<T>` gains a cursor |
-| Messaging transport | `useMessages.ts` — polling vs subscription |
 | Reference lists from the API | `formOptions.ts` becomes a query |
 | Google sign-in shape | `LoginPage`, `authApi.ts` |
 
@@ -129,23 +128,14 @@ independently:
 ### 3.3 Identity separation
 
 The API must never return a user's email address, display name or user id in any response about
-someone else. Posts, comments and messages carry only `AnonymousIdentity` — an opaque id, a
-generated label and a colour.
-
-The opaque id is what the client sends to start a conversation. Resolving it back to an account
-happens server-side, so the browser never learns who it is talking to.
+someone else. Posts and comments carry only `AnonymousIdentity` — an opaque id, a generated label
+and a colour.
 
 ### 3.4 Account deletion
 
 One transactional endpoint, `DELETE /me`. The full cascade is listed in `api-contract.md`. The part
 that is easy to miss: **recompute the aggregates afterwards.** A deleted contributor can push a
 metric back below five, and it must stop being published immediately.
-
-### 3.5 Idempotent message sends
-
-`clientMessageId` is an idempotency key. If a message with that key exists, return it instead of
-creating a second. Without this, every retry after an ambiguous failure produces a duplicate — and
-users do retry, because the UI told them it failed.
 
 ---
 
@@ -163,9 +153,8 @@ time: delete a handler and that path falls through to the network.
 | 5 | Submissions | `POST/PUT .../submissions`, `GET .../my-submission`, `GET /me/submissions` | The 90-day window and supersede logic |
 | 6 | Discussions | `/discussions/*` | Ownership enforcement, banned-word filter |
 | 7 | Home | `GET /home/recommendations`, `/me/read-posts` | Move the priority→tag mapping server-side |
-| 8 | Messages | `/messages/*` | Idempotency first; transport second |
-| 9 | Profile and deletion | `/me/*`, `DELETE /me` | The cascade, transactionally |
-| 10 | Google sign-in | `/auth/google/*` | Replaces the mock endpoint entirely |
+| 8 | Profile and deletion | `/me/*`, `DELETE /me` | The cascade, transactionally |
+| 9 | Google sign-in | `/auth/google/*` | Replaces the mock endpoint entirely |
 
 ### Running half-and-half during migration
 
@@ -176,38 +165,9 @@ removed handler means that one path hits the real backend while the rest stay mo
 
 ---
 
-## 5. Messaging transport
+## 5. Messaging transport (removed)
 
-Today: **polling.** `useConversation` refetches every 5 seconds while a conversation is open
-(`CONVERSATION_POLL_INTERVAL_MS` in `src/features/messages/hooks/useMessages.ts`). That is the whole
-real-time story. There is no WebSocket and none is claimed anywhere in the UI.
-
-To move to push, the integration point is one hook:
-
-```ts
-// src/features/messages/hooks/useMessages.ts
-export function useConversation(conversationId: string | undefined) {
-  const queryClient = useQueryClient();
-
-  useEffect(() => {
-    if (!conversationId) return;
-    const socket = openSocket(conversationId);            // your transport
-    socket.onMessage((message) => {
-      queryClient.setQueryData(
-        queryKeys.messages.conversation(conversationId),
-        (current) => appendMessage(current, message),
-      );
-    });
-    return () => socket.close();
-  }, [conversationId, queryClient]);
-
-  return useQuery({ /* …, refetchInterval removed */ });
-}
-```
-
-Nothing else in the feature changes. Agree first: protocol, how the connection authenticates (a
-cookie is attached automatically; a bearer token is not), the message envelope, reconnection and
-backoff, and whether unread counts come over the socket or stay on the REST list.
+Direct messages are no longer part of the product, so there is no messaging transport to choose.
 
 ---
 
@@ -237,7 +197,7 @@ Once every endpoint is real:
 - [ ] Every endpoint authorises independently of the UI
 - [ ] No email, display name or user id in any response about another user
 - [ ] Privacy threshold enforced before serialisation
-- [ ] Rate limits on sign-in, posting and messaging
+- [ ] Rate limits on sign-in and posting
 - [ ] Banned-word list server-side and not published to the client
 - [ ] `.env` is not committed; no secret in any `VITE_` variable
 
@@ -245,7 +205,6 @@ Once every endpoint is real:
 
 - [ ] Aggregates recompute after every submission, edit and deletion
 - [ ] Account deletion is transactional and recomputes aggregates
-- [ ] `clientMessageId` honoured as an idempotency key
 - [ ] 90-day window runs from first submission and is not reset by editing
 - [ ] Error responses use the agreed envelope with user-readable messages
 

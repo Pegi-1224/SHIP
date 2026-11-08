@@ -14,7 +14,7 @@ export interface Paginated<T> {
 
 /** A stable, non-identifying handle shown instead of a name or email. */
 export interface AnonymousIdentity {
-  /** Opaque id used to start a direct message. Never a user id or email. */
+  /** Opaque handle shown next to a user's posts and comments. Never a user id or email. */
   id: string;
   /** Display label, e.g. `Anonymous Finch`. */
   label: string;

@@ -17,6 +17,14 @@
   max-width: 1320px;
 }
 
+/* Sign-in and the assessment: the page fills the width and paints its own background. */
+.brand {
+  display: flex;
+  flex-direction: column;
+  max-width: none;
+  padding: 0;
+}
+
 .footer {
   border-top: 1px solid var(--ship-color-border);
   background-color: var(--ship-color-surface);

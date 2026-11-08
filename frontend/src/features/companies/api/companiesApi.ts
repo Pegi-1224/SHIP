@@ -11,15 +11,13 @@ import type {
   Company,
   CompanyProfile,
   CompanySearchParams,
-  CompanySubmission,
   CreateCompanyInput,
   SimilarCompanySuggestion,
-  SubmissionEligibility,
   SubmissionHistoryEntry,
-  SubmissionSections,
 } from '@/shared/types/company';
 import type { CompanyRecord, SearchHit } from '@/shared/types/demoSearch';
 import type { DemoReport } from '@/shared/utils/demoReports';
+import type { NewCompanyInput } from '@/shared/types/companySubmission';
 
 export function searchCompanies(
   params: CompanySearchParams,
@@ -64,38 +62,6 @@ export function createCompany(input: CreateCompanyInput): Promise<Company> {
   return api.post<Company>('/companies', input);
 }
 
-/** Whether the user may add a new submission, or must edit the existing one. */
-export function fetchSubmissionEligibility(
-  companyId: string,
-  signal?: AbortSignal,
-): Promise<SubmissionEligibility> {
-  return api.get<SubmissionEligibility>(
-    `/companies/${encodeURIComponent(companyId)}/my-submission`,
-    { signal },
-  );
-}
-
-export function createSubmission(
-  companyId: string,
-  sections: SubmissionSections,
-): Promise<CompanySubmission> {
-  return api.post<CompanySubmission>(
-    `/companies/${encodeURIComponent(companyId)}/submissions`,
-    sections,
-  );
-}
-
-export function updateSubmission(
-  companyId: string,
-  submissionId: string,
-  sections: SubmissionSections,
-): Promise<CompanySubmission> {
-  return api.put<CompanySubmission>(
-    `/companies/${encodeURIComponent(companyId)}/submissions/${encodeURIComponent(submissionId)}`,
-    sections,
-  );
-}
-
 export function fetchMySubmissions(signal?: AbortSignal): Promise<SubmissionHistoryEntry[]> {
   return api.get<SubmissionHistoryEntry[]>('/me/submissions', { signal });
 }
@@ -108,6 +74,14 @@ export function searchDemoCompanies(
   return api.get('/demo/companies', { query: { q }, auth: false, signal });
 }
 
+/** Companies whose name matches what has been typed, names starting with it first. */
+export function suggestDemoCompanyNames(
+  q: string,
+  signal?: AbortSignal,
+): Promise<{ items: SearchHit<CompanyRecord>[]; total: number }> {
+  return api.get('/demo/companies', { query: { q, mode: 'names' }, auth: false, signal });
+}
+
 export function fetchDemoCompany(companyId: string, signal?: AbortSignal): Promise<CompanyRecord> {
   return api.get(`/demo/companies/${encodeURIComponent(companyId)}`, { auth: false, signal });
 }
@@ -116,6 +90,11 @@ export interface DemoReportResult {
   company: CompanyRecord;
   /** False when no dev server could write companies.json; the report lasts until reload. */
   savedToFile: boolean;
+}
+
+/** "Add a company": the new company plus the user's answers, as the signed-in user. */
+export function createDemoCompany(input: NewCompanyInput): Promise<DemoReportResult> {
+  return api.post('/demo/companies', input);
 }
 
 /** One user report from the company page ("Be the first" / "Add yours"). */

@@ -1,5 +1,5 @@
 import { expect, test } from '@playwright/test';
-import { devCompleteAssessment, devSignIn } from './helpers';
+import { completeAssessment, devSignIn } from './helpers';
 
 /**
  * End-to-end checks for the starter-page scaffold, in a real browser against
@@ -26,8 +26,8 @@ test.describe('Signed-out visitor', () => {
     await expect(page.getByText('Not signed in.')).toBeVisible();
     await expect(page.getByRole('link', { name: /Company profile \(example/ })).toBeVisible();
 
-    await page.goto('/companies');
-    await expect(page.getByRole('heading', { name: 'Login' })).toBeVisible();
+    await page.goto('/profile');
+    await expect(page.getByRole('heading', { name: 'Create your account' })).toBeVisible();
   });
 
   test('an unknown route renders the not-found page', async ({ page }) => {
@@ -44,22 +44,15 @@ test.describe('Dev sign-in and assessment shortcuts', () => {
     await devSignIn(page, 'e2e.starter@example.com');
 
     // Assessment-gated route redirects to /assessment first.
-    await page.goto('/companies');
-    await expect(page.getByRole('heading', { name: 'Assessment' })).toBeVisible();
+    await page.goto('/profile');
+    await expect(page.getByRole('heading', { name: 'Personalize your SHIP' })).toBeVisible();
 
-    await devCompleteAssessment(page);
+    await completeAssessment(page);
 
     const routesAndHeadings: Array<[string, string]> = [
-      ['/companies', 'Company Search'],
-      ['/companies/new', 'Add Company'],
-      ['/companies/northwind-systems/submit', 'Company Data Submission'],
       ['/compare', 'Compare Companies'],
       ['/discussions', 'Latest discussions'],
-      ['/discussions/new', 'New Post'],
       ['/discussions/post_0001', 'How did you negotiate your first offer?'],
-      ['/discussions/post_seed_1/edit', 'Edit Post'],
-      ['/messages', 'Messages'],
-      ['/profile', 'Profile'],
     ];
 
     for (const [route, heading] of routesAndHeadings) {
@@ -73,11 +66,11 @@ test.describe('Dev sign-in and assessment shortcuts', () => {
 
   test('a resolved route parameter is shown on the starter page', async ({ page }) => {
     await devSignIn(page, 'e2e.params@example.com');
-    await devCompleteAssessment(page);
+    await completeAssessment(page);
 
-    await page.goto('/companies/northwind-systems/submit');
+    await page.goto('/compare?a=northwind-systems&b=harborline-financial');
 
-    await expect(page.getByText('companyId')).toBeVisible();
+    await expect(page.getByText('a', { exact: true })).toBeVisible();
     await expect(page.getByText('northwind-systems')).toBeVisible();
   });
 
@@ -85,7 +78,7 @@ test.describe('Dev sign-in and assessment shortcuts', () => {
     await devSignIn(page, 'e2e.signout@example.com');
 
     await page.goto('/profile');
-    await page.getByRole('button', { name: 'Sign out' }).click();
+    await page.getByRole('button', { name: 'Log out' }).click();
 
     await expect(page.getByRole('heading', { name: 'Home' })).toBeVisible();
     await expect(page.getByText('Not signed in.')).toBeVisible();

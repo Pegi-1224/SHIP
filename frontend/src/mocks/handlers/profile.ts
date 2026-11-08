@@ -4,7 +4,7 @@
  * `DELETE /me` performs the whole cascade on the server, in one operation:
  * the user's posts, every comment on those posts (including other people's),
  * their own comments elsewhere, their company submissions, both sides of every
- * conversation they took part in, their assessment, their read history and
+ * their assessment, their read history and
  * their sessions. Removing the submissions is what makes the affected company
  * aggregates recompute, since aggregation reads live rows.
  *
@@ -25,20 +25,30 @@ import {
   unauthorized,
   url,
 } from '../helpers';
+import {
+  deleteDemoContentBy,
+  demoCommentCount,
+  demoCommentsBy,
+  demoCompaniesSharedBy,
+  demoPostsBy,
+} from './demoSearch';
 
 export const profileHandlers = [
-  /** Counts shown at the top of Profile. */
+  /**
+   * Counts shown at the top of Profile, from the same demo posts, comments and companies the rest
+   * of the site shows. `submissionCount` is the number of different companies the user shared
+   * data about.
+   */
   http.get(url('/me/activity'), async ({ request }) => {
     await simulateLatency(140);
     const viewer = currentUser(request);
     if (!viewer) return unauthorized();
 
+    const refId = createAnonymousIdentity(viewer.id).id;
     const activity: ProfileActivity = {
-      postCount: db().posts.filter((post) => post.authorId === viewer.id).length,
-      commentCount: db().comments.filter((comment) => comment.authorId === viewer.id).length,
-      submissionCount: db().submissions.filter(
-        (submission) => submission.userId === viewer.id && submission.supersededAt === null,
-      ).length,
+      postCount: demoPostsBy(refId).length,
+      commentCount: demoCommentsBy(refId).length,
+      submissionCount: demoCompaniesSharedBy(refId).size,
     };
 
     return HttpResponse.json(activity);
@@ -49,28 +59,23 @@ export const profileHandlers = [
     const viewer = currentUser(request);
     if (!viewer) return unauthorized();
 
-    const posts = db()
-      .posts.filter((post) => post.authorId === viewer.id)
-      .sort((a, b) => b.createdAt.localeCompare(a.createdAt));
-
+    const refId = createAnonymousIdentity(viewer.id).id;
     const { page, pageSize } = readPagination(request);
-    const pageResult = paginate(posts, page, pageSize);
+    const pageResult = paginate(demoPostsBy(refId), page, pageSize);
 
     return HttpResponse.json({
       ...pageResult,
-      items: pageResult.items.map(
-        (post): Post => ({
-          id: post.id,
-          title: post.title,
-          body: post.body,
-          tags: post.tags,
-          author: createAnonymousIdentity(post.authorId),
-          isOwn: true,
-          createdAt: post.createdAt,
-          editedAt: post.editedAt,
-          commentCount: db().comments.filter((comment) => comment.postId === post.id).length,
-        }),
-      ),
+      items: pageResult.items.map((post): Post => ({
+        id: post.id,
+        title: post.title,
+        body: post.content,
+        tags: post.tags,
+        author: createAnonymousIdentity(viewer.id),
+        isOwn: true,
+        createdAt: post.createdAt,
+        editedAt: post.updatedAt ?? null,
+        commentCount: demoCommentCount(post.id),
+      })),
     });
   }),
 
@@ -79,26 +84,21 @@ export const profileHandlers = [
     const viewer = currentUser(request);
     if (!viewer) return unauthorized();
 
-    const comments = db()
-      .comments.filter((comment) => comment.authorId === viewer.id)
-      .sort((a, b) => b.createdAt.localeCompare(a.createdAt));
-
+    const refId = createAnonymousIdentity(viewer.id).id;
     const { page, pageSize } = readPagination(request);
-    const pageResult = paginate(comments, page, pageSize);
+    const pageResult = paginate(demoCommentsBy(refId), page, pageSize);
 
     return HttpResponse.json({
       ...pageResult,
-      items: pageResult.items.map(
-        (comment): Comment => ({
-          id: comment.id,
-          postId: comment.postId,
-          body: comment.body,
-          author: createAnonymousIdentity(comment.authorId),
-          isOwn: true,
-          createdAt: comment.createdAt,
-          editedAt: comment.editedAt,
-        }),
-      ),
+      items: pageResult.items.map((comment): Comment => ({
+        id: comment.id,
+        postId: comment.postId,
+        body: comment.content,
+        author: createAnonymousIdentity(viewer.id),
+        isOwn: true,
+        createdAt: comment.createdAt,
+        editedAt: null,
+      })),
     });
   }),
 
@@ -124,18 +124,8 @@ export const profileHandlers = [
     // which can push a metric back below the privacy threshold (spec 6.6, T2).
     data.submissions = data.submissions.filter((submission) => submission.userId !== userId);
 
-    // Conversations, deleted for both participants.
-    const ownConversationIds = new Set(
-      data.conversations
-        .filter((conversation) => conversation.participantIds.includes(userId))
-        .map((conversation) => conversation.id),
-    );
-    data.conversations = data.conversations.filter(
-      (conversation) => !ownConversationIds.has(conversation.id),
-    );
-    data.messages = data.messages.filter(
-      (message) => !ownConversationIds.has(message.conversationId),
-    );
+    // The demo posts, comments and reports the rest of the site shows.
+    deleteDemoContentBy(createAnonymousIdentity(userId).id);
 
     // Assessment, read history, sessions and the account itself.
     data.assessments = data.assessments.filter((item) => item.userId !== userId);

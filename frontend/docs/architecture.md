@@ -59,8 +59,7 @@ features/companies/
                   ComparisonMetric.tsx
                   metrics/               The five metric-area renderers.
   hooks/          useCompanies.ts        Queries, mutations, invalidation.
-  pages/          CompanySearchPage.tsx  One per route.
-  schemas/        submissionSchema.ts    Zod validation + form↔API conversion.
+  pages/          ComparePage.tsx        One per route.
   utils/          comparison.ts          Pure domain logic, heavily tested.
   index.ts        Public surface.
 ```
@@ -95,7 +94,7 @@ than in `app/router/`, so shared components can link somewhere without importing
 
 | State | Lives in | Why |
 | --- | --- | --- |
-| Server data (companies, posts, messages, session) | **TanStack Query** | It is a cache of someone else's data, with loading, error, staleness and invalidation. Copying it into component state would mean reimplementing all of that. |
+| Server data (companies, posts, session) | **TanStack Query** | It is a cache of someone else's data, with loading, error, staleness and invalidation. Copying it into component state would mean reimplementing all of that. |
 | Search query, active tag, compared company ids, submission area | **The URL** | Shareable, bookmarkable, and the Back button works. |
 | Form values | **react-hook-form** | Keeps re-renders local to the field and survives a failed submit, which is what preserves the user's input. |
 | Dialog open/closed, current wizard step, composer draft | **Component `useState`** | Nothing outside the component needs it. |
@@ -155,11 +154,8 @@ navigating away.
 
 ### DTO transformation
 
-Where the backend's shape differs from the UI's, the API layer converts it explicitly. Today the
-clearest example is the submission form: `toSubmissionSections` and `fromSubmissionSections` in
-`features/companies/schemas/submissionSchema.ts` translate between the flat form model (every
-section present, strings for selects, `''` for empty numbers) and the sparse API model (only the
-sections the user filled in, typed values). Components never see the wire format.
+Where the backend's shape differs from the UI's, the API layer converts it explicitly, so
+components never see the wire format.
 
 ---
 
@@ -172,7 +168,6 @@ Three pieces of real logic are kept out of components and tested on their own.
 | Comparison rules and sentence generation | `features/companies/utils/comparison.ts` | 23 cases |
 | Aggregation and the privacy threshold | `mocks/aggregations.ts` *(belongs on the backend)* | 10 cases |
 | Statistics helpers — median, share, zero denominators | `shared/utils/statistics.ts` | covered via the two above |
-| Submission validation and form↔API conversion | `features/companies/schemas/submissionSchema.ts` | 10 cases |
 | Tag normalisation and rules | `shared/utils/tags.ts` | 6 cases |
 
 `comparison.ts` is pure: two `CompanyProfile` objects in, a result object out. That is what makes it

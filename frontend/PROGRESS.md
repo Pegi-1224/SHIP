@@ -3,7 +3,7 @@
 What is built, what was verified, and what comes next. Update this at the end of every working
 session.
 
-**Last updated:** 2026-10-13
+**Last updated:** 2026-11-03
 
 ---
 
@@ -24,6 +24,109 @@ a finished design — each one shows a `StarterPage` placeholder instead (see
 | `npm test` | Pass, 70 tests in 7 files |
 | `npm run build` | Pass |
 | `npm run e2e` | Pass, 5 tests in Chromium against the production build |
+
+---
+
+## 2026-11-03 — Direct messages removed
+
+Direct messages are no longer part of the product, so the whole feature was deleted:
+
+- **Deleted:** `src/features/messages/` (the two placeholder pages, the API functions and hooks,
+  `useStartConversationFlow`), `src/mocks/handlers/messages.ts`, `src/shared/types/message.ts`.
+- **Routes and navigation:** `/messages` and `/messages/:conversationId` (routes, path builders),
+  the "Messages" entry in the header's Profile menu, the Messages links on Home's dev index and on
+  the Profile starter page, the `messages` query keys.
+- **Avatars are no longer clickable.** `AnonymousAvatar` lost `onStartConversation` and
+  `disabledReason`, `PostCard` lost `onStartConversation` and `messagingDisabledReason`, and
+  `CommentSection` no longer starts a conversation. The avatar is now a plain, non-interactive icon.
+- **Mock backend:** conversations and messages left the mock database (`DB_VERSION` bumped to 2 so a
+  stale saved copy is discarded) and the account-deletion cascade; the simulated replies and the
+  `!fail` QA affordance (DQ-13, DQ-14) went with the handler.
+- **Instruction walkthrough:** the "Messages" step was removed, so the tour is five steps.
+- **Account deletion** copy no longer lists "your direct messages".
+- **Docs:** README, `api-contract.md` (the Messages section and open question 8),
+  `backend-integration.md` (§3.5, §5, the migration table, the checklist), `feature-checklist.md`
+  (§5), `component-reference.md` and `decisions-and-questions.md`. Earlier entries below are left as
+  they were: they describe what was true at the time.
+
+The backend removed its `/messages/*` endpoints and tables separately (branch `backend`).
+
+**Verified:** lint, typecheck and 158 unit tests pass (4 fewer: the two message routes were in the
+signed-out and signed-in route lists). The Playwright suite was edited (the `/messages` entry) but
+not run.
+
+---
+
+## 2026-11-03 — Assessment page built
+
+**What:** `/assessment` is now the real five-question form (spec 3.3), one question per screen with
+a progress bar, built on the existing `QuestionShell`, `assessmentSchema` and `useSaveAssessment`:
+
+1. Where are you in your career right now? (one choice)
+2. Which industries are you interested in? (one or more)
+3. What matters most to you when choosing a company? (one to three - the others lock at three,
+   for the keyboard as well as the mouse)
+4. Which topics do you want to see in discussions? (one or more `#tags`)
+5. Are there companies you want to follow? (optional; search, Select, remove)
+
+Answers 3 and 4 drive the home recommendations. Each question is validated before the next; Back
+keeps what was entered. **New account:** finishing saves and goes Home. **Retake** (from Profile):
+the saved answers are pre-filled, followed companies show by name, finishing says "Save my
+answers" and returns to Profile, and `updatedAt` is set.
+
+**Guard restored:** `/assessment` is wrapped in `RequireAuth` again, as `AppRoutes.tsx` says to do the
+moment a route gets a real page. It also makes the page wait for the session, which it needs to
+know whether this is a retake; a signed-out visitor is sent to log in and back.
+
+**Removed:** the "Dev: complete assessment with default answers" button, which lived on the
+placeholder. `useDevCompleteAssessment` is still exported but no page uses it now. The e2e helper
+`devCompleteAssessment` became `completeAssessment` and drives the real form.
+
+**Accessibility:** the followed-company remove control is a real button (Mantine's `Pill` hides its
+own from the keyboard and screen readers).
+
+**Tests:** `AssessmentPage.test.tsx` (11); route tests updated. 162 unit tests, lint and typecheck
+pass. Driven in a browser against the real backend: new account, retake, pre-fill, save, redirect.
+**Not run:** the Playwright suite (browsers are not installed here); its helper was rewritten but
+is untested.
+
+**Question wording is mine.** The spec text is not in the repository, so the five questions are
+worded from the validation rules and code comments (the options themselves come from the existing
+type definitions). Check the wording against the spec.
+
+---
+
+## 2026-11-03 — Login page built
+
+**What:** `/login` is now a real page, no longer a `StarterPage`. One screen for sign-in and sign-up:
+the eligibility declaration (spec 2.1), then email → 6-digit code, built from the existing
+`EmailSignInForm`, `EligibilityCheckbox` and `useAuthMutations`. In mock mode only, a clearly
+labelled "Continue with Google (demo account)" button is shown, because that is what
+`MockAuthNotice` describes.
+
+**Where a sign-in ends up** is decided by the route guard, not the page:
+`RedirectIfAuthenticated` sends someone with no completed assessment (every new account) to
+`/assessment`, everyone else to `?redirectTo=` or Home. `readRedirectTarget`
+(`shared/config/paths.ts`) only accepts a path on this site - `//evil.example`, `https://...`,
+backslashes and `/login` itself are ignored.
+
+**Also changed:**
+- `EmailSignInForm`: a server error that names a field (wrong code, missing declaration, bad email)
+  is shown at that field instead of also in a "Something went wrong" banner; the declaration error
+  is handed up to the page's checkbox (`onEligibilityError`); the dev-code panel no longer claims
+  to come from a "mock API", since a real backend in development returns it too.
+- Tests: new `LoginPage.test.tsx` (12 tests: new account, declaration, wrong code, existing account,
+  `redirectTo`, open redirect, Google demo) and `paths.test.ts`; route tests expect the new heading,
+  and `/login` is no longer in the "signed-in user sees every route" list because a signed-in user
+  is redirected away from it.
+
+**Verified:** lint, typecheck and all 151 unit tests pass (`VITE_ENABLE_MOCKS=true`), and the full
+flow was driven in a browser against the real backend (sign-up, sign-out, wrong code, returning
+account). **Not run:** the Playwright e2e suite (its heading was updated but not executed).
+
+**Note (resolved by the Assessment page entry above):** with a real backend a new account used to land on the Assessment starter page, which had no form
+yet, and its mock-only shortcut is disabled. `RequireAssessment` is not applied to any route today,
+so the user is not trapped - but the assessment page is now the next blocker for onboarding.
 
 ---
 

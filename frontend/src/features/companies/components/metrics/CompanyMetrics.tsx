@@ -15,7 +15,13 @@ import {
   SourceLabel,
   ThresholdNotice,
 } from '@/shared/ui';
-import { formatCount, formatMonths, formatPercent, formatUsd, formatWeeks } from '@/shared/utils/format';
+import {
+  formatCount,
+  formatMonths,
+  formatPercent,
+  formatUsd,
+  formatWeeks,
+} from '@/shared/utils/format';
 import { joinWithAnd } from '@/shared/utils/text';
 import { MetricBranches } from './MetricBranches';
 import styles from './metrics.module.css';
@@ -58,13 +64,21 @@ export function SalaryMetric({ profile, onShareData }: MetricSectionProps) {
                 <dl className={styles.values}>
                   <DataPoint
                     label="Average salary"
-                    value={publicData.averageAnnualUsd === null ? null : formatUsd(publicData.averageAnnualUsd)}
+                    value={
+                      publicData.averageAnnualUsd === null
+                        ? null
+                        : formatUsd(publicData.averageAnnualUsd)
+                    }
                     caption={`${COMPENSATION_DEFINITION_LABELS[publicData.compensationDefinition]} · ${publicData.population}`}
                     size="lg"
                   />
                   <DataPoint
                     label="Employees covered"
-                    value={publicData.sampleSize === null ? null : publicData.sampleSize.toLocaleString('en-US')}
+                    value={
+                      publicData.sampleSize === null
+                        ? null
+                        : publicData.sampleSize.toLocaleString('en-US')
+                    }
                     caption={publicData.location}
                   />
                 </dl>
@@ -315,7 +329,10 @@ export function DiversityMetric({ profile, onShareData }: MetricSectionProps) {
                     {SUPPORT_PROGRAMS.map((program) => (
                       <li key={program}>
                         {SUPPORT_PROGRAM_LABELS[program]}:{' '}
-                        {formatCount(reported.summary?.supportProgramCounts[program] ?? 0, 'report')}
+                        {formatCount(
+                          reported.summary?.supportProgramCounts[program] ?? 0,
+                          'report',
+                        )}
                       </li>
                     ))}
                   </ul>

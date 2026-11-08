@@ -14,14 +14,14 @@ import { Prisma } from '../generated/prisma/client.js'
 import { prisma } from './client.js'
 import { generateIdentity } from '../lib/identity.js'
 import { hostnameOf } from '../lib/company.js'
+import { SHARE_DATA_AREA } from '../routes/demoCompanies.js'
 import type { CompanyRecord, PostStatus } from '../types/demo.js'
 
 const SEED_EMAIL_DOMAIN = 'seed.invalid'
 
+/** A demo author: no name or picture, everyone shows as "Anonymous". */
 interface UserSeed {
   refId: string
-  displayName: string | null
-  avatarUrl: string | null
   industry: string | null
   location: string | null
 }
@@ -87,16 +87,6 @@ function nullableJson(value: unknown): Prisma.InputJsonValue | typeof Prisma.DbN
 
 const json = (value: unknown) => value as Prisma.InputJsonValue
 
-/** The demo records' industries, which the demo JSON does not carry. */
-const DEMO_INDUSTRY: Record<string, string> = {
-  'brightfern-health': 'Healthcare',
-  'kestrel-cloudworks': 'Tech',
-  'lumen-harbor-analytics': 'Tech',
-  'orchid-ridge-bank': 'Finance',
-  'quillstone-legal-tech': 'Tech',
-  'wrenfield-studios': 'Entertainment',
-}
-
 const EMPTY_PUBLIC_DATA = { salary: null, promotion: null, diversity: null, benefits: null, maternity: null }
 
 const demoCompanies = readSeed<CompanyRecord[]>('companies.json')
@@ -123,7 +113,7 @@ await prisma.$transaction(async (tx) => {
         name: company.name,
         website: company.website,
         websiteHost: hostnameOf(company.website),
-        industry: DEMO_INDUSTRY[company.id] ?? 'Other',
+        industry: company.industry,
         headquartersCity: company.location,
         isDemoFixture: true,
         publicData: EMPTY_PUBLIC_DATA,
@@ -156,6 +146,18 @@ await prisma.$transaction(async (tx) => {
         publicData: json(publicData),
       })),
     ],
+  })
+
+  // "Share your data" answers stored on a company (from "Add this company"), one row each.
+  await tx.companyReport.createMany({
+    data: demoCompanies.flatMap((company) =>
+      (company.submissions ?? []).map((submission) => ({
+        companyId: company.id,
+        area: SHARE_DATA_AREA,
+        data: json(submission),
+        createdAt: new Date(submission.submittedAt),
+      })),
+    ),
   })
 
   await tx.author.createMany({ data: authors })

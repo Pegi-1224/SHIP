@@ -18,7 +18,8 @@
     "db:migrate": "prisma migrate dev",
     "db:seed": "tsx src/db/seed.ts",
     "db:studio": "prisma studio",
-    "test:smoke": "sh test/run.sh"
+    "test:smoke": "sh test/run.sh",
+    "sync:shared": "node scripts/sync-shared.mjs"
   },
   "dependencies": {
     "@fastify/cors": "^11.4.0",

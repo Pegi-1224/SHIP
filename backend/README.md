@@ -21,8 +21,8 @@ By default the frontend still uses its in-browser mock backend (`frontend/src/mo
 | | tags: `GET/POST /discussions/tags` | required |
 | Companies | `GET /companies` · `GET /companies/name-suggestions` · `GET /companies/compare` · `POST /companies` · `GET /companies/:id` | required |
 | Submissions | `GET /companies/:id/my-submission` · `POST /companies/:id/submissions` · `PUT /companies/:id/submissions/:sid` | required |
-| **Transitional** | `GET /demo/companies` · `GET /demo/companies/:id` · `POST /demo/companies/:id/reports` · `GET /demo/posts` · `GET /demo/posts/:id` · `GET /demo/posts/:id/comments` | **none** |
-| | `POST /demo/posts/:id/comments` | required |
+| **Transitional** | `GET /demo/companies` (`?mode=names`: name autocomplete) · `GET /demo/companies/:id` · `POST /demo/companies/:id/reports` · `GET /demo/posts` · `GET /demo/posts/:id` · `GET /demo/posts/:id/comments` · `GET /demo/tags/trending` | **none** |
+| | `POST /demo/companies` (Add this company) · `POST /demo/posts` · `PUT /demo/posts/:id` · `POST /demo/posts/:id/comments` · `GET /demo/for-you` | required |
 
 **Not built:** `POST /auth/google/mock` (it signs in a fixed account with no OAuth, which a real
 backend must never do - real Google sign-in is separate work), comment editing (an open question
@@ -175,6 +175,18 @@ anyone's comments or reports on a seeded post or company go with it. The data is
 accounts (`*@example.com`) and checks every endpoint, error case and race condition, printing only
 failures. It needs `python3`, the `ship-postgres` container and `AUTH_DEV_RETURN_CODE=true`.
 
+### Shared with the frontend
+
+The `/demo/*` endpoints validate and compute with the frontend's own files: post, report and
+add-company validation, the report averages, banned words, tags, name suggestions and the response
+types. `npm run sync:shared` copies them from `frontend/src/shared` into `src/shared/` (and the demo
+JSON into `src/db/seed-data/`), so a form and the server can never disagree. Never edit the copies:
+change the frontend file, run the script, commit both. "Add this company" answers are stored as
+`CompanyReport` rows with `area = 'share_data'`, under the writer's anonymous handle.
+
+**Running the frontend against this server:** start it here (`npm run dev`), then
+`npm run dev:backend` in `frontend/` (instead of `npm run dev`, which uses the in-browser demo data).
+
 ### Scripts
 
 | Command | Does |
@@ -184,6 +196,7 @@ failures. It needs `python3`, the `ship-postgres` container and `AUTH_DEV_RETURN
 | `npm run build` / `npm start` | Compile to `dist/` and run it |
 | `npm run db:migrate` | Create/apply a migration after editing `prisma/schema.prisma` |
 | `npm run db:seed` | Reset the demo data from `src/db/seed-data/` |
+| `npm run sync:shared` | Copy the frontend's rule files (`src/shared/`) and demo data (`src/db/seed-data/`); see below |
 | `npm run test:smoke` | Run the end-to-end API checks against the running server |
 | `npm run db:studio` | Browse the database in the browser |
 

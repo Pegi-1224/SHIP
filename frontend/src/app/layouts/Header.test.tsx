@@ -54,13 +54,22 @@ describe('header search on Home', () => {
     expect(input).toHaveValue('orchid ridge');
   });
 
-  it('says so when nothing is similar', async () => {
+  it('offers to add the company when nothing is similar', async () => {
     const { user } = renderAt('/');
     await screen.findByRole('heading', { name: 'Latest discussions' });
 
     await user.type(screen.getByRole('textbox', { name: 'Search companies' }), 'zzzqqq{Enter}');
 
-    expect(await screen.findByText('No similar companies')).toBeInTheDocument();
+    expect(
+      await screen.findByRole('heading', { name: 'We don’t have this company yet.' }),
+    ).toBeInTheDocument();
+    expect(
+      screen.getByText(
+        'Add “zzzqqq” and be the first to share what it’s really like to work there.',
+      ),
+    ).toBeInTheDocument();
+    await user.click(screen.getByRole('link', { name: 'Add this company' }));
+    expect(await screen.findByRole('heading', { name: 'Add this company' })).toBeInTheDocument();
   });
 });
 

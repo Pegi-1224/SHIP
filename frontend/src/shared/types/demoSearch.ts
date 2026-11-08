@@ -8,7 +8,8 @@
  * A missing value is `null` - never `0` or an empty string - so the UI can say
  * "Not published" instead of showing a misleading number.
  */
-import type { IsoDateString } from './common';
+import type { StoredCompanySubmission } from './companySubmission';
+import type { Industry, IsoDateString } from './common';
 
 export interface CompanyContact {
   /** A team or role inbox, e.g. `Recruiting team`. */
@@ -81,13 +82,24 @@ export interface UserReportedDiversity {
   womenOnTeamPct: number | null;
   /** Share of respondents who feel included at work. */
   feelIncludedPct: number | null;
+  /**
+   * How many reports each figure averages, when that differs from
+   * `submissions` (not every form asks every question). Missing means
+   * `submissions`.
+   */
+  fieldCounts?: Partial<Record<DiversityField, number>> | null;
 }
+
+export type DiversityField =
+  'womanManagerPct' | 'womanInCSuitePct' | 'womenOnTeamPct' | 'feelIncludedPct';
 
 export interface UserReportedMaternity {
   submissions: number;
   avgPaidWeeks: number | null;
   /** Average share of normal pay received during leave. */
   avgPayPercent: number | null;
+  /** As on `UserReportedDiversity`: per-figure report counts when they differ. */
+  fieldCounts?: Partial<Record<'avgPaidWeeks' | 'avgPayPercent', number>> | null;
 }
 
 export interface ReportedBenefit {
@@ -121,6 +133,8 @@ export interface CompanyRecord {
   name: string;
   website: string;
   intro: string;
+  /** Matches assessment question 2, so Home can suggest companies in the user's industries. */
+  industry: Industry;
   mainFocus: string[];
   location: string;
   email: string;
@@ -138,6 +152,11 @@ export interface CompanyRecord {
   paidMaternityLeave: CompanyMaternityLeave | null;
   /** `null` for an area means nobody has reported it yet. */
   userReported: CompanyUserReported;
+  /**
+   * Every "Share your data" answer for this company, anonymous. Stored in
+   * companies.json but never sent by the API: only the totals above are.
+   */
+  submissions?: StoredCompanySubmission[];
 }
 
 export type PostStatus = 'published' | 'hidden' | 'removed';
@@ -160,16 +179,13 @@ export interface PostRecord {
 }
 
 /**
- * One record in `src/mocks/data/users.json`: how an author appears next to
- * their posts. Keyed by the same opaque `authorRefId` the posts use.
+ * One record in `src/mocks/data/users.json`: the public details of an author,
+ * keyed by the same opaque `authorRefId` the posts use. There is no name or
+ * picture: every post and comment is shown as "Anonymous".
  */
 export interface DemoUserRecord {
   refId: string;
-  /** Chosen username. `null` means the user posts as "Anonymous". */
-  displayName: string | null;
-  /** `null` means no picture; the UI draws a gradient instead. */
-  avatarUrl: string | null;
-  /** Shown under the name on a post, e.g. "Tech · Seattle". Either may be `null`. */
+  /** Shown under "Anonymous" on a post, e.g. "Tech · Seattle". Either may be `null`. */
   industry: string | null;
   location: string | null;
 }
@@ -178,8 +194,9 @@ export interface DemoUserRecord {
 export interface PostAuthor {
   /** Opaque, stable per author; seeds the fallback avatar gradient. */
   refId: string;
-  /** Always set: "Anonymous" when the user has no display name. */
+  /** Always "Anonymous": names are never shown next to posts (spec 3.7). */
   displayName: string;
+  /** Always `null`; the UI draws a gradient seeded by `refId` instead. */
   avatarUrl: string | null;
   industry: string | null;
   location: string | null;
@@ -212,4 +229,21 @@ export interface SearchHit<T> {
   item: T;
   /** 0-1, higher is a closer match. */
   score: number;
+}
+
+/** `GET /demo/for-you`: one page of the signed-in user's Home feed. */
+export interface ForYouFeed {
+  items: PostPreview[];
+  /** Where this page starts; ask for `offset + items.length` to see the next ones. */
+  offset: number;
+  /** Posts in the whole feed. */
+  total: number;
+  /** False when nothing carries the user's topics, so the feed is just the newest posts. */
+  matchedTopics: boolean;
+}
+
+/** One row of `GET /demo/tags/trending`. */
+export interface TrendingTag {
+  tag: string;
+  postCount: number;
 }

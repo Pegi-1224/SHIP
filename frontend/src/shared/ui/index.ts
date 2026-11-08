@@ -31,7 +31,6 @@ export { AnonymousAvatar } from './data-display/AnonymousAvatar';
 export { UserAvatar } from './data-display/UserAvatar';
 export type { UserAvatarProps } from './data-display/UserAvatar';
 export { TagPill } from './data-display/TagPill';
-export { CompanyCard } from './data-display/CompanyCard';
 export { PostCard } from './data-display/PostCard';
 
 export { SearchInput } from './inputs/SearchInput';

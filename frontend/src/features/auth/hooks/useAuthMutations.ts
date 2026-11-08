@@ -138,7 +138,6 @@ export function useMarkInstructionsSeen() {
 
   return useMutation({
     mutationFn: markInstructionsSeen,
-    onSuccess: () =>
-      queryClient.invalidateQueries({ queryKey: queryKeys.session.current }),
+    onSuccess: () => queryClient.invalidateQueries({ queryKey: queryKeys.session.current }),
   });
 }

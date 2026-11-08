@@ -65,7 +65,11 @@ function shortValue(value: number, unit: MetricComparison['unit']): string {
  * so the comparison is fully usable without seeing the bars or distinguishing
  * the two colours (spec 9, accessibility).
  */
-export function ComparisonMetric({ comparison, companyAName, companyBName }: ComparisonMetricProps) {
+export function ComparisonMetric({
+  comparison,
+  companyAName,
+  companyBName,
+}: ComparisonMetricProps) {
   const { values, unit } = comparison;
   const canChart =
     values.a !== null &&

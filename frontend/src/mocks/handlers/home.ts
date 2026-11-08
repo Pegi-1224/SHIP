@@ -32,7 +32,7 @@ const PRIORITY_TAGS: Record<PriorityId, string[]> = {
   supportive_manager: ['supportive manager'],
   parental_leave: ['maternity leave', 'return to work'],
   benefits: ['benefits'],
-  work_life_balance: ['work life balance'],
+  work_life_balance: ['work-life balance'],
   safe_workplace: ['harassment support'],
 };
 

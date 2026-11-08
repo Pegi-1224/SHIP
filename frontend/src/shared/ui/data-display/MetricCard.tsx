@@ -36,7 +36,13 @@ export function MetricCard({
   const headingId = useId();
 
   return (
-    <Paper component="section" aria-labelledby={headingId} withBorder p="lg" className={styles.card}>
+    <Paper
+      component="section"
+      aria-labelledby={headingId}
+      withBorder
+      p="lg"
+      className={styles.card}
+    >
       <div className={styles.header}>
         <div className={styles.heading}>
           {icon ? (

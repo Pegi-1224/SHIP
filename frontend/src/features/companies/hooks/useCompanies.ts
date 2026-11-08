@@ -9,24 +9,20 @@
 import { keepPreviousData, useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { queryKeys } from '@/shared/api';
 import type { DemoReport } from '@/shared/utils/demoReports';
-import type {
-  CompanySearchParams,
-  CreateCompanyInput,
-  SubmissionSections,
-} from '@/shared/types/company';
+import type { NewCompanyInput } from '@/shared/types/companySubmission';
+import type { CompanySearchParams, CreateCompanyInput } from '@/shared/types/company';
 import {
   createCompany,
-  createSubmission,
   fetchCompanyProfile,
   fetchComparison,
   fetchMySubmissions,
   fetchSimilarCompanies,
-  fetchSubmissionEligibility,
   searchCompanies,
   searchDemoCompanies,
+  suggestDemoCompanyNames,
   fetchDemoCompany,
   submitDemoReport,
-  updateSubmission,
+  createDemoCompany,
 } from '../api/companiesApi';
 
 export function useCompanySearch(params: CompanySearchParams, enabled = true) {
@@ -42,6 +38,16 @@ export function useDemoCompanySearch(q: string) {
   return useQuery({
     queryKey: queryKeys.demoSearch.companies(q),
     queryFn: ({ signal }) => searchDemoCompanies(q, signal),
+    placeholderData: keepPreviousData,
+  });
+}
+
+/** Name autocomplete for "Add this company". Nothing is fetched until something is typed. */
+export function useDemoCompanyNameSuggestions(q: string) {
+  return useQuery({
+    queryKey: queryKeys.demoSearch.companyNames(q),
+    queryFn: ({ signal }) => suggestDemoCompanyNames(q, signal),
+    enabled: q.length > 0,
     placeholderData: keepPreviousData,
   });
 }
@@ -62,6 +68,19 @@ export function useSubmitDemoReport(companyId: string) {
     mutationFn: (report: DemoReport) => submitDemoReport(companyId, report),
     onSuccess: async (result) => {
       queryClient.setQueryData(queryKeys.demoSearch.company(companyId), result.company);
+      await queryClient.invalidateQueries({ queryKey: queryKeys.demoSearch.all });
+    },
+  });
+}
+
+/** Adds a company with the user's answers; the new company shows in every search. */
+export function useCreateDemoCompany() {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: (input: NewCompanyInput) => createDemoCompany(input),
+    onSuccess: async (result) => {
+      queryClient.setQueryData(queryKeys.demoSearch.company(result.company.id), result.company);
       await queryClient.invalidateQueries({ queryKey: queryKeys.demoSearch.all });
     },
   });
@@ -99,50 +118,6 @@ export function useCreateCompany() {
   return useMutation({
     mutationFn: (input: CreateCompanyInput) => createCompany(input),
     onSuccess: () => queryClient.invalidateQueries({ queryKey: queryKeys.companies.all }),
-  });
-}
-
-export function useSubmissionEligibility(companyId: string | undefined) {
-  return useQuery({
-    queryKey: queryKeys.companies.mySubmission(companyId ?? ''),
-    queryFn: ({ signal }) => fetchSubmissionEligibility(companyId as string, signal),
-    enabled: Boolean(companyId),
-  });
-}
-
-export interface SubmitCompanyDataInput {
-  sections: SubmissionSections;
-  /** Set when editing an existing submission rather than creating one. */
-  submissionId?: string | undefined;
-}
-
-/**
- * Creates or updates a company-data submission.
- *
- * Both paths invalidate the same caches, because either one changes the
- * aggregates the profile and comparison pages display.
- */
-export function useSubmitCompanyData(companyId: string) {
-  const queryClient = useQueryClient();
-
-  return useMutation({
-    mutationFn: ({ sections, submissionId }: SubmitCompanyDataInput) =>
-      submissionId
-        ? updateSubmission(companyId, submissionId, sections)
-        : createSubmission(companyId, sections),
-    onSuccess: async () => {
-      await Promise.all([
-        queryClient.invalidateQueries({ queryKey: queryKeys.companies.detail(companyId) }),
-        queryClient.invalidateQueries({ queryKey: queryKeys.companies.mySubmission(companyId) }),
-        queryClient.invalidateQueries({ queryKey: queryKeys.companies.mySubmissionHistory }),
-        // Any open comparison involving this company is now stale.
-        queryClient.invalidateQueries({
-          predicate: (query) =>
-            query.queryKey[0] === 'companies' && query.queryKey[1] === 'comparison',
-        }),
-        queryClient.invalidateQueries({ queryKey: queryKeys.profile.activity }),
-      ]);
-    },
   });
 }
 

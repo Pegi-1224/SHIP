@@ -33,6 +33,23 @@
   gap: 14.4px;
 }
 
+/* Shown to the post's author only. */
+.editLink {
+  margin-left: auto;
+  padding: 6px 14.4px;
+  border: 1.8px solid var(--ship-primary-200);
+  border-radius: 10.8px;
+  color: var(--ship-primary-600);
+  font-size: 13.68px;
+  font-weight: 700;
+  line-height: 1.4;
+  text-decoration: none;
+}
+
+.editLink:hover {
+  background-color: var(--ship-primary-50);
+}
+
 .authorName {
   margin: 0;
   color: var(--ship-color-text);

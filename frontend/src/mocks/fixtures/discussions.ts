@@ -119,7 +119,7 @@ const POST_SEEDS: PostSeed[] = [
   {
     title: 'Does anyone else find "unlimited PTO" a red flag now?',
     body: 'Two companies in a row where unlimited meant nobody took more than ten days. Starting to prefer a fixed allowance I can actually point at.',
-    tags: ['benefits', 'work life balance'],
+    tags: ['benefits', 'work-life balance'],
     authorIndex: 13,
     hoursAgo: 210,
   },
@@ -133,7 +133,7 @@ const POST_SEEDS: PostSeed[] = [
   {
     title: 'Negotiating remote work after an in-office mandate',
     body: 'Two days in office became four with six weeks notice. I negotiated back to three with a written exception. Writing down the arguments that landed in case they help someone.',
-    tags: ['negotiation', 'work life balance'],
+    tags: ['negotiation', 'work-life balance'],
     authorIndex: 4,
     hoursAgo: 280,
   },

@@ -1,0 +1,84 @@
+/*
+ * "We don't have this company yet." Measurements follow the UI design's 1440px
+ * frame: a 151.2 x 154.8 tile at y = 381.6, centred; the heading 14.4px below
+ * it, the text 26.4px below that, then a 234 x 64.8 button 32.4px lower.
+ * The block is centred in the space below the header.
+ */
+
+.page {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: calc(100vh - var(--ship-header-height) - 48px);
+  padding: var(--ship-space-6) 0;
+  text-align: center;
+}
+
+.icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 151.2px;
+  height: 154.8px;
+  border-radius: 46.8px;
+  background-color: var(--ship-primary-100);
+  color: var(--ship-primary-600);
+}
+
+.title {
+  max-width: 777.6px;
+  margin: 14.4px 0 0;
+  color: var(--ship-color-text);
+  font-family: var(--ship-font-display);
+  font-size: 43.2px;
+  font-weight: 700;
+  line-height: 1.4;
+}
+
+.text {
+  max-width: 612px;
+  margin: 26.4px 0 0;
+  color: var(--ship-color-text-muted);
+  font-size: 19.08px;
+  line-height: 1.4;
+  overflow-wrap: anywhere;
+}
+
+.button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 234px;
+  height: 64.8px;
+  margin-top: 32.4px;
+  padding: 10px;
+  border-radius: 10.8px;
+  background-color: var(--ship-primary-600);
+  color: #ffffff;
+  font-size: 18.72px;
+  font-weight: 700;
+  line-height: 1;
+  text-decoration: none;
+  transition:
+    background-color 120ms ease,
+    transform 120ms ease;
+}
+
+.button:hover {
+  background-color: var(--ship-primary-700);
+}
+
+.button:active {
+  transform: translateY(1px);
+}
+
+@media (max-width: 640px) {
+  .title {
+    font-size: 32px;
+  }
+
+  .text {
+    font-size: 16.2px;
+  }
+}

@@ -6,6 +6,8 @@ import styles from './AppLayout.module.css';
 
 /** Routes that benefit from the full page width (comparison, company page boxes). */
 const WIDE_ROUTES = ['/compare', '/companies/'];
+/** Routes that paint their own full-width brand background (sign-in, the feature tour and the assessment). */
+const BRAND_ROUTES = ['/login', '/welcome', '/assessment'];
 
 /**
  * The frame every page renders inside: skip link, demo banner, header, main
@@ -17,8 +19,13 @@ const WIDE_ROUTES = ['/compare', '/companies/'];
 export function AppLayout() {
   const location = useLocation();
   const isWide = WIDE_ROUTES.some((route) => location.pathname.startsWith(route));
+  const isBrand = BRAND_ROUTES.includes(location.pathname);
 
-  const mainClassName = isWide ? `${styles.main} ${styles.wide}` : styles.main;
+  const mainClassName = isBrand
+    ? `${styles.main} ${styles.brand}`
+    : isWide
+      ? `${styles.main} ${styles.wide}`
+      : styles.main;
 
   return (
     <div className={styles.shell}>
@@ -41,7 +48,6 @@ export function AppLayout() {
           </Text>
         </div>
       </footer>
-
     </div>
   );
 }

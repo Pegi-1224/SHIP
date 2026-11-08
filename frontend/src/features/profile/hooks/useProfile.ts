@@ -9,16 +9,18 @@ export function useProfileActivity() {
   });
 }
 
-export function useMyPosts() {
+export function useMyPosts(enabled = true) {
   return useQuery({
     queryKey: queryKeys.profile.posts,
     queryFn: ({ signal }) => fetchMyPosts(signal),
+    enabled,
   });
 }
 
-export function useMyComments() {
+export function useMyComments(enabled = true) {
   return useQuery({
     queryKey: queryKeys.profile.comments,
     queryFn: ({ signal }) => fetchMyComments(signal),
+    enabled,
   });
 }

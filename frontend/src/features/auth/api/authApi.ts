@@ -85,10 +85,10 @@ export function signOut(): Promise<void> {
  * Deletes the account.
  *
  * The frontend calls one endpoint. Removing the user's posts, comments, the
- * comments other people left on those posts, their company submissions and
- * both sides of every direct message - and recomputing the affected company
- * aggregates - is the backend's job (spec 3.9, AC-9). The client must never
- * try to enumerate and delete those records itself.
+ * comments other people left on those posts and their company submissions -
+ * and recomputing the affected company aggregates - is the backend's job
+ * (spec 3.9, AC-9). The client must never try to enumerate and delete those
+ * records itself.
  */
 export function deleteAccount(): Promise<void> {
   return api.delete<void>('/me');

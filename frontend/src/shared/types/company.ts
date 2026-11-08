@@ -29,13 +29,7 @@ export interface Company {
 }
 
 /** The five metric areas from spec 3.5. */
-export const METRIC_AREAS = [
-  'salary',
-  'promotion',
-  'diversity',
-  'benefits',
-  'maternity',
-] as const;
+export const METRIC_AREAS = ['salary', 'promotion', 'diversity', 'benefits', 'maternity'] as const;
 
 export type MetricAreaId = (typeof METRIC_AREAS)[number];
 
@@ -63,11 +57,7 @@ export interface PublicSourceMeta {
 }
 
 /** What a salary figure actually includes. Differing definitions are not comparable. */
-export const COMPENSATION_DEFINITIONS = [
-  'base',
-  'base_plus_bonus',
-  'total_compensation',
-] as const;
+export const COMPENSATION_DEFINITIONS = ['base', 'base_plus_bonus', 'total_compensation'] as const;
 
 export type CompensationDefinition = (typeof COMPENSATION_DEFINITIONS)[number];
 
@@ -349,27 +339,6 @@ export interface SubmissionSections {
   diversity?: DiversitySubmissionSection;
   benefits?: BenefitsSubmissionSection;
   maternity?: MaternitySubmissionSection;
-}
-
-export interface CompanySubmission {
-  id: string;
-  companyId: string;
-  sections: SubmissionSections;
-  /** Start of the 90-day window. Editing does not move it (spec 6.6). */
-  createdAt: IsoDateString;
-  updatedAt: IsoDateString;
-}
-
-/**
- * Whether the signed-in user may create a new submission for this company, or
- * may only edit the one they already have (spec 6.5, AC-7).
- */
-export interface SubmissionEligibility {
-  canCreateNew: boolean;
-  /** The submission the user must edit instead, when `canCreateNew` is false. */
-  existingSubmission: CompanySubmission | null;
-  /** When a new submission becomes allowed again. */
-  nextSubmissionAllowedAt: IsoDateString | null;
 }
 
 /** An entry in the signed-in user's own contribution history. */

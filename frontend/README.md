@@ -174,7 +174,6 @@ src/
     home/                  recommendation hooks (preserved, unused by the page)
     companies/             search/profile/submission/comparison logic (preserved, unused by pages)
     discussions/           feed/post/comment logic (preserved, unused by pages)
-    messages/              conversation logic (preserved, unused by pages)
     profile/               account/activity logic (preserved, unused by the page)
   shared/
     api/                 HTTP client, error type, query keys, auth integration point - unchanged
@@ -201,19 +200,16 @@ public surface).
 | --- | --- |
 | `/` | `src/features/home/pages/HomePage.tsx` (also the dev index — see §3) |
 | `/login` | `src/features/auth/pages/LoginPage.tsx` |
+| `/welcome` | `src/features/onboarding/pages/WelcomeTourPage.tsx` |
 | `/assessment` | `src/features/onboarding/pages/AssessmentPage.tsx` |
 | `/profile` | `src/features/profile/pages/ProfilePage.tsx` |
-| `/companies` | `src/features/companies/pages/CompanySearchPage.tsx` |
 | `/companies/new` | `src/features/companies/pages/NewCompanyPage.tsx` |
 | `/companies/:companyId` | `src/features/companies/pages/CompanyProfilePage.tsx` |
-| `/companies/:companyId/submit` | `src/features/companies/pages/CompanySubmitPage.tsx` |
 | `/compare` | `src/features/companies/pages/ComparePage.tsx` |
 | `/discussions` | `src/features/discussions/pages/DiscussionsPage.tsx` |
 | `/discussions/new` | `src/features/discussions/pages/NewPostPage.tsx` |
 | `/discussions/:postId` | `src/features/discussions/pages/PostDetailPage.tsx` |
 | `/discussions/:postId/edit` | `src/features/discussions/pages/EditPostPage.tsx` |
-| `/messages` | `src/features/messages/pages/ConversationListPage.tsx` |
-| `/messages/:conversationId` | `src/features/messages/pages/ConversationPage.tsx` |
 | `*` (not found) | `src/app/router/NotFoundPage.tsx` |
 
 Every one of these files is small: a `StarterPage` with a title, a one-sentence description, a
@@ -245,7 +241,6 @@ Nothing described in the original architecture was deleted. Per feature:
 | home | `src/features/home/api/homeApi.ts` | `src/features/home/hooks/useHome.ts` | `src/mocks/handlers/home.ts` |
 | companies | `src/features/companies/api/companiesApi.ts` | `src/features/companies/hooks/useCompanies.ts` | `src/mocks/handlers/companies.ts` |
 | discussions | `src/features/discussions/api/discussionsApi.ts` | `src/features/discussions/hooks/useDiscussions.ts` | `src/mocks/handlers/discussions.ts` |
-| messages | `src/features/messages/api/messagesApi.ts` | `src/features/messages/hooks/useMessages.ts` | `src/mocks/handlers/messages.ts` |
 | profile | `src/features/profile/api/profileApi.ts` | `src/features/profile/hooks/useProfile.ts` | `src/mocks/handlers/profile.ts` |
 
 Domain logic independent of any UI is also untouched and still fully tested:
@@ -253,8 +248,6 @@ Domain logic independent of any UI is also untouched and still fully tested:
 - `src/features/companies/utils/comparison.ts` — the five comparison rules and summary generation
   (23 tests, `comparison.test.ts`)
 - `src/mocks/aggregations.ts` — the privacy-threshold aggregation (10 tests, `aggregations.test.ts`)
-- `src/features/companies/schemas/submissionSchema.ts` — submission validation and form↔API
-  conversion (10 tests, `submissionSchema.test.ts`)
 - `src/shared/utils/tags.ts` — tag normalisation and validation (6 tests, `tags.test.ts`)
 - `src/shared/api/client.ts` — the HTTP client itself (10 tests, `client.test.ts`)
 
@@ -301,12 +294,12 @@ Take the Company Profile page as a worked example.
    `useCompanyProfile` already handles caching, retries and loading/error states at the query level
    — the page only has to render the three outcomes (`isPending` / `isError` / success).
 4. **Reuse an existing button or navigation action** rather than writing a new one. For example, the
-   "Share your data" action is `navigate(paths.companySubmit(company.id))` — `paths` comes from
+   "Share your data" action is `navigate(paths.companyDetail(company.id))` — `paths` comes from
    `src/shared/config/paths.ts`, already used the same way throughout the app.
 5. **Run `npm run check`.** The route, the guard and the hook are already covered by
    `src/app/router/AppRoutes.test.tsx`; add a test for the page's own new behaviour next to it
    (`CompanyProfilePage.test.tsx`), following the pattern in `comparison.test.ts` or
-   `submissionSchema.test.ts` for pure logic, or `src/test/renderWithProviders.tsx` +
+   `tags.test.ts` for pure logic, or `src/test/renderWithProviders.tsx` +
    `src/test/signIn.ts` for a rendered page.
 
 ### How another teammate can take over a page
@@ -368,19 +361,16 @@ Every route in the app already exists as a starter page, so most work is "replac
 | --- | --- | --- |
 | `/` | Home (dev index) | Everyone |
 | `/login` | Login | Signed-out only. A signed-in user is redirected to `/` |
+| `/welcome` | Feature tour | Signed in. Where a new account lands after sign-up; its last step opens `/assessment` |
 | `/assessment` | Assessment | Signed in. Also used for retaking. Not gated by `RequireAssessment` |
 | `/profile` | Profile | Signed in. Deliberately **not** behind the assessment gate |
-| `/companies` | Company Search | Signed in + assessment finished |
 | `/companies/new` | Add Company | Signed in + assessment finished |
 | `/companies/:companyId` | Company Profile | Signed in + assessment finished |
-| `/companies/:companyId/submit` | Company Data Submission | Signed in + assessment finished |
-| `/compare` | Compare Companies | Signed in + assessment finished |
+| `/compare` | Compare companies (`?a=&b=`), opened from a company page's Compare button | Will need: signed in + assessment finished (public for now) |
 | `/discussions` | Discussions | Signed in + assessment finished |
 | `/discussions/new` | New Post | Signed in + assessment finished |
 | `/discussions/:postId` | Post Detail | Signed in + assessment finished |
 | `/discussions/:postId/edit` | Edit Post | Signed in + assessment finished |
-| `/messages` | Messages | Signed in + assessment finished |
-| `/messages/:conversationId` | Conversation | Signed in + assessment finished |
 | `*` | Not Found | Everyone |
 
 Guards are unchanged from before this refactor — see `src/app/router/AppRoutes.tsx` and
@@ -400,7 +390,7 @@ Button click → validation (Zod) → mutation hook (TanStack Query)
             → cache update (invalidation) → re-render
 ```
 
-`src/features/companies/schemas/submissionSchema.test.ts` and
+`src/features/companies/utils/comparison.test.ts` and
 `src/features/companies/hooks/useCompanies.ts` together demonstrate every step of this except the
 final render, which is exactly the part a real page adds.
 
@@ -504,7 +494,7 @@ Deploying with `VITE_ENABLE_MOCKS=true` publishes the dev sign-in/assessment sho
 | Every request fails right after `npm run dev` | The service worker had not started. Hard-reload once. If it persists, re-run `npx msw init public/ --save`. |
 | "Dev sign in" button is missing on Home | `VITE_ENABLE_MOCKS=false` in your `.env`. It only exists in mock mode — see §12. |
 | Guarded route keeps bouncing to `/login` even after clicking "Dev sign in" | Check the Network tab for a failed `/auth/email/*` call, or that `.env` has `VITE_ENABLE_MOCKS=true`. |
-| `/companies` (or similar) bounces to `/assessment` | Expected — that route needs the assessment completed. Use the dev shortcut on `/assessment`. |
+| `/compare` (or similar) bounces to `/assessment` | Expected — that route needs the assessment completed. Use the dev shortcut on `/assessment`. |
 | Signed out after every reload | Expected: the token lives in `sessionStorage`. Closing the tab ends the session. |
 | 404 on refresh in production | The host is not falling back to `index.html`. See §15. |
 | `npm run e2e` cannot find a browser | Run `npm run e2e:install` once. |

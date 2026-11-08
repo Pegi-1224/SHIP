@@ -18,7 +18,7 @@ import { buildSeedComments, buildSeedPosts } from './fixtures/discussions';
 const STORAGE_KEY = 'ship.mock.db';
 
 /** Bump this whenever the stored shape changes; older copies are discarded. */
-const DB_VERSION = 1;
+const DB_VERSION = 2;
 
 function createSeedDatabase(): MockDatabase {
   const publicData: MockDatabase['publicData'] = {};
@@ -37,8 +37,6 @@ function createSeedDatabase(): MockDatabase {
     submissions: buildSeedSubmissions(),
     posts: buildSeedPosts(),
     comments: buildSeedComments(),
-    conversations: [],
-    messages: [],
     readPosts: {},
     customTags: [],
   };

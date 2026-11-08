@@ -37,7 +37,14 @@ describe('apiRequest', () => {
     );
 
     await api.get('/thing', {
-      query: { q: 'pay gap', page: 2, empty: '', missing: undefined, nothing: null, tags: ['a', 'b'] },
+      query: {
+        q: 'pay gap',
+        page: 2,
+        empty: '',
+        missing: undefined,
+        nothing: null,
+        tags: ['a', 'b'],
+      },
     });
 
     expect(seen).toContain('q=pay+gap');
@@ -52,7 +59,11 @@ describe('apiRequest', () => {
     server.use(
       http.get('/api/thing', () =>
         HttpResponse.json(
-          { code: 'validation_error', message: 'Please enter a number.', fieldErrors: { weeks: ['Required'] } },
+          {
+            code: 'validation_error',
+            message: 'Please enter a number.',
+            fieldErrors: { weeks: ['Required'] },
+          },
           { status: 422 },
         ),
       ),

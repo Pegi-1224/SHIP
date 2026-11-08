@@ -37,7 +37,7 @@ and the record types are in `src/shared/types/demoSearch.ts`.
 | `id` | string | URL slug, unique |
 | `name`, `website`, `intro` | string | |
 | `mainFocus` | string[] | e.g. `["Digital health", "Telemedicine"]` |
-| `location` | string | City or `Remote (US)` |
+| `location` | string | City, U.S. state (companies added by members) or `Remote (US)` |
 | `email`, `phone`, `address` | string | Company's public contact details |
 | `contacts` | `{ name, role, email }[]` | Use team or role inboxes, not personal ones |
 | `sources` | `{ label, url }[]` | Where the information came from |
@@ -134,20 +134,37 @@ Worth adding later if needed: `likeCount`, `reportCount` (for moderation), and `
 carries an `author`, joined from `src/mocks/data/users.json` by `authorRefId`:
 
 ```
-"author": { "refId": "anon_7f3k2a", "displayName": "Alice_122", "avatarUrl": "/demo-avatars/alice_122.svg" }
+"author": { "refId": "anon_7f3k2a", "displayName": "Anonymous", "avatarUrl": null,
+            "industry": "Tech", "location": "Seattle" }
 ```
+
+Every author is shown as "Anonymous" with a gradient avatar fixed per `refId`
+(`shared/utils/avatar.ts`), so names and pictures are never stored with posts.
 
 ## User record (`users.json`)
 
 | Field | Type | Notes |
 |---|---|---|
 | `refId` | string | Same opaque handle as `authorRefId` on posts |
-| `displayName` | string or `null` | Chosen username; `null` is sent as `"Anonymous"` |
-| `avatarUrl` | string or `null` | `null` draws a gradient that is fixed per `refId` (`shared/utils/avatar.ts`) |
-| `industry`, `location` | string or `null` | Shown under the name on a post, e.g. "Tech · Seattle" |
+| `industry`, `location` | string or `null` | Shown under "Anonymous" on a post, e.g. "Tech · Seattle" |
 
-The demo pictures live in `public/demo-avatars/`. The real backend must never send an email or
-real name here.
+There is deliberately no name or picture. The real backend must never send an email, real name or
+username here.
+
+## Signed-in Home (`/`)
+
+```
+GET /demo/for-you?offset=0     -> { "items": [<post with author>], "offset": 0, "total": 9, "matchedTopics": true }
+GET /demo/tags/trending?limit=3 -> { "items": [{ "tag": "career goals", "postCount": 6 }] }
+```
+
+`for-you` needs sign-in. It returns 5 published posts carrying one of the user's assessment
+topics (question 4), newest first; Refresh asks for the next `offset` and it wraps back to 0.
+With no assessment, or no matching posts, it returns the newest posts and `matchedTopics: false`.
+
+The "Look up a company" box picks a random company whose `industry` is one of the user's
+industries (question 2), falling back to any company. Each company record therefore has an
+`industry`: one of Tech, Finance, Consulting, Healthcare, Entertainment, Other.
 
 ## Discussion page (`/discussions/:postId`)
 
@@ -178,3 +195,30 @@ The mock keeps them in memory only, so they disappear on reload.
 "‹ Back" uses the browser history (`shared/ui/navigation/BackLink.tsx`): nothing is stored. When
 the page was opened directly (no earlier page in the tab), it goes to `/discussions` instead.
 
+
+## Add a company (`/companies/new`)
+
+Two steps: the company's details (name, website, industry, headquarters state), then the user's own
+data in five boxes (salary; women support & diversity; promotion; benefits; paid maternity leave).
+Nothing is saved until Save on step 2:
+
+```
+POST /demo/companies  { "company": {...}, "data": {...} }  -> 201 { "company": <company>, "savedToFile": true }
+                                                              409 when the name is already listed; needs sign-in
+```
+
+Shapes: `shared/types/companySubmission.ts`. Validation, the new record and how answers are
+averaged in: `shared/utils/newCompany.ts` (shared by the form, the mock API and the dev-server
+plugin). Option lists (roles, promotion times, leave lengths, checkbox lists):
+`shared/config/formOptions.ts`.
+
+The name box suggests existing companies from the first letter: `GET /demo/companies?q=a&mode=names`
+(names starting with the text first, then a later word, then contains; A to Z within each; up to 6).
+Headquarters and the salary location are U.S. states with their codes, e.g. `California (CA)`.
+
+Promotion, benefits and maternity can be skipped (`null`); team size, women on team, health
+insurance, wellness budget and pay during leave take "N/A" (`null`). Each answer set is stored on
+the company under `submissions`, keyed by the anonymous handle, and folded into `userReported`.
+`submissions` is never sent by the API. Because the new form does not ask every question the old
+per-box reports ask, `userReported.diversity` and `.maternity` may carry `fieldCounts`: how many
+reports each figure averages, when that differs from `submissions`.

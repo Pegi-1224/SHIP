@@ -20,7 +20,13 @@ export interface ErrorStateProps {
  * button. The caller keeps whatever the user had typed; this component never
  * unmounts a form.
  */
-export function ErrorState({ error, title, message, onRetry, isRetrying = false }: ErrorStateProps) {
+export function ErrorState({
+  error,
+  title,
+  message,
+  onRetry,
+  isRetrying = false,
+}: ErrorStateProps) {
   const resolvedMessage = message ?? getErrorMessage(error);
   // A 404 or a validation error is not worth a Retry button.
   const retryable = !isApiError(error) || error.isRetryable;

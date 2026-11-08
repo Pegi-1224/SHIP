@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
-import { Button, Group, Paper, Stack, Text, TextInput, Title } from '@mantine/core';
+import { Button, Group, Paper, Stack, Text, TextInput } from '@mantine/core';
 import { env } from '@/shared/config/env';
 import { paths } from '@/shared/config/paths';
 import { FormErrorAlert, RelatedLinks } from '@/shared/ui';
@@ -9,6 +9,7 @@ import { useDevSignIn, useSignOut } from '@/features/auth';
 import { CompanyDemoResults } from '@/features/companies';
 import { TagDiscussionColumn } from '@/features/discussions';
 import { useDevCompleteAssessment } from '@/features/onboarding';
+import { ForYouHome } from '../components/ForYouHome';
 import { WelcomeBanner } from '../components/WelcomeBanner';
 import styles from './HomePage.module.css';
 
@@ -17,6 +18,10 @@ const HOME_TAG_COLUMNS = ['pay gap', 'maternity leave', 'career goals'] as const
 
 /**
  * Home (`/`).
+ *
+ * Signed out: the sign-up banner and the latest discussions per tag. Signed
+ * in: the "For you" page (`ForYouHome`). Either way, a header company search
+ * (`?q=`) swaps the main content for matching companies.
  *
  * Below the designed page sits the development index for the whole app:
  * every registered route, with worked examples for the routes that need an
@@ -33,14 +38,10 @@ export function HomePage() {
     <Stack gap="xl" className={styles.page}>
       {status === 'unauthenticated' ? <WelcomeBanner /> : null}
 
-      {/* Latest discussions by default; matching companies only while searching. */}
       {companyQuery ? (
-        <Stack component="section" gap="sm" maw={760} aria-labelledby="home-company-results">
-          <Title order={2} size="var(--ship-text-xl)" id="home-company-results">
-            Companies
-          </Title>
-          <CompanyDemoResults query={companyQuery} />
-        </Stack>
+        <CompanyDemoResults query={companyQuery} />
+      ) : status === 'authenticated' && user ? (
+        <ForYouHome name={user.displayName} />
       ) : (
         <section aria-labelledby="home-latest-posts">
           <h2 id="home-latest-posts" className={styles.sectionTitle}>
@@ -209,15 +210,10 @@ function DevIndex() {
       <RelatedLinks
         heading="Companies (guarded + assessment)"
         links={[
-          { to: paths.companies(), label: 'Company search' },
           { to: paths.companyNew(), label: 'Add a company' },
           {
             to: paths.companyDetail(EXAMPLE_DEMO_COMPANY_ID),
             label: `Company page (example: ${EXAMPLE_DEMO_COMPANY_ID})`,
-          },
-          {
-            to: paths.companySubmit(EXAMPLE_COMPANY_ID),
-            label: `Company data submission (example: ${EXAMPLE_COMPANY_ID})`,
           },
           {
             to: paths.compareCompanies(EXAMPLE_COMPANY_ID, EXAMPLE_COMPANY_ID_B),
@@ -241,19 +237,6 @@ function DevIndex() {
           },
         ]}
       />
-
-      <div>
-        <RelatedLinks
-          heading="Messages (guarded + assessment)"
-          links={[{ to: paths.messages(), label: 'Conversation list' }]}
-        />
-        <Text size="xs" c="dimmed" mt={4}>
-          There is no seeded conversation id: conversations are created at runtime when someone
-          messages a post's author. Open the conversation list to see the empty state, or see{' '}
-          <code>src/features/messages/hooks/useStartConversationFlow.ts</code> for how one gets
-          created.
-        </Text>
-      </div>
 
       <RelatedLinks heading="Account" links={[{ to: paths.profile(), label: 'Profile' }]} />
     </Stack>

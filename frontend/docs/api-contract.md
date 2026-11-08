@@ -219,10 +219,9 @@ The backend must, in one transaction (spec 3.9, AC-9):
 1. delete the user's posts **and every comment on those posts, including other people's**;
 2. delete the user's comments on other people's posts;
 3. delete the user's company submissions, including superseded history rows;
-4. delete every conversation the user took part in, **for both participants**, and its messages;
-5. delete the assessment, read history and all sessions;
-6. delete the account;
-7. **recompute the affected company aggregates.** Removing a contributor can push a metric back
+4. delete the assessment, read history and all sessions;
+5. delete the account;
+6. **recompute the affected company aggregates.** Removing a contributor can push a metric back
    below the five-contributor threshold, and it must stop being published immediately (spec 6.6, T2).
 
 **❓ Needs backend confirmation:** is deletion immediate or is there a grace period? Is a
@@ -291,7 +290,7 @@ Search. **Auth: required** (spec 2.2 — signed-out visitors may not search).
 match on the name plus a normalised match that ignores legal suffixes, so "Northwind" finds
 "Northwind Systems Inc.". Production will want proper text search.
 
-Called by: `CompanySearchPage`, `CompanyPicker` (comparison, assessment Q5).
+Called by: `CompanyPicker` (comparison, assessment Q5).
 
 ---
 
@@ -413,6 +412,10 @@ Server-side rules: name required and past the banned-word filter; website requir
 
 ### `GET /companies/:companyId/my-submission`
 
+> **Not used by the frontend any more.** The company data submission page was dropped from the
+> plan (Nov 2026), so nothing calls this endpoint or the two below it. Users share data through
+> "Add this company" and the "Share your data" buttons on a company page (`/demo/*`).
+
 Whether the user may create a new submission or must edit the one they have. **Auth: required.**
 
 ```json
@@ -520,8 +523,8 @@ The feed. **Auth: required.** Newest first (spec 6.1, AC-2).
 }
 ```
 
-`author.id` is an opaque handle, **not** a user id. It is the only thing the client can use to start
-a conversation, and resolving it back to an account happens server-side.
+`author.id` is an opaque handle, **not** a user id. It identifies the author consistently across posts
+and comments without revealing who they are.
 
 `isOwn` is computed from the session. The client uses it to decide whether to show edit and delete —
 but the server must enforce ownership regardless.
@@ -614,62 +617,8 @@ production.
 
 ## Messages
 
-### `GET /messages/conversations`
-
-**Auth: required.** Most recent first.
-
-```json
-[{ "id": "conv_1", "peer": { "id": "anon_8x2a1f", "label": "Anonymous Finch", "color": "#7c40b6" },
-   "lastMessagePreview": "Thanks for reaching out.", "lastMessageAt": "...", "unreadCount": 1 }]
-```
-
-Only the anonymous identity is ever returned. No name, no email, no user id.
-
-### `POST /messages/conversations`
-
-`{ "anonymousId": "anon_8x2a1f" }` → `200` existing or `201` new `Conversation`.
-**Auth: required.**
-
-The client sends the author's anonymous handle; the backend resolves it. `404` if that person no
-longer exists; `422` for messaging yourself.
-
-### `GET /messages/conversations/:conversationId`
-
-**Auth: required.** `404` if the caller is not a participant — do not distinguish "not yours" from
-"does not exist".
-
-```json
-{
-  "conversation": { "...Conversation" },
-  "messages": [{ "id": "msg_1", "conversationId": "conv_1", "body": "…",
-                 "direction": "outgoing", "createdAt": "...", "clientMessageId": "msg_c1f2" }]
-}
-```
-
-Reading marks the other side's messages as read.
-
-### `POST /messages/conversations/:conversationId/messages`
-
-**Auth: required.**
-
-```json
-{ "body": "Thanks for your post.", "clientMessageId": "msg_c1f2e9" }
-```
-
-> **`clientMessageId` is an idempotency key and the backend must honour it.** The client generates it
-> once per message and reuses it on every retry. If a message with that key already exists, return
-> the stored one (`200`) instead of creating a second. Without this, a request that succeeded but
-> whose response was lost produces a duplicate the moment the user retries — and they will retry,
-> because the UI told them it failed.
-
-`201` new · `200` already stored · `422` empty body or missing key.
-
-**The MVP has no edit or delete for a sent message** (spec 6.7). No such endpoint is proposed.
-
-**❓ Needs backend confirmation — transport.** The client polls this conversation every 5 seconds
-while it is open. That is the whole real-time story and nothing claims otherwise. If a push
-transport is wanted, the protocol (WebSocket, SSE), the authentication handshake and the message
-envelope all need agreeing first. See `backend-integration.md`.
+**Removed.** Direct messages are no longer part of the product (2026-11-03), so there are no
+`/messages/*` endpoints and no message or conversation types.
 
 ---
 
@@ -684,7 +633,7 @@ envelope all need agreeing first. See `backend-integration.md`.
 | 5 | Title, body and comment length limits | Post and comment validation |
 | 6 | Does `womenLeadershipPct` join the comparison summary? | Comparison rules |
 | 7 | Where does the priority→tag mapping live? | `/home/recommendations` |
-| 8 | Messaging transport: polling or push? | `/messages/*` |
+| 8 | ~~Messaging transport: polling or push?~~ | Removed with direct messages |
 | 9 | Account deletion: immediate, or a grace period? | `DELETE /me` |
 | 10 | Should reference lists (roles, cities, benefits) be API-served? | All forms |
 | 11 | Can comments be edited? | Comment endpoints |

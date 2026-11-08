@@ -8,25 +8,19 @@
  * The banned-word check here gives the user immediate feedback. It is NOT a
  * security control: the backend must run the authoritative check, because
  * anything in this bundle can be bypassed.
+ *
+ * Imports are relative with the `.ts` extension because the Vite dev-server
+ * plugin loads this file outside the app's `@/` alias.
  */
+import { bannedWordMessage, containsBannedWord } from './moderation.ts';
+
+export { containsBannedWord };
 
 export const TAG_MIN_LENGTH = 2;
 export const TAG_MAX_LENGTH = 30;
 
-/**
- * Placeholder moderation list for the MVP demo.
- *
- * The real list is owned by the backend and is not published to the client.
- * See docs/decisions-and-questions.md (DQ-07).
- */
-const BANNED_TAG_WORDS = ['slur', 'spamword', 'bannedexample'];
-
 export function normalizeTag(raw: string): string {
-  return raw
-    .trim()
-    .replace(/^#+/, '')
-    .replace(/\s+/g, ' ')
-    .toLowerCase();
+  return raw.trim().replace(/^#+/, '').replace(/\s+/g, ' ').toLowerCase();
 }
 
 export type TagValidationResult = { valid: true } | { valid: false; message: string };
@@ -50,17 +44,9 @@ export function validateTag(raw: string): TagValidationResult {
     };
   }
   if (containsBannedWord(tag)) {
-    return {
-      valid: false,
-      message: 'This tag contains a word we do not allow. Please choose a different name.',
-    };
+    return { valid: false, message: bannedWordMessage('tag') };
   }
   return { valid: true };
-}
-
-export function containsBannedWord(text: string): boolean {
-  const haystack = text.toLowerCase();
-  return BANNED_TAG_WORDS.some((word) => haystack.includes(word));
 }
 
 /** De-duplicate a list of raw tag inputs, preserving the order the user typed. */

@@ -1,14 +1,6 @@
 import { useState } from 'react';
 import { Button, Group, Modal, Progress, Stack, Text, Title } from '@mantine/core';
-import {
-  Building2,
-  Home,
-  MessageCircle,
-  MessagesSquare,
-  Scale,
-  User,
-  type LucideIcon,
-} from 'lucide-react';
+import { Building2, Home, MessagesSquare, Scale, User, type LucideIcon } from 'lucide-react';
 import { useMarkInstructionsSeen } from '@/features/auth';
 import styles from './InstructionWalkthrough.module.css';
 
@@ -39,11 +31,6 @@ const STEPS: Step[] = [
     icon: Scale,
     title: 'Compare',
     body: 'Put two companies side by side. We only compare figures that measure the same thing, and we say so when we cannot.',
-  },
-  {
-    icon: MessageCircle,
-    title: 'Messages',
-    body: 'Tap the avatar on any post to message the author. Both of you stay anonymous - no names, no email addresses.',
   },
   {
     icon: User,
