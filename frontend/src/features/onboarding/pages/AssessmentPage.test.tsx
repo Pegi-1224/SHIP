@@ -27,7 +27,7 @@ async function answerFirstFour(user: UserEvent) {
   await user.click(next());
 
   await question(/What matters most/);
-  await user.click(screen.getByRole('checkbox', { name: 'Pay equity' }));
+  await user.click(screen.getByRole('checkbox', { name: 'Company culture' }));
   await user.click(next());
 
   await question(/Which topics/);
@@ -105,7 +105,7 @@ describe('AssessmentPage', () => {
       await user.click(next());
       await question(/What matters most/);
 
-      for (const name of ['Pay equity', 'Benefits', 'Safe workplace']) {
+      for (const name of ['Company culture', 'Benefits', 'Safe workplace']) {
         await user.click(screen.getByRole('checkbox', { name }));
       }
       expect(screen.getByText('3 of 3 chosen')).toBeInTheDocument();

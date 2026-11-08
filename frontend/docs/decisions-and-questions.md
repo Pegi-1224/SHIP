@@ -100,9 +100,9 @@ options are not tags.
 
 | Priority (Q3) | Tags |
 | --- | --- |
-| Pay equity | `pay gap`, `negotiation` |
+| Company culture (`pay_equity`) | `pay gap`, `negotiation` |
 | Promotion & leadership | `career goals` |
-| Supportive manager | `supportive manager` |
+| Workplace support (`supportive_manager`) | `supportive manager` |
 | Maternity / parental leave | `maternity leave`, `return to work` |
 | Benefits | `benefits` |
 | Work-life balance | `work life balance` |

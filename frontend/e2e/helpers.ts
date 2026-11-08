@@ -32,7 +32,7 @@ export async function completeAssessment(page: Page): Promise<void> {
   await next.click();
   await page.getByText('Tech', { exact: true }).click();
   await next.click();
-  await page.getByText('Pay equity').click();
+  await page.getByText('Company culture').click();
   await next.click();
   await page.getByText('#pay gap').click();
   await next.click();

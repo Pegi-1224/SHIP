@@ -41,9 +41,10 @@ export const PRIORITIES = [
 export type PriorityId = (typeof PRIORITIES)[number];
 
 export const PRIORITY_LABELS: Record<PriorityId, string> = {
-  pay_equity: 'Pay equity',
+  // The ids stay as first released (the backend stores them); only the wording changed.
+  pay_equity: 'Company culture',
   promotion_and_leadership: 'Promotion & leadership',
-  supportive_manager: 'Supportive manager',
+  supportive_manager: 'Workplace support',
   parental_leave: 'Maternity / parental leave',
   benefits: 'Benefits',
   work_life_balance: 'Work-life balance',
