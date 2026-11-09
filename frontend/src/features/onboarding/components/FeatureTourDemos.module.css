@@ -114,67 +114,150 @@
 
 /* ---- Feature 2: two companies compared ---- */
 
-.stack {
+.compare {
   display: grid;
-  gap: 18px;
+  gap: 10px;
   width: 100%;
-  max-width: 515px;
+  max-width: 533px;
+  color: #1c1538;
+  font-size: 13.32px;
+  line-height: 1;
 }
 
-.compareCard {
-  border-radius: 18px;
-  box-shadow: 0 10.8px 28.8px 0 #24104f08;
+.compare :where(p, dl, dd) {
+  margin: 0;
 }
 
-.compareHeader {
+.versus {
   display: flex;
-  align-items: baseline;
-  justify-content: space-between;
-  gap: 12px;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px 10px;
+  min-height: 18px;
 }
 
-.compareTitle {
-  font-size: 19.44px;
-  font-weight: 800;
-  line-height: 1.4;
+.side {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  font-weight: 600;
 }
 
-.source {
+.sideDot {
+  flex: none;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+}
+
+.vs {
   color: #746d88;
-  font-size: 11.16px;
+}
+
+.summary {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 16px;
+  border-radius: 14px;
+  background-color: #3a1a8a;
+  color: #ffffff;
+}
+
+.summaryLabel {
+  color: #c4b5fa;
+  font-size: 11px;
   font-weight: 700;
-  line-height: 1.4;
   text-transform: uppercase;
 }
 
-.compareRows {
-  display: grid;
-  gap: 14.4px;
-  margin-top: 18px;
-}
-
-.compareRow {
-  display: grid;
-  grid-template-columns: 120px minmax(0, 1fr) 64px;
-  gap: 21.6px;
-  align-items: center;
-}
-
-.compareName {
-  font-size: 14.04px;
-  font-weight: 600;
+.summaryText {
+  font-size: 16.2px;
+  font-weight: 700;
   line-height: 1.4;
 }
 
-.compareBar .track {
-  height: 12.6px;
-  border-radius: 7.2px;
-  background-color: #efeafa;
+.summaryLead {
+  padding: 6px 14px;
+  border-radius: 20px;
+  background-color: #5b2acf;
+  font-size: 12.5px;
+  font-weight: 600;
 }
 
-.compareValue {
-  font-size: 14.4px;
-  font-weight: 800;
+.areas {
+  padding: 0 16px;
+  border-radius: 14px;
+  background-color: #ffffff;
+  box-shadow: 0 4px 16px 0 #24104f08;
+}
+
+.area {
+  display: grid;
+  grid-template-columns: 140px minmax(0, 1fr) minmax(0, 1fr) 8px;
+  column-gap: 12px;
+  align-items: center;
+  min-height: 34px;
+}
+
+.area + .area {
+  border-top: 1px solid #f0ebfa;
+}
+
+.areaValue {
+  color: #746d88;
+}
+
+.areaValue.lead,
+.areaValue.leadAccent {
+  font-weight: 700;
+}
+
+.areaValue.lead {
+  color: #1c1538;
+}
+
+.areaValue.leadAccent {
+  color: #5b2acf;
+}
+
+.leaderDot {
+  display: block;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+}
+
+.compareFooter {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+}
+
+.key {
+  padding: 3px 8px;
+  border-radius: 4px;
+  font-size: 10.8px;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.keyPublic {
+  background-color: #ede8fb;
+  color: #5b2acf;
+}
+
+.keyUser {
+  background-color: #fff0c1;
+  color: #906818;
+}
+
+.compareNote {
+  margin-left: auto;
+  color: #746d88;
+  font-size: 12px;
   line-height: 1.4;
 }
 
@@ -242,8 +325,8 @@
     grid-template-columns: 90px minmax(0, 1fr);
   }
 
-  .compareRow {
-    grid-template-columns: 82px minmax(0, 1fr) 48px;
-    gap: 12px;
+  .area {
+    grid-template-columns: 104px minmax(0, 1fr) minmax(0, 1fr) 8px;
+    column-gap: 8px;
   }
 }

@@ -24,6 +24,8 @@ describe('WelcomeTourPage', () => {
     await user.click(next());
     expect(screen.getByRole('heading', { name: 'Side By Side Comparisons' })).toHaveFocus();
     expect(screen.getByText('Feature 2 of 3')).toBeInTheDocument();
+    expect(screen.getByText('Sample companies for illustration')).toBeInTheDocument();
+    expect(screen.getByText('Brightfern Health leads in 4 of 5 areas')).toBeInTheDocument();
 
     await user.click(back());
     expect(screen.getByRole('heading', { name: 'Look up any company' })).toBeInTheDocument();

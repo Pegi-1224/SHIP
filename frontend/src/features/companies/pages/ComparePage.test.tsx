@@ -59,4 +59,28 @@ describe('ComparePage', () => {
     expect(leave.getByText('16wk')).toBeInTheDocument();
     expect(leave.getByText('20wk')).toBeInTheDocument();
   });
+
+  it('switches a box between public data and user reports', async () => {
+    const { user } = renderAt('/compare?a=lumen-harbor-analytics&b=brightfern-health');
+
+    const salary = within(await screen.findByRole('region', { name: 'Salary' }));
+    const publicButton = salary.getByRole('button', { name: 'Public data' });
+    const userButton = salary.getByRole('button', { name: 'User reported' });
+    expect(publicButton).toHaveAttribute('aria-pressed', 'true');
+    expect(salary.getByText('$128,000')).toBeInTheDocument();
+
+    await user.click(userButton);
+    expect(userButton).toHaveAttribute('aria-pressed', 'true');
+    expect(publicButton).toHaveAttribute('aria-pressed', 'false');
+    expect(salary.getByText('$121,000')).toBeInTheDocument();
+    expect(salary.getByText('$146,000')).toBeInTheDocument();
+    expect(salary.getByText('Brightfern Health: from 15 submissions')).toBeInTheDocument();
+
+    // Each box keeps its own choice.
+    const leave = within(screen.getByRole('region', { name: 'Paid maternity leave' }));
+    expect(leave.getByRole('button', { name: 'Public data' })).toHaveAttribute(
+      'aria-pressed',
+      'true',
+    );
+  });
 });

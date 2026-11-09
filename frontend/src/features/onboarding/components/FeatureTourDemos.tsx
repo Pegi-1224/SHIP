@@ -8,14 +8,10 @@ import styles from './FeatureTourDemos.module.css';
  */
 
 /** A bar that fills `percent` of its track. `label` reads the value out when it is not shown. */
-function Bar({ percent, label, color }: { percent: number; label?: string; color?: string }) {
+function Bar({ percent, label }: { percent: number; label?: string }) {
   return (
     <span className={styles.track}>
-      <span
-        className={styles.fill}
-        style={{ width: `${percent}%`, backgroundColor: color }}
-        aria-hidden="true"
-      />
+      <span className={styles.fill} style={{ width: `${percent}%` }} aria-hidden="true" />
       {label ? <span className="ship-visually-hidden">{label}</span> : null}
     </span>
   );
@@ -64,52 +60,79 @@ export function CompanyDemo() {
   );
 }
 
-const NORTHWIND_COLOR = '#5b2acf';
-const LUMEN_COLOR = '#659aff';
+const SIDES = {
+  a: { name: 'Brightfern Health', color: '#5b2acf' },
+  b: { name: 'Lumen Harbor Analytics', color: '#659aff' },
+} as const;
 
-const COMPARISONS = [
-  {
-    title: 'Paid maternity leave',
-    // Bars are drawn against a fixed scale so the two companies can be compared at a glance.
-    scale: 58,
-    rows: [
-      { name: 'Northwind', amount: 16, value: '16 wk', color: NORTHWIND_COLOR },
-      { name: 'Lumen Labs', amount: 20, value: '20 wk', color: LUMEN_COLOR },
-    ],
-  },
-  {
-    title: 'Salary',
-    scale: 240,
-    rows: [
-      { name: 'Northwind', amount: 150, value: '$150k', color: NORTHWIND_COLOR },
-      { name: 'Lumen Labs', amount: 134, value: '$134k', color: LUMEN_COLOR },
-    ],
-  },
+/** One area each: the two values, and which side leads. `accent` colours the leading value. */
+const COMPARE_ROWS = [
+  { label: 'Salary', a: '$141k', b: '$128k', leader: 'a' },
+  { label: 'Promotion rate', a: '52%', b: '40%', leader: 'a' },
+  { label: 'Women in workforce', a: '63%', b: '44%', leader: 'a' },
+  { label: 'Maternity leave', a: '20 wk', b: '16 wk', leader: 'a', accent: true },
+  { label: 'Benefits', a: '4 items', b: '5 items', leader: 'b', accent: true },
 ] as const;
 
-/** Feature 2: two companies side by side. */
-export function CompareDemo() {
+/** Feature 2: two companies side by side, as the compare page sums them up. */
+export function CompareDemo({ note }: { note: string }) {
   return (
-    <div className={styles.stack}>
-      {COMPARISONS.map((comparison) => (
-        <div key={comparison.title} className={`${styles.card} ${styles.compareCard}`}>
-          <div className={styles.compareHeader}>
-            <p className={styles.compareTitle}>{comparison.title}</p>
-            <p className={styles.source}>Public data</p>
-          </div>
-          <dl className={styles.compareRows}>
-            {comparison.rows.map((row) => (
-              <div key={row.name} className={styles.compareRow}>
-                <dt className={styles.compareName}>{row.name}</dt>
-                <dd className={styles.compareBar}>
-                  <Bar percent={(row.amount / comparison.scale) * 100} color={row.color} />
-                </dd>
-                <dd className={styles.compareValue}>{row.value}</dd>
-              </div>
+    <div className={styles.compare}>
+      <p className={styles.versus}>
+        <span className={styles.side}>
+          <span className={styles.sideDot} style={{ backgroundColor: SIDES.a.color }} />
+          {SIDES.a.name}
+        </span>
+        <span className={styles.vs}>VS</span>
+        <span className={styles.side}>
+          <span className={styles.sideDot} style={{ backgroundColor: SIDES.b.color }} />
+          {SIDES.b.name}
+        </span>
+      </p>
+
+      <div className={styles.summary}>
+        <p className={styles.summaryLabel}>Summary</p>
+        <p className={styles.summaryText}>
+          Brightfern Health offers 4 more weeks of paid maternity leave and has 19 percentage points
+          more women in its workforce.
+        </p>
+        <p className={styles.summaryLead}>Brightfern Health leads in 4 of 5 areas</p>
+      </div>
+
+      <dl className={styles.areas}>
+        {COMPARE_ROWS.map((row) => (
+          <div key={row.label} className={styles.area}>
+            <dt className={styles.areaLabel}>{row.label}</dt>
+            {(['a', 'b'] as const).map((side) => (
+              <dd
+                key={side}
+                className={
+                  row.leader !== side
+                    ? styles.areaValue
+                    : `${styles.areaValue} ${'accent' in row ? styles.leadAccent : styles.lead}`
+                }
+              >
+                <span className="ship-visually-hidden">{SIDES[side].name}: </span>
+                {row[side]}
+              </dd>
             ))}
-          </dl>
-        </div>
-      ))}
+            <dd className={styles.areaLeader}>
+              <span
+                className={styles.leaderDot}
+                style={{ backgroundColor: SIDES[row.leader].color }}
+                aria-hidden="true"
+              />
+              <span className="ship-visually-hidden">{SIDES[row.leader].name} leads</span>
+            </dd>
+          </div>
+        ))}
+      </dl>
+
+      <div className={styles.compareFooter}>
+        <span className={`${styles.key} ${styles.keyPublic}`}>Public data</span>
+        <span className={`${styles.key} ${styles.keyUser}`}>User reported</span>
+        <p className={styles.compareNote}>{note}</p>
+      </div>
     </div>
   );
 }

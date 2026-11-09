@@ -7,9 +7,11 @@ import styles from './WelcomeTourPage.module.css';
 interface Feature {
   title: string;
   description: string;
-  Demo: ComponentType;
+  Demo: ComponentType<{ note: string }>;
   /** Says under the illustration that it is made up. */
   note: string;
+  /** The demo shows the note itself (step 2 puts it beside its data key). */
+  noteInDemo?: boolean;
 }
 
 const FEATURES: Feature[] = [
@@ -26,6 +28,7 @@ const FEATURES: Feature[] = [
       'Explore how two companies stack up in salary, women’s leadership, maternity leave, and workplace benefits. Make better-informed career decisions by discovering which company best aligns with your goals and values.',
     Demo: CompareDemo,
     note: 'Sample companies for illustration',
+    noteInDemo: true,
   },
   {
     title: 'Discuss with Others',
@@ -76,9 +79,11 @@ export function WelcomeTourPage() {
       <div className={styles.box}>
         <figure className={styles.demo}>
           <div className={styles.demoContent}>
-            <Demo />
+            <Demo note={feature.note} />
           </div>
-          <figcaption className={styles.note}>{feature.note}</figcaption>
+          {feature.noteInDemo ? null : (
+            <figcaption className={styles.note}>{feature.note}</figcaption>
+          )}
         </figure>
 
         <div className={styles.copy}>
