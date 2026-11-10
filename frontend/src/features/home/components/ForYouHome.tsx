@@ -81,7 +81,10 @@ export function ForYouHome({ name }: { name: string }) {
       </section>
 
       <aside className={styles.aside} aria-label="Suggestions">
-        <CompanySpotlight industries={answers?.industries ?? []} />
+        <CompanySpotlight
+          industries={answers?.industries ?? []}
+          followedCompanyIds={answers?.followedCompanyIds ?? []}
+        />
 
         <section className={styles.panel} aria-labelledby="home-topics-title">
           <h2 id="home-topics-title" className={styles.panelTitle}>

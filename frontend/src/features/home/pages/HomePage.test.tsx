@@ -1,4 +1,4 @@
-import { describe, expect, it } from 'vitest';
+import { describe, expect, it, vi } from 'vitest';
 import { screen, waitFor, within } from '@testing-library/react';
 import { renderWithProviders } from '@/test/renderWithProviders';
 import { DEFAULT_TEST_ASSESSMENT, signInTestUser } from '@/test/signIn';
@@ -88,6 +88,34 @@ describe('HomePage, signed in', () => {
     expect(box.getByRole('link', { name: 'Look up the details' })).toHaveAttribute(
       'href',
       '/companies/brightfern-health',
+    );
+  });
+
+  it('also suggests the companies the user follows', async () => {
+    // Healthcare has one company and the user follows one Tech company: those two are the picks.
+    await signInTestUser({
+      assessment: {
+        ...DEFAULT_TEST_ASSESSMENT,
+        industries: ['Healthcare'],
+        followedCompanyIds: ['lumen-harbor-analytics'],
+      },
+    });
+
+    const suggested = new Set<string>();
+    for (const roll of [0, 0.999]) {
+      const random = vi.spyOn(Math, 'random').mockReturnValue(roll);
+      const { unmount } = renderHome();
+      const box = within(await screen.findByRole('region', { name: 'Look up a company' }));
+      const link = await box.findByRole('link', { name: 'Look up the details' });
+      suggested.add(link.getAttribute('href') ?? '');
+      expect(
+        box.getByText('Picked from the companies you follow and Healthcare'),
+      ).toBeInTheDocument();
+      unmount();
+      random.mockRestore();
+    }
+    expect(suggested).toEqual(
+      new Set(['/companies/brightfern-health', '/companies/lumen-harbor-analytics']),
     );
   });
 

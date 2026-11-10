@@ -25,19 +25,38 @@ function companyFacts(company: CompanyRecord): Array<[string, string]> {
   ];
 }
 
+/** "Tech, Finance", "the companies you follow", or both. */
+function sourceText(industries: readonly Industry[], following: boolean): string {
+  const parts = [
+    ...(following ? ['the companies you follow'] : []),
+    ...(industries.length > 0 ? [industries.join(', ')] : []),
+  ];
+  return parts.join(' and ');
+}
+
 /**
  * "Look up a company": one random company from the industries the user chose
- * in the assessment (question 2), with a few of its numbers and a link to its
- * page. Falls back to any company when none is in those industries yet.
+ * in the assessment (question 2) or the companies they follow (question 5),
+ * with a few of its numbers and a link to its page. Falls back to any company
+ * when none matches yet.
  */
-export function CompanySpotlight({ industries }: { industries: readonly Industry[] }) {
+export function CompanySpotlight({
+  industries,
+  followedCompanyIds,
+}: {
+  industries: readonly Industry[];
+  followedCompanyIds: readonly string[];
+}) {
   const companies = useDemoCompanySearch('');
   // Picked once per visit, so the suggestion does not jump around while the page re-renders.
   const [pick] = useState(() => Math.random());
 
   const all = companies.data?.items.map((hit) => hit.item) ?? [];
-  const inIndustries = all.filter((company) => industries.includes(company.industry));
-  const candidates = inIndustries.length > 0 ? inIndustries : all;
+  const matching = all.filter(
+    (company) => industries.includes(company.industry) || followedCompanyIds.includes(company.id),
+  );
+  const candidates = matching.length > 0 ? matching : all;
+  const chosen = sourceText(industries, followedCompanyIds.length > 0);
   const company = candidates[Math.floor(pick * candidates.length)];
 
   return (
@@ -46,9 +65,9 @@ export function CompanySpotlight({ industries }: { industries: readonly Industry
         Look up a company
       </h2>
       <p className={styles.spotlightHint}>
-        {inIndustries.length > 0 || industries.length === 0
-          ? `Picked from ${industries.length > 0 ? industries.join(', ') : 'all industries'}`
-          : `No ${industries.join(', ')} companies yet, so here’s another`}
+        {matching.length > 0 || chosen === ''
+          ? `Picked from ${chosen || 'all industries'}`
+          : `No companies from ${chosen} yet, so here’s another`}
       </p>
 
       <div className={styles.spotlightCard}>
