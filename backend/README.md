@@ -170,6 +170,17 @@ formal), their reports and submissions, the seed authors, posts and comments, an
 anyone's comments or reports on a seeded post or company go with it. The data is a copy of
 `frontend/src/mocks/data` and the frontend fixtures; every record is fictional.
 
+**Real companies.** `npm run db:import-companies -- <file>` loads the reviewed company dataset
+exported by `export_for_backend.py` in the company-research project
+(`outputs/backend_export/companies_backend.json`, 300 companies). Each one is upserted by a slug of
+its name with `isDemoFixture: false`; the curated figures go into `publicData` (formal
+`/companies` endpoints) and into the transitional profile columns with `hasDemoProfile: true`, so
+the `/demo/*` pages show them too. Only verified or reviewed values are in the file, and public
+salary stays `null` because no company publishes an average (single job-posting ranges go to the
+profile's `salary.rangeUsd`). Re-running refreshes the curated columns and keeps user-reported
+aggregates, reports and submissions. Add `--dry-run` to validate only, or `--remove` to delete the
+imported companies again. `npm run db:seed` does not touch them.
+
 **Environment** (`.env`, copied from `.env.example`): `DATABASE_URL`, `PORT`, `CORS_ORIGINS`,
 `AUTH_SECRET` (keys the sign-in code hash; generate with `openssl rand -base64 36`),
 `AUTH_DEV_RETURN_CODE` (dev only, see section 4), `SESSION_TTL_DAYS`.
@@ -187,6 +198,7 @@ failures. It needs `python3`, the `ship-postgres` container and `AUTH_DEV_RETURN
 | `npm run build` / `npm start` | Compile to `dist/` and run it |
 | `npm run db:migrate` | Create/apply a migration after editing `prisma/schema.prisma` |
 | `npm run db:seed` | Reset the demo data from `src/db/seed-data/` |
+| `npm run db:import-companies -- <file>` | Upsert the reviewed real companies (`--dry-run`, `--remove`) |
 | `npm run test:smoke` | Run the end-to-end API checks against the running server |
 | `npm run db:studio` | Browse the database in the browser |
 

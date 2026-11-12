@@ -52,13 +52,27 @@ ub = sign_in(f"dave{stamp}@example.com")
 # ---- search / list
 s, r = call("GET", "/companies")
 check("companies without token -> 401", s == 401, (s, r))
-s, r = call("GET", "/companies?pageSize=100", token=ua)
-names = [c["name"] for c in r["items"]]
-check("list: 18 companies (10 demo + 8 formal), sorted by name, contract shape", s == 200 and r["total"] == 18 and names == sorted(names, key=str.lower) and set(r["items"][0]) == {"id", "name", "website", "industry", "headquartersCity", "isDemoFixture"}, (s, r["total"], names[:3]))
+def all_pages(path):
+    """Every item of a paginated list, so the checks hold when real companies are imported too."""
+    items, page = [], 1
+    while True:
+        s, r = call("GET", f"{path}{'&' if '?' in path else '?'}pageSize=100&page={page}", token=ua)
+        if s != 200: return s, items, None
+        items += r["items"]
+        if not r["hasMore"]: return s, items, r["total"]
+        page += 1
+
+s, items, total = all_pages("/companies")
+demo = [c for c in items if c["isDemoFixture"]]
+# The API sorts with the locale-aware String.localeCompare; str.lower matches it for the seed names,
+# not for every real name ("Airbnb" vs "Air Products"), so the order is checked on the seed subset.
+names = [c["name"] for c in demo]
+check("list: the 18 seed companies (10 demo + 8 formal) plus any imported real ones, sorted by name, contract shape", s == 200 and len(demo) == 18 and total == len(items) and names == sorted(names, key=str.lower) and set(items[0]) == {"id", "name", "website", "industry", "headquartersCity", "isDemoFixture"}, (s, total, len(demo), names[:3]))
 s, r = call("GET", "/companies?q=northwind", token=ua)
 check("search 'northwind' finds Northwind Systems", s == 200 and [c["id"] for c in r["items"]] == ["northwind-systems"], (s, r))
-s, r = call("GET", "/companies?q=Tech&pageSize=100", token=ua)
-check("search by industry 'Tech'", s == 200 and r["total"] >= 3 and all(c["industry"] == "Tech" for c in r["items"]), (s, r["total"]))
+s, items, total = all_pages("/companies?q=Tech")
+# Search matches names as well as industries, so a real company named "...Technologies" may appear.
+check("search by industry 'Tech'", s == 200 and sum(c["industry"] == "Tech" for c in items if c["isDemoFixture"]) >= 3 and all(c["industry"] == "Tech" or "tech" in c["name"].lower() for c in items), (s, total))
 s, r = call("GET", "/companies?pageSize=5&page=2", token=ua)
 check("pagination page 2: 5 items, hasMore", s == 200 and len(r["items"]) == 5 and r["page"] == 2 and r["hasMore"] is True, (s, r))
 
@@ -199,7 +213,10 @@ check("...and exactly one active row in the database", sql(f"SELECT count(*) FRO
 
 # demo isolation
 s, r = call("GET", "/demo/companies")
-check("/demo/companies still only the 10 demo records", s == 200 and r["total"] == 10, (s, r["total"]))
+# Imported real companies carry a demo profile too; the 8 formal-only fixtures must never appear.
+demo_profiles = int(sql('SELECT count(*) FROM "Company" WHERE "hasDemoProfile"'))
+seed_demo = int(sql('SELECT count(*) FROM "Company" WHERE "hasDemoProfile" AND "isDemoFixture"'))
+check("/demo/companies lists only demo-profile records (10 demo + any imported)", s == 200 and seed_demo == 10 and r["total"] == demo_profiles, (s, r["total"], demo_profiles))
 s, r = call("GET", "/demo/companies/northwind-systems")
 check("/demo/companies/:id 404s for non-demo companies", s == 404, (s, r))
 

@@ -17,6 +17,7 @@
     "db:generate": "prisma generate",
     "db:migrate": "prisma migrate dev",
     "db:seed": "tsx src/db/seed.ts",
+    "db:import-companies": "tsx src/db/import-companies.ts",
     "db:studio": "prisma studio",
     "test:smoke": "sh test/run.sh"
   },
