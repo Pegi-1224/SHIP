@@ -1,8 +1,8 @@
 /**
  * Imports the reviewed real-company dataset: `npm run db:import-companies -- <file> [--dry-run] [--remove]`.
  *
- * <file> is the JSON written by `export_for_backend.py` in the company-research project
- * (outputs/backend_export/companies_backend.json). It carries only verified or reviewed values.
+ * <file> is normally `data/real-companies.json`, the JSON written by `export_for_backend.py` in the
+ * company-research project. It carries only verified or reviewed values.
  *
  * Each company is upserted by id (a slug of its name) with `isDemoFixture: false`. The curated
  * figures go into `publicData` for the formal `/companies` endpoints and into the transitional

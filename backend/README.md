@@ -170,9 +170,12 @@ formal), their reports and submissions, the seed authors, posts and comments, an
 anyone's comments or reports on a seeded post or company go with it. The data is a copy of
 `frontend/src/mocks/data` and the frontend fixtures; every record is fictional.
 
-**Real companies.** `npm run db:import-companies -- <file>` loads the reviewed company dataset
-exported by `export_for_backend.py` in the company-research project
-(`outputs/backend_export/companies_backend.json`, 300 companies). Each one is upserted by a slug of
+**Real companies.** `npm run db:import-companies -- data/real-companies.json` loads the reviewed
+real-company dataset checked into `data/`: 85 companies whose profile is fairly complete
+(description, headquarters, contact details, plus at least one women-related figure such as
+benefits or maternity leave). Every value carries the public source page it was checked against.
+The file is exported by `export_for_backend.py` in the separate company-research project; to
+refresh it, re-export there, replace the file and re-run the import. Each one is upserted by a slug of
 its name with `isDemoFixture: false`; the curated figures go into `publicData` (formal
 `/companies` endpoints) and into the transitional profile columns with `hasDemoProfile: true`, so
 the `/demo/*` pages show them too. Only verified or reviewed values are in the file, and public
@@ -198,7 +201,7 @@ failures. It needs `python3`, the `ship-postgres` container and `AUTH_DEV_RETURN
 | `npm run build` / `npm start` | Compile to `dist/` and run it |
 | `npm run db:migrate` | Create/apply a migration after editing `prisma/schema.prisma` |
 | `npm run db:seed` | Reset the demo data from `src/db/seed-data/` |
-| `npm run db:import-companies -- <file>` | Upsert the reviewed real companies (`--dry-run`, `--remove`) |
+| `npm run db:import-companies -- data/real-companies.json` | Upsert the reviewed real companies (`--dry-run`, `--remove`) |
 | `npm run test:smoke` | Run the end-to-end API checks against the running server |
 | `npm run db:studio` | Browse the database in the browser |
 
@@ -208,6 +211,7 @@ failures. It needs `python3`, the `ship-postgres` container and `AUTH_DEV_RETURN
 backend/
 ├── prisma/schema.prisma    database schema (see "Data model" below)
 ├── prisma.config.ts        Prisma CLI config (reads DATABASE_URL)
+├── data/real-companies.json  reviewed real companies for db:import-companies
 ├── test/                   end-to-end smoke tests (run.sh + smoke_1..3.py)
 └── src/
     ├── server.ts           entry point
